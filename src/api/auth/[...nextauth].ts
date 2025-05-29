@@ -1,7 +1,7 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { NextAuthOptions } from "next-auth";
-
+/*
 const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
@@ -10,7 +10,8 @@ const authOptions: NextAuthOptions = {
         username: { label: "Username", type: "text", placeholder: "Enter your username" },
         password: { label: "Password", type: "password", placeholder: "Enter your password" },
       },
-      async authorize(credentials) {
+     async authorize(credentials: Record<string, any>) {
+
         // Add logic here to look up the user from the credentials supplied
         const user = { id: 1, name: "User", email: "user@example.com" }; // Example user
 
@@ -44,4 +45,4 @@ const authOptions: NextAuthOptions = {
   },
 };
 
-export default NextAuth(authOptions);
+export default NextAuth(authOptions);*/
