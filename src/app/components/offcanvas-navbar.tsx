@@ -39,12 +39,12 @@ export default function OffcanvasNavbar({ brandName = "Aura Beauty", brandHref =
         <div className="container d-flex justify-content-between align-items-center">
           <p className="mb-0 small fw-medium">RESERVAS ONLINE</p>
           <div className="d-flex gap-3">
-            {/* Aquí podrías agregar cosas en la barra superior */}
+            {/* Elementos adicionales aquí si los necesitas */}
           </div>
         </div>
       </div>
 
-      {/* Navbar */}
+      {/* Navbar principal */}
       <nav className="navbar navbar-expand-lg navbar-light bg-white border-bottom sticky-top">
         <div className="container">
           <Link href={brandHref} className="navbar-brand fw-bold text-primary">
@@ -66,7 +66,6 @@ export default function OffcanvasNavbar({ brandName = "Aura Beauty", brandHref =
               ))}
             </ul>
 
-            {/* Botón de Iniciar Sesión en escritorio */}
             <Link href="/login" className="btn btn-primary ms-3 text-uppercase">
               Iniciar Sesión
             </Link>
@@ -74,7 +73,7 @@ export default function OffcanvasNavbar({ brandName = "Aura Beauty", brandHref =
         </div>
       </nav>
 
-      {/* Overlay */}
+      {/* Overlay (oscurece fondo al abrir offcanvas) */}
       {isOpen && (
         <div
           className="position-fixed top-0 start-0 w-100 h-100 bg-dark bg-opacity-50"
@@ -83,7 +82,7 @@ export default function OffcanvasNavbar({ brandName = "Aura Beauty", brandHref =
         />
       )}
 
-      {/* Offcanvas */}
+      {/* Offcanvas menú lateral */}
       <div
         className={`offcanvas offcanvas-end show ${isOpen ? "d-block" : "d-none"}`}
         tabIndex={-1}
@@ -95,7 +94,6 @@ export default function OffcanvasNavbar({ brandName = "Aura Beauty", brandHref =
         </div>
 
         <div className="offcanvas-body d-flex flex-column">
-          {/* Aquí primero el formulario de búsqueda y el botón de iniciar sesión */}
           <form onSubmit={handleSubmit} className="d-flex gap-2 mb-3">
             <input type="search" className="form-control" placeholder="Buscar..." />
             <button type="submit" className="btn btn-outline-secondary">
@@ -111,7 +109,6 @@ export default function OffcanvasNavbar({ brandName = "Aura Beauty", brandHref =
             Iniciar Sesión
           </Link>
 
-          {/* Después la lista de navegación */}
           <ul className="nav flex-column mb-0">
             {navigationItems.map((item) => (
               <li key={item} className="nav-item border-bottom py-2">
