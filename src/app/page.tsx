@@ -30,7 +30,7 @@ export default function Home() {
       {/* Banner promocional */}
       <div className="bg-purple py-3 text-center">
         <p className="fs-5 fw-medium text-white px-3 mb-0">
-          HASTA UN 30% DE DESCUENTO EN TRATAMIENTOS + 25% DE AHORRO, TODOS LOS DÍAS.
+          20% DE DESCUENTO CONTRATANDO DOS SERVICIOS + 15% DE AHORRO, TODOS LOS MARTES Y JUEVES.
         </p>
       </div>
 
@@ -64,6 +64,14 @@ export default function Home() {
               <div className="service-icon">💆</div>
               <h3 className="h5 fw-semibold mb-2">Masajes</h3>
               <p className="text-muted-foreground mb-0">Relajación y bienestar corporal</p>
+            </div>
+          </div>
+
+           <div className="col-12 col-md-6 col-lg-4">
+            <div className="service-card">
+              <div className="service-icon">✂️</div>
+              <h3 className="h5 fw-semibold mb-2">Peluqueria</h3>
+              <p className="text-muted-foreground mb-0">El mejor look posible</p>
             </div>
           </div>
         </div>

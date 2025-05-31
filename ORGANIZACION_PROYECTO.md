@@ -17,7 +17,7 @@ Este documento contiene la organización inicial del proyecto web de reservas de
 
 ## 🎨 Frontend
 
-- [ ] Página principal con presentación de servicios
+- [X] Página principal con presentación de servicios
 - [ ] Página para seleccionar y reservar turnos
 - [ ] Página de confirmación y checkout
 - [ ] Componente de calendario de turnos

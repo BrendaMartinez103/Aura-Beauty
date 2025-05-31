@@ -1,9 +1,8 @@
 "use client"
 
-import type React from "react"
 import { useState } from "react"
-import { Menu, X, Search, Facebook, Instagram } from "lucide-react"
 import Link from "next/link"
+import { Menu, Search } from "lucide-react"
 
 interface OffcanvasNavbarProps {
   brandName?: string
@@ -36,120 +35,92 @@ export default function OffcanvasNavbar({ brandName = "Aura Beauty", brandHref =
   return (
     <>
       {/* Top Bar */}
-      <div className="bg-background border-b border-border">
-        <div className="container mx-auto px-4">
-          <div className="flex justify-between items-center py-3">
-            <div>
-              <p className="text-sm font-medium text-muted-foreground">RESERVAS ONLINE</p>
-            </div>
-            <div className="flex gap-3">
-              <Link href="#" aria-label="Facebook" className="text-muted-foreground hover:text-foreground transition-colors">
-                <Facebook className="h-5 w-5" />
-              </Link>
-              <Link href="#" aria-label="Instagram" className="text-muted-foreground hover:text-foreground transition-colors">
-                <Instagram className="h-5 w-5" />
-              </Link>
-            </div>
+      <div className="border-bottom py-2 bg-light">
+        <div className="container d-flex justify-content-between align-items-center">
+          <p className="mb-0 small fw-medium">RESERVAS ONLINE</p>
+          <div className="d-flex gap-3">
+            {/* Aquí podrías agregar cosas en la barra superior */}
           </div>
         </div>
       </div>
 
-      {/* Main Navbar */}
-      <nav className="bg-background border-b border-border sticky top-0 z-40">
-        <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between h-16">
-            {/* Brand */}
-            <Link href={brandHref} className="text-xl font-bold text-purple-600 hover:text-purple-700 transition-colors">
-              {brandName}
-            </Link>
+      {/* Navbar */}
+      <nav className="navbar navbar-expand-lg navbar-light bg-white border-bottom sticky-top">
+        <div className="container">
+          <Link href={brandHref} className="navbar-brand fw-bold text-primary">
+            {brandName}
+          </Link>
 
-            {/* Desktop Navigation */}
-            <div className="hidden lg:flex items-center space-x-1">
-              {navigationItems.map((item) => (
-                <Link
-                  key={item}
-                  href="#"
-                  className="px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors uppercase"
-                >
-                  {item}
-                </Link>
-              ))}
-            </div>
-
-            {/* Mobile Toggle Button */}
-            <button
-              onClick={toggleOffcanvas}
-              aria-label="Toggle navigation"
-              className="lg:hidden p-2 border rounded-md text-muted-foreground hover:text-foreground"
-            >
-              <Menu className="h-4 w-4" />
-            </button>
-          </div>
-        </div>
-      </nav>
-
-      {/* Overlay */}
-      {isOpen && <div className="fixed inset-0 bg-black/50 z-40 lg:hidden" onClick={closeOffcanvas} />}
-
-      {/* Offcanvas */}
-      <div
-        className={`
-          fixed top-0 right-0 h-full w-80 bg-background border-l border-border z-50 transform transition-transform duration-300 ease-in-out lg:hidden
-          ${isOpen ? "translate-x-0" : "translate-x-full"}
-        `}
-      >
-        {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-border">
-          <h5 className="text-lg font-semibold text-purple-600">Menú</h5>
-          <button onClick={closeOffcanvas} aria-label="Close" className="p-2 rounded-md hover:bg-accent">
-            <X className="h-4 w-4" />
+          <button className="btn d-lg-none" onClick={toggleOffcanvas} aria-label="Menú">
+            <Menu size={20} />
           </button>
-        </div>
 
-        {/* Body */}
-        <div className="p-4 flex flex-col h-full">
-          {/* Navigation Links */}
-          <nav className="flex-1">
-            <ul className="space-y-1">
+          <div className="collapse navbar-collapse d-none d-lg-flex align-items-center">
+            <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
               {navigationItems.map((item) => (
-                <li key={item}>
-                  <Link
-                    href="#"
-                    className="block px-3 py-3 text-sm font-medium text-foreground rounded-md hover:bg-accent transition-colors uppercase border-b border-border/50"
-                    onClick={closeOffcanvas}
-                  >
+                <li key={item} className="nav-item">
+                  <Link href="#" className="nav-link text-uppercase">
                     {item}
                   </Link>
                 </li>
               ))}
             </ul>
-          </nav>
 
-          {/* Social Links in Mobile */}
-          <div className="mt-6 pt-4 border-t border-border">
-            <p className="text-sm font-medium text-muted-foreground mb-3">Síguenos</p>
-            <div className="flex gap-4">
-              <Link href="#" aria-label="Facebook" className="text-muted-foreground hover:text-foreground transition-colors">
-                <Facebook className="h-6 w-6" />
-              </Link>
-              <Link href="#" aria-label="Instagram" className="text-muted-foreground hover:text-foreground transition-colors">
-                <Instagram className="h-6 w-6" />
-              </Link>
-            </div>
+            {/* Botón de Iniciar Sesión en escritorio */}
+            <Link href="/login" className="btn btn-primary ms-3 text-uppercase">
+              Iniciar Sesión
+            </Link>
           </div>
+        </div>
+      </nav>
 
-          {/* Search Form */}
-          <form onSubmit={handleSubmit} className="flex gap-2 mt-4">
-            <input
-              type="search"
-              placeholder="Buscar..."
-              aria-label="Search"
-              className="flex-1 p-2 border rounded-md"
-            />
-            <button type="submit" className="p-2 border rounded-md">
-              <Search className="h-4 w-4" />
+      {/* Overlay */}
+      {isOpen && (
+        <div
+          className="position-fixed top-0 start-0 w-100 h-100 bg-dark bg-opacity-50"
+          onClick={closeOffcanvas}
+          style={{ zIndex: 1040 }}
+        />
+      )}
+
+      {/* Offcanvas */}
+      <div
+        className={`offcanvas offcanvas-end show ${isOpen ? "d-block" : "d-none"}`}
+        tabIndex={-1}
+        style={{ visibility: isOpen ? "visible" : "hidden", zIndex: 1045 }}
+      >
+        <div className="offcanvas-header">
+          <h5 className="offcanvas-title text-primary">Menú</h5>
+          <button type="button" className="btn-close" onClick={closeOffcanvas} aria-label="Cerrar"></button>
+        </div>
+
+        <div className="offcanvas-body d-flex flex-column">
+          {/* Aquí primero el formulario de búsqueda y el botón de iniciar sesión */}
+          <form onSubmit={handleSubmit} className="d-flex gap-2 mb-3">
+            <input type="search" className="form-control" placeholder="Buscar..." />
+            <button type="submit" className="btn btn-outline-secondary">
+              <Search size={18} />
             </button>
           </form>
+
+          <Link
+            href="/login"
+            className="btn btn-primary text-uppercase mb-4"
+            onClick={closeOffcanvas}
+          >
+            Iniciar Sesión
+          </Link>
+
+          {/* Después la lista de navegación */}
+          <ul className="nav flex-column mb-0">
+            {navigationItems.map((item) => (
+              <li key={item} className="nav-item border-bottom py-2">
+                <Link href="#" className="nav-link text-uppercase" onClick={closeOffcanvas}>
+                  {item}
+                </Link>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </>
