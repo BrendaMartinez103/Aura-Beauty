@@ -19,6 +19,7 @@ Este documento contiene la organización inicial del proyecto web de reservas de
 
 - [X] Página principal con presentación de servicios
 - [X] Página de conocenos
+- [X] Página de nuestros espacios
 - [ ] Página para seleccionar y reservar turnos
 - [ ] Página de confirmación y checkout
 - [ ] Componente de calendario de turnos
