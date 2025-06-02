@@ -11,8 +11,8 @@ export default function Home() {
         <Image
           src="/imagenPrincipal.jpeg"
           alt="Servicios de belleza: pestañas, masajes, manicura y estilismo"
-          width={250}
-          height={70}
+          width={300}
+          height={100}
           className="rounded shadow-sm"
         />
       </div>

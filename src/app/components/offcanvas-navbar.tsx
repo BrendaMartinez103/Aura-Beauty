@@ -19,7 +19,6 @@ export default function OffcanvasNavbar({ brandName = "Aura Beauty", brandHref =
     "Conócenos",
     "Nuestros Espacios",
     "Servicios",
-    "Tratamientos",
     "Reserva Online",
     "Beneficios",
     "Eventos",
