@@ -1,6 +1,6 @@
 'use client'
 import Image from 'next/image'
-import 'bootstrap/dist/css/bootstrap.min.css'
+import OffcanvasNavbar from '../components/offcanvas-navbar'
 
 export default function NuestrosEspacios() {
   const servicios = [
@@ -37,32 +37,51 @@ export default function NuestrosEspacios() {
   ]
 
   return (
-    <div className="container py-5">
-      <h1 className="text-center mb-5">Nuestros Espacios</h1>
-      {servicios.map((servicio, index) => (
-        <div key={index} className="row mb-5 align-items-center">
-          <div className="col-md-6 mb-3 mb-md-0">
-            <Image
-              src={servicio.imagen}
-              alt={servicio.titulo}
-              className="img-fluid rounded shadow"
-              width={600}
-              height={400}
-              layout="responsive"
-            />
-          </div>
-          <div className="col-md-6">
-            <h3>{servicio.titulo}</h3>
-            <p>{servicio.descripcion}</p>
-          </div>  
+    <main className="min-vh-100" style={{ backgroundColor: 'var(--background)' }}>
+      <OffcanvasNavbar brandName="Aura Beauty" brandHref="/" />
+
+      <div className="container py-5">
+        <div className="text-center mb-5">
+          <h1 className="display-4 fw-bold text-purple mb-3">Nuestros Espacios</h1>
+          <p className="fs-5 text-muted-foreground">
+            Conocé cada rincón diseñado para tu comodidad, relax y belleza.
+          </p>
         </div>
-      ))}
-       <div className="text-center mt-5">
-        <a href="/" className="btn btn-primary">
-          Volver al Inicio
-        </a>
+
+        {servicios.map((servicio, index) => (
+          <div
+            key={index}
+            className={`row align-items-center mb-5 ${
+              index % 2 !== 0 ? 'flex-md-row-reverse' : ''
+            }`}
+          >
+            <div className="col-md-6 mb-3 mb-md-0">
+              <Image
+                src={servicio.imagen}
+                alt={servicio.titulo}
+                className="img-fluid rounded shadow-sm"
+                width={600}
+                height={400}
+                layout="responsive"
+              />
+            </div>
+            <div className="col-md-6">
+              <h3 className="h4 fw-semibold text-purple mb-3">{servicio.titulo}</h3>
+              <p className="fs-6 text-muted-foreground">{servicio.descripcion}</p>
+            </div>
+          </div>
+        ))}
+
+        <div className="bg-light rounded p-4 text-center mt-5">
+          <h4 className="h5 fw-semibold text-purple mb-3">¿Querés visitarnos?</h4>
+          <p className="fs-6 text-muted-foreground mb-3">
+            Vení a disfrutar de un ambiente pensado exclusivamente para vos.
+          </p>
+          <a href="/" className="btn btn-primary">
+            Volver al Inicio
+          </a>
+        </div>
       </div>
-    </div>
-    
+    </main>
   )
 }
