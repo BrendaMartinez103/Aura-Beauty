@@ -16,14 +16,12 @@ export default function OffcanvasNavbar({ brandName = "Aura Beauty", brandHref =
   const closeOffcanvas = () => setIsOpen(false)
 
   const navigationItems = [
-    "Conócenos",
-    "Nuestros Espacios",
-    "Servicios",
-    "Reserva Online",
-    "Beneficios",
-    "Eventos",
-    "Novedades",
-    "Gift Card",
+  { label: "Conócenos", href: "/conocenos" },
+  { label: "Nuestros Espacios", href: "/nuestros-espacios" },
+  { label: "Servicios", href: "/servicios" },
+  { label: "Reserva Online", href: "/reserva" },
+  { label: "Nuestros Clientes", href: "/nuestros-clientes" },
+  { label: "Gift Card", href: "/gift-card" },
   ]
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -55,15 +53,16 @@ export default function OffcanvasNavbar({ brandName = "Aura Beauty", brandHref =
           </button>
 
           <div className="collapse navbar-collapse d-none d-lg-flex align-items-center">
-            <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
-              {navigationItems.map((item) => (
-                <li key={item} className="nav-item">
-                  <Link href="#" className="nav-link text-uppercase">
-                    {item}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+          <ul className="nav flex-column mb-0">
+            {navigationItems.map((item) => (
+              <li key={item.label} className="nav-item border-bottom py-2">
+                <Link href={item.href} className="nav-link text-uppercase" onClick={closeOffcanvas}>
+                  {item.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+
 
             <Link href="/login" className="btn btn-primary ms-3 text-uppercase">
               Iniciar Sesión
@@ -108,15 +107,16 @@ export default function OffcanvasNavbar({ brandName = "Aura Beauty", brandHref =
             Iniciar Sesión
           </Link>
 
-          <ul className="nav flex-column mb-0">
+         <ul className="nav flex-column mb-0">
             {navigationItems.map((item) => (
-              <li key={item} className="nav-item border-bottom py-2">
-                <Link href="#" className="nav-link text-uppercase" onClick={closeOffcanvas}>
-                  {item}
+              <li key={item.label} className="nav-item border-bottom py-2">
+                <Link href={item.href} className="nav-link text-uppercase" onClick={closeOffcanvas}>
+                  {item.label}
                 </Link>
               </li>
             ))}
           </ul>
+
         </div>
       </div>
     </>
