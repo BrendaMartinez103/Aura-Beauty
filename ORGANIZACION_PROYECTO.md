@@ -22,7 +22,8 @@ Este documento contiene la organización inicial del proyecto web de reservas de
 - [X] Página de nuestros espacios
 - [X] Página de servicios
 - [X] Página de nuestros clientes
-- [ ] Página de gift card
+- [X] Página pre gift card
+- [ ] Página gift card
 - [ ] Página pre reserva y seleccion de servicio
 - [ ] Página reservar turnos
 - [ ] Página de confirmación y checkout
