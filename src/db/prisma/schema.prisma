@@ -1,6 +1,7 @@
 // filepath: /my-nextjs-app/my-nextjs-app/src/db/prisma/schema.prisma
 generator client {
   provider = "prisma-client-js"
+  output   = "/app/generated/prisma-client"
 }
 
 datasource db {
@@ -8,23 +9,49 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id        Int      @id @default(autoincrement())
-  name      String?
-  email     String   @unique
-  password  String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  products  Product[]
+enum EstadoReserva {
+  PENDIENTE
+  CONFIRMADA
+  CANCELADA
+  COMPLETADA
 }
 
-model Product {
+model Administrador {
+  id        Int      @id @default(autoincrement())
+  nombre    String
+  email     String   @unique
+  password  String
+  creadoEn  DateTime @default(now())
+}
+
+model Cliente {
+  id        Int      @id @default(autoincrement())
+  documento String   @unique // DNI o similar
+  nombre    String
+  telefono  String 
+  email     String   @unique
+  password  String   // <-- Campo agregado para credenciales de login
+  reservas  Reserva[]
+  creadoEn  DateTime @default(now())
+}
+
+model Servicio {
   id          Int      @id @default(autoincrement())
-  name        String
-  description String?
-  price       Float
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  userId      Int
-  user        User     @relation(fields: [userId], references: [id])
+  nombre      String
+  descripcion String
+  precio      Float
+  duracion    Int      // minutos
+  activo      Boolean  @default(true)
+  reservas    Reserva[]
+}
+
+model Reserva {
+  id          Int            @id @default(autoincrement())
+  clienteId   Int
+  cliente     Cliente        @relation(fields: [clienteId], references: [id])
+  servicioId  Int
+  servicio    Servicio       @relation(fields: [servicioId], references: [id])
+  fechaHora   DateTime
+  creadoEn    DateTime       @default(now())
+  estado      EstadoReserva  @default(PENDIENTE)
 }

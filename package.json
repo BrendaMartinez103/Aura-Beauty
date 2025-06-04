@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@prisma/client": "^6.8.2",
+    "@prisma/extension-accelerate": "^2.0.1",
     "bootstrap": "^5.3.6",
     "mercadopago": "^2.7.0",
     "next": "15.3.2",
