@@ -1,7 +1,6 @@
 // filepath: /my-nextjs-app/my-nextjs-app/src/db/prisma/schema.prisma
 generator client {
   provider = "prisma-client-js"
-  output   = "/app/generated/prisma-client"
 }
 
 datasource db {
@@ -35,13 +34,21 @@ model Cliente {
   creadoEn  DateTime @default(now())
 }
 
+model Categoria {
+  id        Int        @id @default(autoincrement())
+  nombre    String     @unique
+  servicios Servicio[]
+}
+
 model Servicio {
-  id          Int      @id @default(autoincrement())
+  id          Int        @id @default(autoincrement())
   nombre      String
   descripcion String
   precio      Float
-  duracion    Int      // minutos
-  activo      Boolean  @default(true)
+  duracion    Int
+  activo      Boolean    @default(true)
+  categoriaId Int
+  categoria   Categoria  @relation(fields: [categoriaId], references: [id])
   reservas    Reserva[]
 }
 
