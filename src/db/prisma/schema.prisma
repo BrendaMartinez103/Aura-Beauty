@@ -8,23 +8,57 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id        Int      @id @default(autoincrement())
-  name      String?
-  email     String   @unique
-  password  String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  products  Product[]
+enum EstadoReserva {
+  PENDIENTE
+  CONFIRMADA
+  CANCELADA
+  COMPLETADA
 }
 
-model Product {
-  id          Int      @id @default(autoincrement())
-  name        String
-  description String?
-  price       Float
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  userId      Int
-  user        User     @relation(fields: [userId], references: [id])
+model Administrador {
+  id        Int      @id @default(autoincrement())
+  nombre    String
+  email     String   @unique
+  password  String
+  creadoEn  DateTime @default(now())
+}
+
+model Cliente {
+  id        Int      @id @default(autoincrement())
+  documento String   @unique // DNI o similar
+  nombre    String
+  telefono  String 
+  email     String   @unique
+  password  String   // <-- Campo agregado para credenciales de login
+  reservas  Reserva[]
+  creadoEn  DateTime @default(now())
+}
+
+model Categoria {
+  id        Int        @id @default(autoincrement())
+  nombre    String     @unique
+  servicios Servicio[]
+}
+
+model Servicio {
+  id          Int        @id @default(autoincrement())
+  nombre      String
+  descripcion String
+  precio      Float
+  duracion    Int
+  activo      Boolean    @default(true)
+  categoriaId Int
+  categoria   Categoria  @relation(fields: [categoriaId], references: [id])
+  reservas    Reserva[]
+}
+
+model Reserva {
+  id          Int            @id @default(autoincrement())
+  clienteId   Int
+  cliente     Cliente        @relation(fields: [clienteId], references: [id])
+  servicioId  Int
+  servicio    Servicio       @relation(fields: [servicioId], references: [id])
+  fechaHora   DateTime
+  creadoEn    DateTime       @default(now())
+  estado      EstadoReserva  @default(PENDIENTE)
 }
