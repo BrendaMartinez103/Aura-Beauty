@@ -10,7 +10,7 @@ export default function Home() {
       <div className="container my-4 d-flex justify-content-center">
         <Image
           src="/imagenPrincipal.jpeg"
-          alt="Servicios de belleza: pestañas, masajes, manicura y estilismo"
+          alt="Servicios de belleza: pestañas y cejas, masajes, manicura y pedicura y estilismo"
           width={300}
           height={100}
           className="rounded shadow-sm"
@@ -30,7 +30,7 @@ export default function Home() {
       {/* Banner promocional */}
       <div className="bg-purple py-3 text-center">
         <p className="fs-5 fw-medium text-white px-3 mb-0">
-          20% DE DESCUENTO CONTRATANDO DOS SERVICIOS + 15% DE AHORRO, TODOS LOS MARTES Y JUEVES.
+          20% DE DESCUENTO CONTRATANDO DOS O MÁS SERVICIOS + 15% DE AHORRO TODOS LOS MARTES Y JUEVES.
         </p>
       </div>
 
@@ -46,7 +46,7 @@ export default function Home() {
           <div className="col-12 col-md-6 col-lg-4">
             <div className="service-card">
               <div className="service-icon">💅</div>
-              <h3 className="h5 fw-semibold mb-2">Manicura</h3>
+              <h3 className="h5 fw-semibold mb-2">Manicura y Pedicura</h3>
               <p className="text-muted-foreground mb-0">Cuidado profesional para tus uñas</p>
             </div>
           </div>
@@ -54,8 +54,8 @@ export default function Home() {
           <div className="col-12 col-md-6 col-lg-4">
             <div className="service-card">
               <div className="service-icon">👁️</div>
-              <h3 className="h5 fw-semibold mb-2">Pestañas</h3>
-              <p className="text-muted-foreground mb-0">Extensiones y tratamientos para pestañas</p>
+              <h3 className="h5 fw-semibold mb-2">Pestañas y Cejas</h3>
+              <p className="text-muted-foreground mb-0">Extensiones y tratamientos </p>
             </div>
           </div>
 
