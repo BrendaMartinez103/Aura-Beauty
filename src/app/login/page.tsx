@@ -32,8 +32,11 @@ export default function LoginForm() {
         const error = await res.json();
         setErrorMessage(error.error || 'Credenciales inválidas');
       } else {
+        const data = await res.json();
+        localStorage.setItem("usuario", JSON.stringify({ rol: "cliente", email: data.cliente.email }));
         setErrorMessage(null);
         router.push('/');
+
       }
     } catch (error) {
       setErrorMessage('Error del servidor');

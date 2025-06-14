@@ -1,22 +1,31 @@
-import { prisma } from "@/db/client"
-import bcrypt from "bcryptjs"
-import { NextRequest, NextResponse } from "next/server"
+import { prisma } from "@/db/client";
+import bcrypt from "bcryptjs";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
-  const { email, password } = await req.json()
+  try {
+    const { email, password } = await req.json();
 
-  const usuario = await prisma.cliente.findUnique({ where: { email } })
+    const cliente = await prisma.cliente.findUnique({ where: { email } });
+    if (!cliente) {
+      return NextResponse.json({ error: "Usuario no encontrado" }, { status: 401 });
+    }
 
-  if (!usuario) {
-    return NextResponse.json({ error: "Usuario no encontrado" }, { status: 401 })
+    const valid = await bcrypt.compare(password, cliente.password);
+    if (!valid) {
+      return NextResponse.json({ error: "Credenciales inválidas" }, { status: 401 });
+    }
+
+    return NextResponse.json({
+      message: "Login correcto",
+      cliente: {
+        id: cliente.id,
+        email: cliente.email,
+        rol: "cliente"
+      }
+    });
+  } catch (error) {
+    console.error("Error en login:", error);
+    return NextResponse.json({ error: "Error del servidor" }, { status: 500 });
   }
-
-  const match = await bcrypt.compare(password, usuario.password)
-
-  if (!match) {
-    return NextResponse.json({ error: "Credenciales inválidas" }, { status: 401 })
-  }
-
-  // Aquí podrías devolver un token, cookie o redirigir
-  return NextResponse.json({ message: "Login correcto", usuario })
 }
