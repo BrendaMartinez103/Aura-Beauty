@@ -24,10 +24,10 @@ Este documento contiene la organización inicial del proyecto web de reservas de
 - [X] Página de nuestros clientes
 - [X] Página pre gift card
 - [ ] Página gift card
-- [ ] Página pre reserva y seleccion de servicio
-- [ ] Página reservar turnos
+- [X] Página pre reserva y seleccion de servicio
+- [x] Página reservar turnos
 - [ ] Página de confirmación y checkout
-- [ ] Componente de calendario de turnos
+- [ ] notificacion
 - [ ] Validación de formularios en frontend
 - [ ] Barra de navegación y footer reutilizable
 - [ ] Componentes reutilizables: tarjetas de servicio, formulario de reserva
@@ -36,10 +36,10 @@ Este documento contiene la organización inicial del proyecto web de reservas de
 
 ## ⚙️ Backend y Base de Datos
 
-- [ ] Crear esquemas prisma y migraciones de base de datos
-- [ ] Configurar conexión a la base de datos (PostgreSQL)
-- [ ] Configurar ORM (Prisma)
-- [ ] Crear modelos de datos: Usuario, Servicio, Reserva
+- [X] Crear esquemas prisma y migraciones de base de datos
+- [X] Configurar conexión a la base de datos (PostgreSQL)
+- [X] Configurar ORM (Prisma)
+- [X] Crear modelos de datos: Usuario, Servicio, Reserva
 - [ ] Endpoints API REST para CRUD de servicios
 - [ ] Endpoints API REST para reservas de turnos
 - [ ] Endpoints para autenticación (login, logout, registro)
@@ -51,7 +51,7 @@ Este documento contiene la organización inicial del proyecto web de reservas de
 ## 🔐 Autenticación y Roles
 
 - [ ] Configurar NextAuth
-- [ ] Implementar login/logout
+- [X] Implementar login/logout
 - [ ] Diferenciar vistas entre usuario y administrador
 - [ ] Proteger rutas de administrador
 
