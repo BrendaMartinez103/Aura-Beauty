@@ -6,6 +6,24 @@ export async function POST(req: NextRequest) {
   try {
     const { email, password } = await req.json();
 
+ // 🔍 Buscar primero en administrador
+    const admin = await prisma.administrador.findUnique({ where: { email } });
+    if (admin) {
+      const valid = await bcrypt.compare(password, admin.password);
+      if (!valid) {
+        return NextResponse.json({ error: "Credenciales inválidas" }, { status: 401 });
+      }
+
+      return NextResponse.json({
+        message: "Login correcto",
+        usuario: {
+          id: admin.id,
+          email: admin.email,
+          rol: "admin"
+        }
+      });
+    }
+
     const cliente = await prisma.cliente.findUnique({ where: { email } });
     if (!cliente) {
       return NextResponse.json({ error: "Usuario no encontrado" }, { status: 401 });
