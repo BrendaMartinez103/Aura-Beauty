@@ -50,17 +50,19 @@ export default function ReservaOnlinePage() {
   const router = useRouter()
   const [usuario, setUsuario] = useState<{ rol: 'admin' | 'cliente' | null }>({ rol: null })
 
-  useEffect(() => {
-    // Lógica simulada: cambiar por fetch real o contexto de autenticación
-    const loggedInUser = { rol: "cliente" } // "admin" | "cliente" | null
-    //setUsuario(loggedInUser)
-  }, [])
+ useEffect(() => {
+  const storedUser = localStorage.getItem("usuario");
+  if (storedUser) {
+    setUsuario(JSON.parse(storedUser));
+  }
+}, []);
+
 
   const handleClickServicio = (servicio: string) => {
     if (!usuario.rol) {
       router.push("/login")
     } else if (usuario.rol === "cliente") {
-      router.push(`/carrito?servicio=${encodeURIComponent(servicio)}`)
+      router.push(`/servicio=${encodeURIComponent(servicio)}`)
     }
   }
 
