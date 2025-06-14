@@ -6,7 +6,7 @@ import { useEffect, useState } from "react"
 const categorias = {
   "✂️ Peluquería": [
     "Corte",
-    "Brushing / Peinado",
+    "Brushing o Peinado",
     "Planchita o Buclera",
     "Coloración",
     "Baño de crema",
@@ -62,7 +62,8 @@ export default function ReservaOnlinePage() {
     if (!usuario.rol) {
       router.push("/login")
     } else if (usuario.rol === "cliente") {
-      router.push(`/servicio=${encodeURIComponent(servicio)}`)
+      router.push(`/reserva/${encodeURIComponent(servicio)}`)
+
     }
   }
 
