@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Link from "next/link"
 import { Menu, Search } from "lucide-react"
 
@@ -11,17 +11,28 @@ interface OffcanvasNavbarProps {
 
 export default function OffcanvasNavbar({ brandName = "Aura Beauty", brandHref = "/" }: OffcanvasNavbarProps) {
   const [isOpen, setIsOpen] = useState(false)
+  const [logueado, setLogueado] = useState(false)
+
+  useEffect(() => {
+    const sesion = localStorage.getItem("usuario")
+    setLogueado(!!sesion)
+  }, [])
 
   const toggleOffcanvas = () => setIsOpen(!isOpen)
   const closeOffcanvas = () => setIsOpen(false)
 
+  const cerrarSesion = () => {
+    localStorage.removeItem("usuario")
+    window.location.href = "/"
+  }
+
   const navigationItems = [
-  { label: "Conócenos", href: "/conocenos" },
-  { label: "Nuestros Espacios", href: "/nuestros-espacios" },
-  { label: "Servicios", href: "/servicios" },
-  { label: "Reserva Online", href: "/reserva" },
-  { label: "Nuestros Clientes", href: "/nuestros-clientes" },
-  { label: "Gift Card", href: "/gift-card" },
+    { label: "Conócenos", href: "/conocenos" },
+    { label: "Nuestros Espacios", href: "/nuestros-espacios" },
+    { label: "Servicios", href: "/servicios" },
+    { label: "Reserva Online", href: "/reserva" },
+    { label: "Nuestros Clientes", href: "/nuestros-clientes" },
+    { label: "Gift Card", href: "/gift-card" },
   ]
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -35,9 +46,6 @@ export default function OffcanvasNavbar({ brandName = "Aura Beauty", brandHref =
       <div className="border-bottom py-2 bg-light">
         <div className="container d-flex justify-content-between align-items-center">
           <p className="mb-0 small fw-medium">RESERVAS ONLINE</p>
-          <div className="d-flex gap-3">
-            {/* Elementos adicionales aquí si los necesitas */}
-          </div>
         </div>
       </div>
 
@@ -53,25 +61,30 @@ export default function OffcanvasNavbar({ brandName = "Aura Beauty", brandHref =
           </button>
 
           <div className="collapse navbar-collapse d-none d-lg-flex align-items-center">
-          <ul className="nav flex-column mb-0">
-            {navigationItems.map((item) => (
-              <li key={item.label} className="nav-item border-bottom py-2">
-                <Link href={item.href} className="nav-link text-uppercase" onClick={closeOffcanvas}>
-                  {item.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
+            <ul className="nav flex-column mb-0">
+              {navigationItems.map((item) => (
+                <li key={item.label} className="nav-item border-bottom py-2">
+                  <Link href={item.href} className="nav-link text-uppercase" onClick={closeOffcanvas}>
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
 
-
-            <Link href="/login" className="btn btn-primary ms-3 text-uppercase">
-              Iniciar Sesión
-            </Link>
+            {logueado ? (
+              <button onClick={cerrarSesion} className="btn btn-outline-danger ms-3 text-uppercase">
+                Cerrar sesión
+              </button>
+            ) : (
+              <Link href="/login" className="btn btn-primary ms-3 text-uppercase">
+                Iniciar Sesión
+              </Link>
+            )}
           </div>
         </div>
       </nav>
 
-      {/* Overlay (oscurece fondo al abrir offcanvas) */}
+      {/* Overlay */}
       {isOpen && (
         <div
           className="position-fixed top-0 start-0 w-100 h-100 bg-dark bg-opacity-50"
@@ -80,7 +93,7 @@ export default function OffcanvasNavbar({ brandName = "Aura Beauty", brandHref =
         />
       )}
 
-      {/* Offcanvas menú lateral */}
+      {/* Offcanvas */}
       <div
         className={`offcanvas offcanvas-end show ${isOpen ? "d-block" : "d-none"}`}
         tabIndex={-1}
@@ -99,15 +112,17 @@ export default function OffcanvasNavbar({ brandName = "Aura Beauty", brandHref =
             </button>
           </form>
 
-          <Link
-            href="/login"
-            className="btn btn-primary text-uppercase mb-4"
-            onClick={closeOffcanvas}
-          >
-            Iniciar Sesión
-          </Link>
+          {logueado ? (
+            <button onClick={cerrarSesion} className="btn btn-outline-danger text-uppercase mb-4">
+              Cerrar sesión
+            </button>
+          ) : (
+            <Link href="/login" className="btn btn-primary text-uppercase mb-4" onClick={closeOffcanvas}>
+              Iniciar Sesión
+            </Link>
+          )}
 
-         <ul className="nav flex-column mb-0">
+          <ul className="nav flex-column mb-0">
             {navigationItems.map((item) => (
               <li key={item.label} className="nav-item border-bottom py-2">
                 <Link href={item.href} className="nav-link text-uppercase" onClick={closeOffcanvas}>
@@ -116,7 +131,6 @@ export default function OffcanvasNavbar({ brandName = "Aura Beauty", brandHref =
               </li>
             ))}
           </ul>
-
         </div>
       </div>
     </>
