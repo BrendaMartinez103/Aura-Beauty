@@ -22,14 +22,21 @@ export default function LoginForm() {
     setIsPending(true);
 
     try {
-      // Simular login
-      if (email === 'admin@aura.com' && contrasena === 'admin') {
-        router.push('/reserva-online');
+      const res = await fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password: contrasena }),
+      });
+
+      if (!res.ok) {
+        const error = await res.json();
+        setErrorMessage(error.error || 'Credenciales inválidas');
       } else {
-        setErrorMessage('Credenciales inválidas');
+        setErrorMessage(null);
+        router.push('/');
       }
     } catch (error) {
-      setErrorMessage('Error al iniciar sesión');
+      setErrorMessage('Error del servidor');
     } finally {
       setIsPending(false);
     }
