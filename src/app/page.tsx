@@ -1,95 +1,94 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+import Image from "next/image"
+import OffcanvasNavbar from "./components/offcanvas-navbar"
 
 export default function Home() {
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol>
-          <li>
-            Get started by editing <code>src/app/page.tsx</code>.
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+    <main className="min-vh-100" style={{ backgroundColor: "var(--background)" }}>
+      <OffcanvasNavbar brandName="Aura Beauty" brandHref="/" />
 
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.secondary}
-          >
-            Read our docs
-          </a>
+      {/* Imagen principal */}
+      <div className="container my-4 d-flex justify-content-center">
+        <Image
+          src="/imagenPrincipal.jpeg"
+          alt="Servicios de belleza: pestañas, masajes, manicura y estilismo"
+          width={300}
+          height={100}
+          className="rounded shadow-sm"
+        />
+      </div>
+
+      {/* Nombre y slogan */}
+      <div className="container text-center my-5">
+        <h1 className="display-4 fw-bold text-purple">
+          Aura Beauty
+        </h1>
+        <p className="fs-4 text-muted-foreground">
+          Más que belleza, armonía.
+        </p>
+      </div>
+
+      {/* Banner promocional */}
+      <div className="bg-purple py-3 text-center">
+        <p className="fs-5 fw-medium text-white px-3 mb-0">
+          20% DE DESCUENTO CONTRATANDO DOS SERVICIOS + 15% DE AHORRO, TODOS LOS MARTES Y JUEVES.
+        </p>
+      </div>
+
+      {/* Sección bienvenida */}
+      <div className="container text-center my-5">
+        <h2 className="h2 fw-normal text-foreground mb-3">¡Bienvenido!</h2>
+        <p className="fs-4 text-muted-foreground">Seleccioná las opciones para reservar tu cita</p>
+      </div>
+
+      {/* Sección servicios */}
+      <div className="container my-5">
+        <div className="row g-4">
+          <div className="col-12 col-md-6 col-lg-4">
+            <div className="service-card">
+              <div className="service-icon">💅</div>
+              <h3 className="h5 fw-semibold mb-2">Manicura</h3>
+              <p className="text-muted-foreground mb-0">Cuidado profesional para tus uñas</p>
+            </div>
+          </div>
+
+          <div className="col-12 col-md-6 col-lg-4">
+            <div className="service-card">
+              <div className="service-icon">👁️</div>
+              <h3 className="h5 fw-semibold mb-2">Pestañas</h3>
+              <p className="text-muted-foreground mb-0">Extensiones y tratamientos para pestañas</p>
+            </div>
+          </div>
+
+          <div className="col-12 col-md-6 col-lg-4">
+            <div className="service-card">
+              <div className="service-icon">💆</div>
+              <h3 className="h5 fw-semibold mb-2">Masajes</h3>
+              <p className="text-muted-foreground mb-0">Relajación y bienestar corporal</p>
+            </div>
+          </div>
+
+           <div className="col-12 col-md-6 col-lg-4">
+            <div className="service-card">
+              <div className="service-icon">✂️</div>
+              <h3 className="h5 fw-semibold mb-2">Peluqueria</h3>
+              <p className="text-muted-foreground mb-0">El mejor look posible</p>
+            </div>
+          </div>
         </div>
-      </main>
-      <footer className={styles.footer}>
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
-  );
+      </div>
+
+      {/* CTA */}
+      <div className="py-5" style={{ backgroundColor: "#f5f3ff" }}>
+        <div className="container text-center">
+          <h2 className="display-5 fw-bold text-purple mb-4">¿Lista para tu transformación?</h2>
+          <p className="fs-5 text-muted-foreground mb-4 mx-auto" style={{ maxWidth: "600px" }}>
+            Reserva tu cita online y disfruta de nuestros servicios de belleza premium con los mejores profesionales.
+          </p>
+          <button className="btn btn-primary btn-lg px-5">
+            Reservar Ahora
+          </button>
+        </div>
+      </div>
+    </main>
+  )
 }

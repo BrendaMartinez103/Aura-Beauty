@@ -17,8 +17,15 @@ Este documento contiene la organización inicial del proyecto web de reservas de
 
 ## 🎨 Frontend
 
-- [ ] Página principal con presentación de servicios
-- [ ] Página para seleccionar y reservar turnos
+- [X] Página principal con presentación de servicios
+- [X] Página de conocenos
+- [X] Página de nuestros espacios
+- [X] Página de servicios
+- [X] Página de nuestros clientes
+- [X] Página pre gift card
+- [ ] Página gift card
+- [ ] Página pre reserva y seleccion de servicio
+- [ ] Página reservar turnos
 - [ ] Página de confirmación y checkout
 - [ ] Componente de calendario de turnos
 - [ ] Validación de formularios en frontend
