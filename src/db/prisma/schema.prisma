@@ -8,57 +8,79 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum EstadoReserva {
-  PENDIENTE
-  CONFIRMADA
-  CANCELADA
-  COMPLETADA
-}
-
 model Administrador {
-  id        Int      @id @default(autoincrement())
-  nombre    String
-  email     String   @unique
-  password  String
-  creadoEn  DateTime @default(now())
+  id       Int      @id @default(autoincrement())
+  nombre   String
+  email    String   @unique
+  password String
+  creadoEn DateTime @default(now())
 }
 
 model Cliente {
-  id        Int      @id @default(autoincrement())
-  documento String   @unique // DNI o similar
+  id        Int       @id @default(autoincrement())
+  documento String    @unique // DNI o similar
   nombre    String
-  telefono  String 
-  email     String   @unique
-  password  String   // <-- Campo agregado para credenciales de login
-  reservas  Reserva[]
-  creadoEn  DateTime @default(now())
-}
-
-model Categoria {
-  id        Int        @id @default(autoincrement())
-  nombre    String     @unique
-  servicios Servicio[]
+  telefono  String
+  email     String    @unique
+  password  String // <-- Campo agregado para credenciales de login
+  creadoEn  DateTime  @default(now())
+  Carritos  Carrito[]
+  Detalles  Detalle[]
+  Compras   Compra[]
 }
 
 model Servicio {
-  id          Int        @id @default(autoincrement())
+  id          Int       @id @default(autoincrement())
   nombre      String
   descripcion String
   precio      Float
   duracion    Int
-  activo      Boolean    @default(true)
+  activo      Boolean   @default(true)
   categoriaId Int
-  categoria   Categoria  @relation(fields: [categoriaId], references: [id])
-  reservas    Reserva[]
+  categoria   Categoria @relation(fields: [categoriaId], references: [id])
+  Carrito     Carrito[]
+  Detalle     Detalle[]
 }
 
-model Reserva {
-  id          Int            @id @default(autoincrement())
-  clienteId   Int
-  cliente     Cliente        @relation(fields: [clienteId], references: [id])
-  servicioId  Int
-  servicio    Servicio       @relation(fields: [servicioId], references: [id])
-  fechaHora   DateTime
-  creadoEn    DateTime       @default(now())
-  estado      EstadoReserva  @default(PENDIENTE)
+model Categoria {
+  id       Int        @id @default(autoincrement())
+  nombre   String     @unique
+  Servicio Servicio[]
+}
+
+model Carrito {
+  clienteId  Int
+  cliente    Cliente  @relation(fields: [clienteId], references: [id])
+  servicioId Int
+  servicio   Servicio @relation(fields: [servicioId], references: [id])
+  cantidad   Int
+  fechaHora  DateTime
+  creadoEn   DateTime @default(now())
+
+  @@id([clienteId, servicioId]) // Combinación única de cliente y servicio
+  @@unique([clienteId, servicioId, fechaHora]) // Asegura que no haya duplicados por cliente, servicio y fecha
+}
+
+model Detalle {
+  id         Int      @id @default(autoincrement())
+  clienteId  Int
+  cliente    Cliente  @relation(fields: [clienteId], references: [id])
+  servicioId Int
+  servicio   Servicio @relation(fields: [servicioId], references: [id])
+  cantidad   Int
+  fechaHora  DateTime
+  creadoEn   DateTime @default(now())
+  compraId   Int
+  compra     Compra   @relation(fields: [compraId], references: [id])
+}
+
+model Compra {
+  id                Int       @id @default(autoincrement())
+  clienteId         Int
+  cliente           Cliente   @relation(fields: [clienteId], references: [id])
+  total             Float
+  fechaHora         DateTime  @default(now())
+  creadoEn          DateTime  @default(now())
+  Detalles          Detalle[]
+  mp_transaction_id String    @unique // ID de la transacción de Mercado Pago
 }
