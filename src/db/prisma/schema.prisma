@@ -25,7 +25,6 @@ model Cliente {
   password  String // <-- Campo agregado para credenciales de login
   creadoEn  DateTime  @default(now())
   Carritos  Carrito[]
-  Detalles  Detalle[]
   Compras   Compra[]
 }
 
@@ -40,7 +39,6 @@ model Servicio {
   categoriaId Int
   categoria   Categoria @relation(fields: [categoriaId], references: [id])
   Carrito     Carrito[]
-  Detalle     Detalle[]
 }
 
 model Categoria {
@@ -63,16 +61,18 @@ model Carrito {
 }
 
 model Detalle {
-  id         Int      @id @default(autoincrement())
-  clienteId  Int
-  cliente    Cliente  @relation(fields: [clienteId], references: [id])
-  servicioId Int
-  servicio   Servicio @relation(fields: [servicioId], references: [id])
-  cantidad   Int
-  fechaHora  DateTime
-  creadoEn   DateTime @default(now())
-  compraId   Int
-  compra     Compra   @relation(fields: [compraId], references: [id])
+  id          Int      @id @default(autoincrement())
+  nombre      String
+  descripcion String
+  imageUrl    String
+  precio      Float
+  duracion    Int
+  cantidad    Int
+  categoria   String
+  fechaHora   DateTime
+  creadoEn    DateTime @default(now())
+  compraId    Int
+  compra      Compra   @relation(fields: [compraId], references: [id])
 }
 
 model Compra {
@@ -83,5 +83,5 @@ model Compra {
   fechaHora         DateTime  @default(now())
   creadoEn          DateTime  @default(now())
   mp_transaction_id String    @unique // ID de la transacción de Mercado Pago
-  Detalle Detalle[]
+  Detalle           Detalle[]
 }

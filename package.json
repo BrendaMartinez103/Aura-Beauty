@@ -22,6 +22,7 @@
     "mercadopago": "^2.7.0",
     "next": "15.3.2",
     "next-auth": "^4.24.11",
+    "prettier-plugin-prisma": "^5.0.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },

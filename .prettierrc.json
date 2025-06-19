@@ -3,5 +3,5 @@
     "tabWidth": 2,
     "singleQuote": true,
     "trailingComma": "es5",
-    "plugins": ["eslint-plugin-prettier"]
+    "plugins": ["eslint-plugin-prettier", "prettier-plugin-prisma"]
 }
