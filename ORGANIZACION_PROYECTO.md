@@ -8,7 +8,7 @@ Este documento contiene la organización inicial del proyecto web de reservas de
 
 - [ ] Definir roles: usuario final vs. administrador
 - [ ] Crear mockups / bocetos de la interfaz
-- [ ] Esquematizar base de datos (modelos, relaciones)
+- [X] Esquematizar base de datos (modelos, relaciones)
 - [ ] Definir servicios de belleza y estructura de reservas
 - [ ] Revisión de requisitos y funcionalidades
 - [ ] Definir flujo de usuario: desde la selección del servicio hasta la confirmación del turno
@@ -42,7 +42,7 @@ Este documento contiene la organización inicial del proyecto web de reservas de
 - [X] Crear modelos de datos: Usuario, Servicio, Reserva
 - [ ] Endpoints API REST para CRUD de servicios
 - [ ] Endpoints API REST para reservas de turnos
-- [ ] Endpoints para autenticación (login, logout, registro)
+- [X] Endpoints para autenticación (login, logout, registro)
 - [ ] Validación de datos en backend
 - [ ] Manejo de errores 404 y generales
 
@@ -50,7 +50,7 @@ Este documento contiene la organización inicial del proyecto web de reservas de
 
 ## 🔐 Autenticación y Roles
 
-- [ ] Configurar NextAuth
+- [X] Configurar NextAuth
 - [X] Implementar login/logout
 - [ ] Diferenciar vistas entre usuario y administrador
 - [ ] Proteger rutas de administrador
