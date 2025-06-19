@@ -1,6 +1,7 @@
 'use client'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Image from 'next/image'
+import Link from 'next/link'
 
 export default function NuestrosClientes() {
   const reseñas = [
@@ -51,7 +52,7 @@ export default function NuestrosClientes() {
                 />
                 <h5 className="card-title">{cliente.nombre}</h5>
                 <h6 className="text-muted">{cliente.servicio}</h6>
-                <p className="card-text">"{cliente.comentario}"</p>
+                <p className="card-text">&quot;{cliente.comentario}&quot;</p>
                 <div>
                   {[...Array(cliente.estrellas)].map((_, i) => (
                     <span key={i} className="text-warning">★</span>
@@ -67,7 +68,7 @@ export default function NuestrosClientes() {
       </div>
 
       <div className="text-center mt-5">
-        <a href="/" className="btn btn-primary">Volver al Inicio</a>
+        <Link href="/" className="btn btn-primary">Volver al Inicio</Link>
       </div>
     </div>
   )

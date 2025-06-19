@@ -1,6 +1,7 @@
 'use client'
 import Image from 'next/image'
 import OffcanvasNavbar from '../components/offcanvas-navbar'
+import Link from 'next/link'
 
 export default function NuestrosEspacios() {
   const servicios = [
@@ -77,9 +78,9 @@ export default function NuestrosEspacios() {
           <p className="fs-6 text-muted-foreground mb-3">
             Vení a disfrutar de un ambiente pensado exclusivamente para vos.
           </p>
-          <a href="/" className="btn btn-primary">
+          <Link href="/" className="btn btn-primary">
             Volver al Inicio
-          </a>
+          </Link>
         </div>
       </div>
     </main>

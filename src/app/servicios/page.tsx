@@ -1,4 +1,5 @@
 'use client'
+import Link from "next/link"
 import OffcanvasNavbar from "../components/offcanvas-navbar"
 
 export default function ServiciosPage() {
@@ -73,7 +74,7 @@ export default function ServiciosPage() {
                 <p className="fs-6 text-muted-foreground mb-3">
                   Elegí el servicio que más te guste y dejate cuidar por nuestras profesionales.
                 </p>
-                <a href="/" className="btn btn-primary">Volver al Inicio</a>
+                <Link href="/" className="btn btn-primary">Volver al Inicio</Link>
               </div>
             </div>
           </div>

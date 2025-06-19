@@ -1,3 +1,4 @@
+import Link from "next/link"
 import OffcanvasNavbar from "../components/offcanvas-navbar"
 
 export default function ConocenosPage() {
@@ -87,9 +88,9 @@ export default function ConocenosPage() {
                   En Aura Beauty, cada visita es una experiencia única. Nos enfocamos en entender tus necesidades
                   específicas para brindarte un servicio personalizado que supere tus expectativas.
                 </p>
-                <a href="/" className="btn btn-primary">
+                <Link href="/" className="btn btn-primary">
                   Volver al Inicio
-                </a>
+                </Link>
               </div>
             </div>
           </div>

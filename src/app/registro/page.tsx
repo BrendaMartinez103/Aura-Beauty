@@ -39,7 +39,7 @@ export default function RegistroForm() {
       if (!response.ok) throw new Error('No se pudo registrar el usuario');
 
       router.push('/login');
-    } catch (error) {
+    } catch {
       setErrorMessage('Error al registrar. Verificá los datos.');
     } finally {
       setIsPending(false);
