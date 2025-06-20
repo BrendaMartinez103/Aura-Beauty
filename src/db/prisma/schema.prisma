@@ -32,7 +32,7 @@ model Servicio {
   id          Int       @id @default(autoincrement())
   nombre      String
   descripcion String
-  imageUrl    String
+  imageUrl    String    @default("")
   precio      Float
   duracion    Int
   activo      Boolean   @default(true)
@@ -64,7 +64,7 @@ model Detalle {
   id          Int      @id @default(autoincrement())
   nombre      String
   descripcion String
-  imageUrl    String
+  imageUrl    String   @default("")
   precio      Float
   duracion    Int
   cantidad    Int
