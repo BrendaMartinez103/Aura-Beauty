@@ -1,60 +1,21 @@
-"use client";
+'use client'
 
-import React, { useState } from "react";
-import { useRouter } from "next/navigation";
-import { signIn } from "next-auth/react";
+import React from 'react'
+import { useActionState } from 'react'
+import { authenticate } from '@/lib/actions'
+import { useSearchParams } from 'next/navigation'
 
 export default function LoginForm() {
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [isPending, setIsPending] = useState(false);
-  const router = useRouter();
-
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    const formElements = event.currentTarget
-      .elements as typeof event.currentTarget.elements & {
-      email: HTMLInputElement;
-      contrasena: HTMLInputElement;
-    };
-
-    const email = formElements.email.value;
-    const contrasena = formElements.contrasena.value;
-
-    setIsPending(true);
-
-    signIn("credentials", {
-      email,
-      password: contrasena,
-      redirect: false,
-    })
-      .then((result) => {
-        if (result?.error) {
-          setErrorMessage(result.error);
-        } else {
-          localStorage.setItem(
-            "usuario",
-            JSON.stringify({ rol: "cliente", email })
-          );
-          setErrorMessage(null);
-          router.push("/");
-        }
-      })
-      .catch((error) => {
-        setErrorMessage(error.message || "Error del servidor");
-      })
-      .finally(() => {
-        setIsPending(false);
-      });
-  };
+  const searchParams = useSearchParams()
+  const callbackUrl = searchParams.get('callbackUrl') || '/'
+  const [errorMessage, formAction, isPending] = useActionState(
+    authenticate,
+    undefined
+  )
 
   return (
     <div className="min-vh-100 d-flex align-items-center justify-content-center p-4">
-      <form
-        onSubmit={handleSubmit}
-        className="w-100"
-        style={{ maxWidth: "400px" }}
-      >
+      <form action={formAction} className="w-100" style={{ maxWidth: '400px' }}>
         <div className="rounded bg-white border border-light px-4 py-5 shadow">
           <h1 className="text-center mb-3 fw-bold text-purple fs-2">
             Aura Beauty
@@ -102,7 +63,7 @@ export default function LoginForm() {
               />
             </div>
           </div>
-
+          <input type="hidden" name="redirectTo" value={callbackUrl} />
           {/* Botón login */}
           <div className="d-grid mt-4">
             <button
@@ -110,7 +71,7 @@ export default function LoginForm() {
               className="btn btn-primary fw-bold"
               disabled={isPending}
             >
-              {isPending ? "Cargando..." : "Iniciar sesión"}
+              {isPending ? 'Cargando...' : 'Iniciar sesión'}
             </button>
           </div>
 
@@ -128,7 +89,7 @@ export default function LoginForm() {
           {/* Link de registro */}
           <div className="text-center mt-4">
             <small>
-              ¿Aún no te registraste?{" "}
+              ¿Aún no te registraste?{' '}
               <a
                 href="/registro"
                 className="text-decoration-underline text-primary"
@@ -140,5 +101,5 @@ export default function LoginForm() {
         </div>
       </form>
     </div>
-  );
+  )
 }
