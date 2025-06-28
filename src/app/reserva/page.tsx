@@ -1,7 +1,7 @@
 'use client'
 import OffcanvasNavbar from '../components/offcanvas-navbar'
 import { useRouter } from "next/navigation"
-import { useEffect, useState } from "react"
+import { useSession } from "next-auth/react"
 
 const categorias = {
   "✂️ Peluquería": [
@@ -48,22 +48,15 @@ const categorias = {
 
 export default function ReservaOnlinePage() {
   const router = useRouter()
-  const [usuario, setUsuario] = useState<{ rol: 'admin' | 'cliente' | null }>({ rol: null })
+  const { data: session } = useSession()
 
- useEffect(() => {
-  const storedUser = localStorage.getItem("usuario");
-  if (storedUser) {
-    setUsuario(JSON.parse(storedUser));
-  }
-}, []);
-
+  const rol = session?.user?.rol as 'admin' | 'cliente' | null
 
   const handleClickServicio = (servicio: string) => {
-    if (!usuario.rol) {
+    if (!rol) {
       router.push("/login")
-    } else if (usuario.rol === "cliente") {
+    } else if (rol === "cliente") {
       router.push(`/reserva/${encodeURIComponent(servicio)}`)
-
     }
   }
 
@@ -78,7 +71,7 @@ export default function ReservaOnlinePage() {
       <div className="container my-5">
         <h1 className="display-4 fw-bold text-purple text-center mb-4">Reservá tu turno</h1>
 
-        {usuario.rol === "admin" && (
+        {rol === "admin" && (
           <div className="text-end mb-3">
             <button className="btn btn-outline-primary" onClick={handleAgregarServicio}>
               ➕ Agregar Servicio
