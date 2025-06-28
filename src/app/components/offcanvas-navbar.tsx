@@ -24,7 +24,7 @@ export default function OffcanvasNavbar({
   const cerrarSesion = () => {
     signOut({
       redirect: true,
-      redirectTo: '/',
+      callbackUrl: '/',
     })
   }
 
