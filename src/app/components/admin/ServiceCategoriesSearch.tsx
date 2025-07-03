@@ -10,6 +10,7 @@ import {
   Card,
   Button,
   Spinner,
+  Modal,
 } from 'react-bootstrap'
 import { Search } from 'lucide-react'
 import CategoryCard, {
@@ -23,6 +24,8 @@ export default function CategorySearch() {
   const [editingId, setEditingId] = useState<number | null>(null)
   const [editingName, setEditingName] = useState('')
   const [loading, setLoading] = useState(true)
+  const [showDeleteModal, setShowDeleteModal] = useState(false)
+  const [categoryToDelete, setCategoryToDelete] = useState<number | null>(null)
 
   const fetchCategories = async () => {
     setLoading(true)
@@ -53,11 +56,21 @@ export default function CategorySearch() {
   }, [categories, searchTerm])
 
   const handleDelete = (id: number) => {
-    if (
-      window.confirm('¿Estás seguro de que quieres eliminar esta categoría?')
-    ) {
-      setCategories((prev) => prev.filter((cat) => cat.id !== id))
+    setCategoryToDelete(id)
+    setShowDeleteModal(true)
+  }
+
+  const confirmDelete = () => {
+    if (categoryToDelete !== null) {
+      setCategories((prev) => prev.filter((cat) => cat.id !== categoryToDelete))
     }
+    setShowDeleteModal(false)
+    setCategoryToDelete(null)
+  }
+
+  const cancelDelete = () => {
+    setShowDeleteModal(false)
+    setCategoryToDelete(null)
   }
 
   const handleEdit = (category: Category) => {
@@ -176,6 +189,24 @@ export default function CategorySearch() {
           </Col>
         )}
       </Row>
+
+      {/* Modal de confirmación de borrado */}
+      <Modal show={showDeleteModal} onHide={cancelDelete} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Confirmar eliminación</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          ¿Estás seguro de que quieres eliminar esta categoría?
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={cancelDelete}>
+            Cancelar
+          </Button>
+          <Button variant="danger" onClick={confirmDelete}>
+            Eliminar
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </Container>
   )
 }
