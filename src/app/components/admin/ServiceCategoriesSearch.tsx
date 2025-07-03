@@ -2,21 +2,13 @@
 
 import type React from 'react'
 import { useState, useMemo, useEffect } from 'react'
-import {
-  Container,
-  Row,
-  Col,
-  Form,
-  Card,
-  Button,
-  Spinner,
-  Modal,
-} from 'react-bootstrap'
-import { Search } from 'lucide-react'
-import CategoryCard, {
-  type Category,
-} from '@/app/components/admin/CategoryCard'
+import { Container, Row, Col } from 'react-bootstrap'
 import { getAllCategories, getCountServicesByCategoryId } from '@/lib/data'
+import DeleteCategoryModal from './DeleteCategoryModal'
+import SearchBar from './SearchBar'
+import CategoryInfoBar from './CategoryInfoBar'
+import CategoryGrid from './CategoryGrid'
+import { type Category } from '@/app/components/admin/CategoryCard'
 
 export default function CategorySearch() {
   const [searchTerm, setSearchTerm] = useState('')
@@ -104,109 +96,37 @@ export default function CategorySearch() {
       <Row className="mb-4">
         <Col>
           <h2 className="mb-3">Gestión de Categorías de Servicios</h2>
-
-          {/* Barra de búsqueda */}
-          <div className="position-relative mb-4">
-            <Form.Control
-              type="text"
-              placeholder="Buscar categorías por nombre o descripción..."
-              value={searchTerm}
-              onChange={handleSearch}
-              className="ps-5"
-              size="lg"
-              disabled={loading}
-            />
-            <Search
-              className="position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"
-              size={20}
-            />
-          </div>
-
-          {/* Información de resultados */}
-          <div className="d-flex justify-content-between align-items-center mb-3">
-            <p className="text-muted mb-0">
-              {filteredCategories.length === categories.length
-                ? `Mostrando todas las ${categories.length} categorías`
-                : `Mostrando ${filteredCategories.length} de ${categories.length} categorías`}
-            </p>
-
-            {searchTerm && (
-              <Button
-                variant="outline-secondary"
-                size="sm"
-                onClick={() => setSearchTerm('')}
-                disabled={loading}
-              >
-                Limpiar filtro
-              </Button>
-            )}
-          </div>
+          <SearchBar
+            value={searchTerm}
+            onChange={handleSearch}
+            disabled={loading}
+          />
+          <CategoryInfoBar
+            filteredCount={filteredCategories.length}
+            totalCount={categories.length}
+            searchTerm={searchTerm}
+            onClear={() => setSearchTerm('')}
+            loading={loading}
+          />
         </Col>
       </Row>
-
-      {/* Grid de tarjetas */}
-      <Row>
-        {loading ? (
-          <Col xs={12} className="text-center py-5">
-            <Spinner animation="border" role="status" />
-            <div className="mt-3 text-muted">Cargando categorías...</div>
-          </Col>
-        ) : filteredCategories.length > 0 ? (
-          filteredCategories.map((category) => (
-            <Col
-              key={category.id}
-              xs={12}
-              sm={6}
-              lg={4}
-              xl={3}
-              className="mb-4"
-            >
-              <CategoryCard
-                category={category}
-                onEdit={handleEdit}
-                onDelete={handleDelete}
-                isEditing={editingId === category.id}
-                editingName={editingName}
-                onEditingNameChange={setEditingName}
-                onSaveEdit={handleSaveEdit}
-                onCancelEdit={handleCancelEdit}
-              />
-            </Col>
-          ))
-        ) : (
-          <Col xs={12}>
-            <Card className="text-center py-5">
-              <Card.Body>
-                <Search size={48} className="text-muted mb-3" />
-                <h5 className="text-muted">No se encontraron categorías</h5>
-                <p className="text-muted mb-0">
-                  {searchTerm
-                    ? `No hay categorías que coincidan con "${searchTerm}"`
-                    : 'No hay categorías disponibles'}
-                </p>
-              </Card.Body>
-            </Card>
-          </Col>
-        )}
-      </Row>
-
-      {/* Modal de confirmación de borrado */}
-      <Modal show={showDeleteModal} onHide={cancelDelete} centered>
-        <Modal.Header closeButton>
-          <Modal.Title>Confirmar eliminación</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          ¿Estás seguro de que quieres eliminar esta categoría?
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={cancelDelete}>
-            Cancelar
-          </Button>
-          <Button variant="danger" onClick={confirmDelete}>
-            Eliminar
-          </Button>
-        </Modal.Footer>
-      </Modal>
+      <CategoryGrid
+        categories={filteredCategories}
+        loading={loading}
+        editingId={editingId}
+        editingName={editingName}
+        onEdit={handleEdit}
+        onDelete={handleDelete}
+        onEditingNameChange={setEditingName}
+        onSaveEdit={handleSaveEdit}
+        onCancelEdit={handleCancelEdit}
+        searchTerm={searchTerm}
+      />
+      <DeleteCategoryModal
+        show={showDeleteModal}
+        onHide={cancelDelete}
+        onConfirm={confirmDelete}
+      />
     </Container>
   )
 }
