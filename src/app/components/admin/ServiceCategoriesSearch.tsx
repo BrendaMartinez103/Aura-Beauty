@@ -2,13 +2,19 @@
 
 import type React from 'react'
 import { useState, useMemo, useEffect } from 'react'
-import { Container, Row, Col } from 'react-bootstrap'
-import { getAllCategories, getCountServicesByCategoryId } from '@/lib/data'
+import { Container, Row, Col, Button } from 'react-bootstrap'
+import {
+  getAllCategories,
+  getCountServicesByCategoryId,
+  createCategory,
+} from '@/lib/data'
 import DeleteCategoryModal from './DeleteCategoryModal'
 import SearchBar from './SearchBar'
 import CategoryInfoBar from './CategoryInfoBar'
 import CategoryGrid from './CategoryGrid'
+import AddCategoryModal from './AddCategoryModal'
 import { type Category } from '@/app/components/admin/CategoryCard'
+import { Plus } from 'lucide-react'
 
 export default function CategorySearch() {
   const [searchTerm, setSearchTerm] = useState('')
@@ -18,6 +24,7 @@ export default function CategorySearch() {
   const [loading, setLoading] = useState(true)
   const [showDeleteModal, setShowDeleteModal] = useState(false)
   const [categoryToDelete, setCategoryToDelete] = useState<number | null>(null)
+  const [showAddModal, setShowAddModal] = useState(false)
 
   const fetchCategories = async () => {
     setLoading(true)
@@ -91,11 +98,18 @@ export default function CategorySearch() {
     setSearchTerm(e.target.value)
   }
 
+  const handleAddCategory = async (name: string) => {
+    await createCategory(name)
+    await fetchCategories()
+  }
+
   return (
     <Container fluid className="py-4">
-      <Row className="mb-4">
+      <Row className="justify-content-end mb-4">
         <Col>
-          <h2 className="mb-3">Gestión de Categorías de Servicios</h2>
+          <div className="d-flex justify-content-between align-items-center mb-3">
+            <h2 className="mb-0">Gestión de Categorías</h2>
+          </div>
           <SearchBar
             value={searchTerm}
             onChange={handleSearch}
@@ -108,6 +122,11 @@ export default function CategorySearch() {
             onClear={() => setSearchTerm('')}
             loading={loading}
           />
+          <div className="d-flex justify-content-end">
+            <Button variant="primary" onClick={() => setShowAddModal(true)}>
+              <Plus size={18} className="me-2" /> Agregar categoría
+            </Button>
+          </div>
         </Col>
       </Row>
       <CategoryGrid
@@ -126,6 +145,11 @@ export default function CategorySearch() {
         show={showDeleteModal}
         onHide={cancelDelete}
         onConfirm={confirmDelete}
+      />
+      <AddCategoryModal
+        show={showAddModal}
+        onHide={() => setShowAddModal(false)}
+        onAdd={handleAddCategory}
       />
     </Container>
   )

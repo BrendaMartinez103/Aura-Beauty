@@ -22,3 +22,9 @@ export async function getCountServicesByCategoryId(categoryId: number) {
   })
   return count
 }
+
+export async function createCategory(nombre: string) {
+  return await prisma.categoria.create({
+    data: { nombre },
+  })
+}

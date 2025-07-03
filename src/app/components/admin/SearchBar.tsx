@@ -12,7 +12,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ value, onChange, disabled }) => (
   <div className="position-relative mb-4">
     <Form.Control
       type="text"
-      placeholder="Buscar categorías por nombre o descripción..."
+      placeholder="Buscar categorías..."
       value={value}
       onChange={onChange}
       className="ps-5"
