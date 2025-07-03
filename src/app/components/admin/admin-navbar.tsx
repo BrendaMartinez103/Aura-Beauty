@@ -2,17 +2,19 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { Menu, Search } from 'lucide-react'
+import { Menu } from 'lucide-react'
 import { useSession, signOut } from 'next-auth/react'
 
 interface OffcanvasNavbarProps {
   brandName?: string
   brandHref?: string
+  navigationItems?: { label: string; href: string }[]
 }
 
 export default function AdminNavbar({
   brandName = 'Aura Beauty',
   brandHref = '/',
+  navigationItems = [{ label: 'Inicio', href: '/' }],
 }: OffcanvasNavbarProps) {
   const [isOpen, setIsOpen] = useState(false)
 
@@ -26,20 +28,6 @@ export default function AdminNavbar({
       redirect: true,
       callbackUrl: '/',
     })
-  }
-
-  const navigationItems = [
-    { label: 'Conócenos', href: '/conocenos' },
-    { label: 'Nuestros Espacios', href: '/nuestros-espacios' },
-    { label: 'Servicios', href: '/servicios' },
-    { label: 'Reserva Online', href: '/reserva' },
-    { label: 'Nuestros Clientes', href: '/nuestros-clientes' },
-    { label: 'Gift Card', href: '/gift-card' },
-  ]
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    console.log('Búsqueda enviada')
   }
 
   return (
@@ -60,7 +48,7 @@ export default function AdminNavbar({
           </button>
 
           <div className="collapse navbar-collapse d-none d-lg-flex align-items-center">
-            <ul className="nav flex-column mb-0">
+            <ul className="nav flex-row mb-0">
               {navigationItems.map((item) => (
                 <li key={item.label} className="nav-item border-bottom py-2">
                   <Link
@@ -119,7 +107,7 @@ export default function AdminNavbar({
         </div>
 
         <div className="offcanvas-body d-flex flex-column">
-          <form onSubmit={handleSubmit} className="d-flex gap-2 mb-3">
+          {/* <form onSubmit={handleSubmit} className="d-flex gap-2 mb-3">
             <input
               type="search"
               className="form-control"
@@ -128,7 +116,7 @@ export default function AdminNavbar({
             <button type="submit" className="btn btn-outline-secondary">
               <Search size={18} />
             </button>
-          </form>
+          </form> */}
 
           {session ? (
             <button
