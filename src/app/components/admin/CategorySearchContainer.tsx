@@ -10,13 +10,13 @@ import {
   updateCategory,
   deleteCategory,
 } from '@/lib/data'
-import DeleteCategoryModal from './DeleteCategoryModal'
 import SearchBar from './SearchBar'
-import CategoryInfoBar from './CategoryInfoBar'
+import InfoBar from './InfoBar'
 import CategoryGrid from './CategoryGrid'
 import AddCategoryModal from './AddCategoryModal'
 import { type Category } from '@/app/components/admin/CategoryCard'
 import { Plus } from 'lucide-react'
+import ConfirmModal from './ConfirmModal'
 
 export default function CategorySearch() {
   const [searchTerm, setSearchTerm] = useState('')
@@ -177,12 +177,13 @@ export default function CategorySearch() {
             disabled={loading}
             placeholder="Buscar categorías..."
           />
-          <CategoryInfoBar
+          <InfoBar
             filteredCount={filteredCategories.length}
             totalCount={categories.length}
             searchTerm={searchTerm}
             onClear={() => setSearchTerm('')}
             loading={loading}
+            resourceName="categorías"
           />
           <div className="d-flex justify-content-end">
             <Button
@@ -207,10 +208,15 @@ export default function CategorySearch() {
         onCancelEdit={handleCancelEdit}
         searchTerm={searchTerm}
       />
-      <DeleteCategoryModal
+      <ConfirmModal
         show={showDeleteModal}
         onHide={cancelDelete}
         onConfirm={confirmDelete}
+        title="Confirmar eliminación"
+        message="¿Estás seguro de que quieres eliminar esta categoría?"
+        confirmText="Eliminar"
+        cancelText="Cancelar"
+        confirmVariant="danger"
       />
       <AddCategoryModal
         show={showAddModal}

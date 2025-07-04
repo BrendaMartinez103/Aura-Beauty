@@ -1,26 +1,28 @@
 import React from 'react'
 import { Button } from 'react-bootstrap'
 
-interface CategoryInfoBarProps {
+interface InfoBarProps {
   filteredCount: number
   totalCount: number
   searchTerm: string
   onClear: () => void
-  loading: boolean
+  loading?: boolean
+  resourceName?: string // Ej: 'categorías', 'servicios', etc.
 }
 
-const CategoryInfoBar: React.FC<CategoryInfoBarProps> = ({
+const InfoBar: React.FC<InfoBarProps> = ({
   filteredCount,
   totalCount,
   searchTerm,
   onClear,
-  loading,
+  loading = false,
+  resourceName = 'elementos',
 }) => (
   <div className="d-flex justify-content-between align-items-center mb-3">
     <p className="text-muted mb-0">
       {filteredCount === totalCount
-        ? `Mostrando todas las ${totalCount} categorías`
-        : `Mostrando ${filteredCount} de ${totalCount} categorías`}
+        ? `Mostrando todos los ${totalCount} ${resourceName}`
+        : `Mostrando ${filteredCount} de ${totalCount} ${resourceName}`}
     </p>
     {searchTerm && (
       <Button
@@ -35,4 +37,4 @@ const CategoryInfoBar: React.FC<CategoryInfoBarProps> = ({
   </div>
 )
 
-export default CategoryInfoBar
+export default InfoBar
