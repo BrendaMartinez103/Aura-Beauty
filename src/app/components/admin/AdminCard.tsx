@@ -1,45 +1,56 @@
-'use client'
-
-import type React from 'react'
-import { Card, Button, Form } from 'react-bootstrap'
+import React from 'react'
+import { Card, Button, Form, Badge } from 'react-bootstrap'
 import { Edit, Trash2 } from 'lucide-react'
-import { useRouter, usePathname } from 'next/navigation'
 
-interface Category {
+export interface AdminCardProps {
   id: number
   name: string
-  serviceCount: number
-}
-
-interface CategoryCardProps {
-  category: Category
-  onEdit: (category: Category) => void
-  onDelete: (id: number) => void
+  description?: string
+  countLabel?: string // Ej: 'servicios disponibles'
+  countValue?: number
+  imageUrl?: string
+  badgeText?: string
+  badgeVariant?: string
   isEditing: boolean
   editingName: string
+  onEdit: (item: {
+    id: number
+    name: string
+    description?: string
+    imageUrl?: string
+  }) => void
+  onDelete: (id: number) => void
   onEditingNameChange: (name: string) => void
   onSaveEdit: (id: number) => void
   onCancelEdit: () => void
+  onCardClick?: (id: number) => void
 }
 
-const CategoryCard: React.FC<CategoryCardProps> = ({
-  category,
-  onEdit,
-  onDelete,
+const AdminCard: React.FC<AdminCardProps> = ({
+  id,
+  name,
+  description,
+  countLabel,
+  countValue,
+  imageUrl,
+  badgeText,
+  badgeVariant = 'secondary',
   isEditing,
   editingName,
+  onEdit,
+  onDelete,
   onEditingNameChange,
   onSaveEdit,
   onCancelEdit,
+  onCardClick,
 }) => {
-  const router = useRouter()
-  const pathname = usePathname()
   return (
     <Card
       className="h-100 shadow-sm"
-      style={{ cursor: 'pointer' }}
-      onClick={() => router.push(`${pathname}/${category.id}`)}
+      style={{ cursor: onCardClick ? 'pointer' : 'default' }}
+      onClick={onCardClick ? () => onCardClick(id) : undefined}
     >
+      {imageUrl && <Card.Img variant="top" src={imageUrl} alt={name} />}
       <Card.Body className="d-flex flex-column">
         <div className="d-flex justify-content-between align-items-start mb-2">
           {isEditing ? (
@@ -51,7 +62,7 @@ const CategoryCard: React.FC<CategoryCardProps> = ({
               autoFocus
               onKeyDown={(e) => {
                 if (e.key === 'Enter') {
-                  onSaveEdit(category.id)
+                  onSaveEdit(id)
                 } else if (e.key === 'Escape') {
                   onCancelEdit()
                 }
@@ -59,22 +70,29 @@ const CategoryCard: React.FC<CategoryCardProps> = ({
               onClick={(e) => e.stopPropagation()}
             />
           ) : (
-            <Card.Title className="h5 mb-1">{category.name}</Card.Title>
+            <Card.Title className="h5 mb-1">{name}</Card.Title>
+          )}
+          {badgeText && (
+            <Badge bg={badgeVariant} className="ms-2">
+              {badgeText}
+            </Badge>
           )}
         </div>
-        <div className="mb-3">
-          <small className="text-muted">
-            <strong>{category.serviceCount}</strong> servicios disponibles
-          </small>
-        </div>
-
+        {description && <Card.Text>{description}</Card.Text>}
+        {typeof countValue === 'number' && countLabel && (
+          <div className="mb-3">
+            <small className="text-muted">
+              <strong>{countValue}</strong> {countLabel}
+            </small>
+          </div>
+        )}
         <div className="mt-auto d-flex gap-2 justify-content-end">
           <Button
             variant="outline-primary"
             size="sm"
             onClick={(e) => {
               e.stopPropagation()
-              onEdit(category)
+              onEdit({ id, name, description, imageUrl })
             }}
             disabled={isEditing}
           >
@@ -86,7 +104,7 @@ const CategoryCard: React.FC<CategoryCardProps> = ({
             size="sm"
             onClick={(e) => {
               e.stopPropagation()
-              onDelete(category.id)
+              onDelete(id)
             }}
             disabled={isEditing}
           >
@@ -99,5 +117,4 @@ const CategoryCard: React.FC<CategoryCardProps> = ({
   )
 }
 
-export default CategoryCard
-export type { Category, CategoryCardProps }
+export default AdminCard

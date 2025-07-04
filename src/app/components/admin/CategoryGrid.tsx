@@ -1,7 +1,8 @@
 import React from 'react'
 import { Row, Col, Card, Spinner } from 'react-bootstrap'
 import { Search } from 'lucide-react'
-import CategoryCard, { Category } from '@/app/components/admin/CategoryCard'
+import AdminCard from './AdminCard'
+import { Category } from '@/types'
 
 interface CategoryGridProps {
   categories: Category[]
@@ -14,6 +15,7 @@ interface CategoryGridProps {
   onSaveEdit: (id: number) => void
   onCancelEdit: () => void
   searchTerm: string
+  onCardClick?: (id: number) => void
 }
 
 const CategoryGrid: React.FC<CategoryGridProps> = ({
@@ -27,6 +29,7 @@ const CategoryGrid: React.FC<CategoryGridProps> = ({
   onSaveEdit,
   onCancelEdit,
   searchTerm,
+  onCardClick,
 }) => (
   <Row>
     {loading ? (
@@ -37,15 +40,19 @@ const CategoryGrid: React.FC<CategoryGridProps> = ({
     ) : categories.length > 0 ? (
       categories.map((category) => (
         <Col key={category.id} xs={12} sm={6} lg={4} xl={3} className="mb-4">
-          <CategoryCard
-            category={category}
-            onEdit={onEdit}
-            onDelete={onDelete}
+          <AdminCard
+            id={category.id}
+            name={category.name}
+            countLabel="servicios disponibles"
+            countValue={category.serviceCount}
             isEditing={editingId === category.id}
             editingName={editingName}
+            onEdit={() => onEdit(category)}
+            onDelete={onDelete}
             onEditingNameChange={onEditingNameChange}
             onSaveEdit={onSaveEdit}
             onCancelEdit={onCancelEdit}
+            onCardClick={onCardClick}
           />
         </Col>
       ))
