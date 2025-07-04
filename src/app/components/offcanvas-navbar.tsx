@@ -32,7 +32,7 @@ export default function OffcanvasNavbar({
     { label: 'Conócenos', href: '/conocenos' },
     { label: 'Nuestros Espacios', href: '/nuestros-espacios' },
     { label: 'Servicios', href: '/servicios' },
-    { label: 'Reserva Online', href: '/reserva' },
+    { label: 'Comprar Servicios', href: '/reserva' },
     { label: 'Nuestros Clientes', href: '/nuestros-clientes' },
   ]
 
@@ -46,7 +46,7 @@ export default function OffcanvasNavbar({
       {/* Top Bar */}
       <div className="border-bottom py-2 bg-light">
         <div className="container d-flex justify-content-between align-items-center">
-          <p className="mb-0 small fw-medium">RESERVAS ONLINE</p>
+          <p className="mb-0 small fw-medium">Compra de Servicios</p>
         </div>
       </div>
 

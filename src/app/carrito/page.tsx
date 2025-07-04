@@ -107,7 +107,7 @@ export default function CarritoPage() {
           <div className="text-end mt-4">
             <h4>Total: ${total.toLocaleString('es-AR')}</h4>
             <button className="btn btn-primary mt-2">
-              Finalizar reserva
+              Finalizar compra
             </button>
             <button
               className="btn btn-purple mt-3 ms-2"

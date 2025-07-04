@@ -37,7 +37,7 @@ export default function Home() {
       {/* Sección bienvenida */}
       <div className="container text-center my-5">
         <h2 className="h2 fw-normal text-foreground mb-3">¡Bienvenido!</h2>
-        <p className="fs-4 text-muted-foreground">Seleccioná las opciones para reservar tu cita</p>
+        <p className="fs-4 text-muted-foreground">Seleccioná las opciones para comprar tu servicio</p>
       </div>
 
       {/* Sección servicios */}
@@ -82,10 +82,10 @@ export default function Home() {
         <div className="container text-center">
           <h2 className="display-5 fw-bold text-purple mb-4">¿Lista para tu transformación?</h2>
           <p className="fs-5 text-muted-foreground mb-4 mx-auto" style={{ maxWidth: "600px" }}>
-            Reserva tu cita online y disfruta de nuestros servicios de belleza premium con los mejores profesionales.
+            Compra online y disfruta de nuestros servicios de belleza premium con los mejores profesionales.
           </p>
           <button className="btn btn-primary btn-lg px-5">
-            Reservar Ahora
+            Comprar Ahora
           </button>
         </div>
       </div>
