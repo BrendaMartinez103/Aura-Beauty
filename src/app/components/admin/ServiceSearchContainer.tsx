@@ -14,6 +14,7 @@ import {
 } from '@/lib/data'
 import { ServiceCardData } from '@/types'
 import AddOrEditServiceModal, { ServiceModalData } from './AddServiceModal'
+import ConfirmModal from './ConfirmModal'
 
 interface ServiceSearchContainerProps {
   servicios: ServiceCardData[]
@@ -35,6 +36,8 @@ const ServiceSearchContainer: React.FC<ServiceSearchContainerProps> = ({
   const [serviceToEdit, setServiceToEdit] = useState<ServiceCardData | null>(
     null
   )
+  const [showConfirmModal, setShowConfirmModal] = useState(false)
+  const [serviceIdToDelete, setServiceIdToDelete] = useState<number | null>(null)
 
   React.useEffect(() => {
     // Cargar categorías al montar
@@ -108,17 +111,25 @@ const ServiceSearchContainer: React.FC<ServiceSearchContainerProps> = ({
     setServiceToEdit(null)
   }
 
-  const handleDelete = async (id: number) => {
+  const handleRequestDelete = (id: number) => {
+    setServiceIdToDelete(id)
+    setShowConfirmModal(true)
+  }
+
+  const handleConfirmDelete = async () => {
+    if (serviceIdToDelete === null) return
     setActionError(null)
     setActionLoading(true)
     try {
-      await deleteService(id)
+      await deleteService(serviceIdToDelete)
       await fetchServices()
       setActionSuccess('Servicio eliminado correctamente.')
     } catch {
       setActionError('Error al eliminar el servicio.')
     }
     setActionLoading(false)
+    setShowConfirmModal(false)
+    setServiceIdToDelete(null)
   }
 
   const handleAddService = async (data: ServiceModalData) => {
@@ -192,7 +203,7 @@ const ServiceSearchContainer: React.FC<ServiceSearchContainerProps> = ({
       <ServiceGrid
         servicios={filtered}
         onEdit={handleEdit}
-        onDelete={handleDelete}
+        onDelete={handleRequestDelete}
       />
       <AddOrEditServiceModal
         show={showAddModal}
@@ -225,6 +236,16 @@ const ServiceSearchContainer: React.FC<ServiceSearchContainerProps> = ({
             : undefined
         }
         isEdit={true}
+      />
+      <ConfirmModal
+        show={showConfirmModal}
+        onHide={() => { setShowConfirmModal(false); setServiceIdToDelete(null) }}
+        onConfirm={handleConfirmDelete}
+        title="Eliminar servicio"
+        message="¿Estás seguro de que deseas eliminar este servicio? Esta acción no se puede deshacer."
+        confirmText="Eliminar"
+        cancelText="Cancelar"
+        confirmVariant="danger"
       />
     </Container>
   )
