@@ -17,3 +17,12 @@ export interface CategoryCardData {
   name: string
   serviceCount: number
 }
+export interface ServiceCardData {
+  id: number
+  nombre: string
+  descripcion: string
+  imageUrl?: string
+  precio: number
+  duracion: number
+  activo: boolean
+}
