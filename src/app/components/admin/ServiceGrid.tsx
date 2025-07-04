@@ -44,7 +44,7 @@ const ServiceGrid: React.FC<ServiceGridProps> = ({
             countValue={servicio.duracion}
             isEditing={editingId === servicio.id}
             editingName={editingName}
-            onEdit={() => onEdit}
+            onEdit={() => onEdit(servicio)}
             onDelete={onDelete}
             onEditingNameChange={onEditingNameChange}
             onSaveEdit={onSaveEdit}

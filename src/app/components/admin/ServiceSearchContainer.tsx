@@ -5,8 +5,15 @@ import SearchBar from './SearchBar'
 import { Button, Col, Container, Row, Alert } from 'react-bootstrap'
 import { Plus } from 'lucide-react'
 import InfoBar from './InfoBar'
-import { updateService, deleteService, getAllServices } from '@/lib/data'
+import {
+  updateService,
+  deleteService,
+  getAllServices,
+  createService,
+  getAllCategories,
+} from '@/lib/data'
 import { ServiceCardData } from '@/types'
+import AddOrEditServiceModal, { ServiceModalData } from './AddServiceModal'
 
 interface ServiceSearchContainerProps {
   servicios: ServiceCardData[]
@@ -17,12 +24,22 @@ const ServiceSearchContainer: React.FC<ServiceSearchContainerProps> = ({
 }) => {
   const [search, setSearch] = useState('')
   const [showAddModal, setShowAddModal] = useState(false)
+  const [showEditModal, setShowEditModal] = useState(false)
   const [actionLoading, setActionLoading] = useState(false)
-  const [editingId, setEditingId] = useState<number | null>(null)
-  const [editingName, setEditingName] = useState('')
   const [services, setServices] = useState<ServiceCardData[]>(initialServicios)
   const [actionError, setActionError] = useState<string | null>(null)
   const [actionSuccess, setActionSuccess] = useState<string | null>(null)
+  const [categorias, setCategorias] = useState<
+    { id: number; nombre: string }[]
+  >([])
+  const [serviceToEdit, setServiceToEdit] = useState<ServiceCardData | null>(
+    null
+  )
+
+  React.useEffect(() => {
+    // Cargar categorías al montar
+    getAllCategories().then(setCategorias)
+  }, [])
 
   const filtered = useMemo(() => {
     if (!search.trim()) {
@@ -45,30 +62,50 @@ const ServiceSearchContainer: React.FC<ServiceSearchContainerProps> = ({
   }
 
   const handleEdit = (servicio: ServiceCardData) => {
-    setEditingId(servicio.id)
-    setEditingName(servicio.nombre)
+    setServiceToEdit(servicio)
+    setShowEditModal(true)
   }
 
-  const handleSaveEdit = async (id: number) => {
+  const handleEditService = async (data: ServiceModalData) => {
     setActionError(null)
     setActionLoading(true)
-    if (editingName.trim()) {
-      try {
-        await updateService(id, { nombre: editingName.trim() })
+    try {
+      if (serviceToEdit) {
+        // Check if the service still exists before updating
+        const exists = services.some((s) => s.id === serviceToEdit.id)
+        if (!exists) {
+          setActionError('El servicio ya no existe o fue eliminado.')
+          setActionLoading(false)
+          setShowEditModal(false)
+          setServiceToEdit(null)
+          return
+        }
+        // Convert fields to correct types for updateService
+        await updateService(serviceToEdit.id, {
+          nombre: data.nombre,
+          descripcion: data.descripcion,
+          precio: Number(data.precio),
+          duracion: Number(data.duracion),
+          activo: data.activo,
+          categoriaId: Number(data.categoriaId),
+          imageUrl: data.imageUrl?.trim() || undefined,
+        })
         await fetchServices()
         setActionSuccess('Servicio editado correctamente.')
-      } catch {
+      }
+    } catch (e) {
+      const error = e as { code?: string }
+      if (error) {
+        setActionError(
+          'No se encontró el servicio para editar. Puede que haya sido eliminado.'
+        )
+      } else {
         setActionError('Error al editar el servicio.')
       }
     }
     setActionLoading(false)
-    setEditingId(null)
-    setEditingName('')
-  }
-
-  const handleCancelEdit = () => {
-    setEditingId(null)
-    setEditingName('')
+    setShowEditModal(false)
+    setServiceToEdit(null)
   }
 
   const handleDelete = async (id: number) => {
@@ -82,6 +119,28 @@ const ServiceSearchContainer: React.FC<ServiceSearchContainerProps> = ({
       setActionError('Error al eliminar el servicio.')
     }
     setActionLoading(false)
+  }
+
+  const handleAddService = async (data: ServiceModalData) => {
+    setActionError(null)
+    setActionLoading(true)
+    try {
+      await createService(
+        data.nombre,
+        data.descripcion,
+        Number(data.precio),
+        Number(data.duracion),
+        data.activo,
+        Number(data.categoriaId),
+        data.imageUrl?.trim() || undefined
+      )
+      await fetchServices()
+      setActionSuccess('Servicio agregado correctamente.')
+    } catch {
+      setActionError('Error al agregar el servicio.')
+    }
+    setActionLoading(false)
+    setShowAddModal(false)
   }
 
   return (
@@ -132,13 +191,40 @@ const ServiceSearchContainer: React.FC<ServiceSearchContainerProps> = ({
       </Row>
       <ServiceGrid
         servicios={filtered}
-        editingId={editingId}
-        editingName={editingName}
         onEdit={handleEdit}
         onDelete={handleDelete}
-        onEditingNameChange={setEditingName}
-        onSaveEdit={handleSaveEdit}
-        onCancelEdit={handleCancelEdit}
+      />
+      <AddOrEditServiceModal
+        show={showAddModal}
+        onHide={() => setShowAddModal(false)}
+        onSubmit={handleAddService}
+        categorias={categorias}
+        isEdit={false}
+      />
+      <AddOrEditServiceModal
+        show={showEditModal}
+        onHide={() => {
+          setShowEditModal(false)
+          setServiceToEdit(null)
+        }}
+        onSubmit={handleEditService}
+        categorias={categorias}
+        initialData={
+          serviceToEdit
+            ? {
+                nombre: serviceToEdit.nombre,
+                descripcion: serviceToEdit.descripcion,
+                precio: serviceToEdit.precio,
+                duracion: serviceToEdit.duracion,
+                activo: serviceToEdit.activo,
+                categoriaId:
+                  (serviceToEdit as unknown as { categoriaId?: number })
+                    .categoriaId ?? '',
+                imageUrl: serviceToEdit.imageUrl || '',
+              }
+            : undefined
+        }
+        isEdit={true}
       />
     </Container>
   )
