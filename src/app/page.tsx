@@ -1,4 +1,7 @@
+'use client'
+
 import Image from "next/image"
+import Link from "next/link"
 import OffcanvasNavbar from "./components/offcanvas-navbar"
 
 export default function Home() {
@@ -19,12 +22,8 @@ export default function Home() {
 
       {/* Nombre y slogan */}
       <div className="container text-center my-5">
-        <h1 className="display-4 fw-bold text-purple">
-          Aura Beauty
-        </h1>
-        <p className="fs-4 text-muted-foreground">
-          Más que belleza, armonía.
-        </p>
+        <h1 className="display-4 fw-bold text-purple">Aura Beauty</h1>
+        <p className="fs-4 text-muted-foreground">Más que belleza, armonía.</p>
       </div>
 
       {/* Banner promocional */}
@@ -43,37 +42,47 @@ export default function Home() {
       {/* Sección servicios */}
       <div className="container my-5">
         <div className="row g-4">
+
           <div className="col-12 col-md-6 col-lg-4">
-            <div className="service-card">
-              <div className="service-icon">💅</div>
-              <h3 className="h5 fw-semibold mb-2">Manicura y Pedicura</h3>
-              <p className="text-muted-foreground mb-0">Cuidado profesional para tus uñas</p>
-            </div>
+            <Link href="/reserva/categoria/Manicura y Pedicura" className="text-decoration-none">
+              <div className="service-card">
+                <div className="service-icon">💅</div>
+                <h3 className="h5 fw-semibold mb-2">Manicura y Pedicura</h3>
+                <p className="text-muted-foreground mb-0">Cuidado profesional para tus uñas</p>
+              </div>
+            </Link>
           </div>
 
           <div className="col-12 col-md-6 col-lg-4">
-            <div className="service-card">
-              <div className="service-icon">👁️</div>
-              <h3 className="h5 fw-semibold mb-2">Pestañas y Cejas</h3>
-              <p className="text-muted-foreground mb-0">Extensiones y tratamientos </p>
-            </div>
+            <Link href="/reserva/categoria/Pestañas y Cejas" className="text-decoration-none">
+              <div className="service-card">
+                <div className="service-icon">👁️</div>
+                <h3 className="h5 fw-semibold mb-2">Pestañas y Cejas</h3>
+                <p className="text-muted-foreground mb-0">Extensiones y tratamientos</p>
+              </div>
+            </Link>
           </div>
 
           <div className="col-12 col-md-6 col-lg-4">
-            <div className="service-card">
-              <div className="service-icon">💆</div>
-              <h3 className="h5 fw-semibold mb-2">Masajes</h3>
-              <p className="text-muted-foreground mb-0">Relajación y bienestar corporal</p>
-            </div>
+            <Link href="/reserva/categoria/Masajes" className="text-decoration-none">
+              <div className="service-card">
+                <div className="service-icon">💆</div>
+                <h3 className="h5 fw-semibold mb-2">Masajes</h3>
+                <p className="text-muted-foreground mb-0">Relajación y bienestar corporal</p>
+              </div>
+            </Link>
           </div>
 
-           <div className="col-12 col-md-6 col-lg-4">
-            <div className="service-card">
-              <div className="service-icon">✂️</div>
-              <h3 className="h5 fw-semibold mb-2">Peluqueria</h3>
-              <p className="text-muted-foreground mb-0">El mejor look posible</p>
-            </div>
+          <div className="col-12 col-md-6 col-lg-4">
+            <Link href="/reserva/categoria/Peluquería" className="text-decoration-none">
+              <div className="service-card">
+                <div className="service-icon">✂️</div>
+                <h3 className="h5 fw-semibold mb-2">Peluquería</h3>
+                <p className="text-muted-foreground mb-0">El mejor look posible</p>
+              </div>
+            </Link>
           </div>
+
         </div>
       </div>
 
@@ -84,9 +93,11 @@ export default function Home() {
           <p className="fs-5 text-muted-foreground mb-4 mx-auto" style={{ maxWidth: "600px" }}>
             Compra online y disfruta de nuestros servicios de belleza premium con los mejores profesionales.
           </p>
-          <button className="btn btn-primary btn-lg px-5">
-            Comprar Ahora
-          </button>
+          <Link href="/reserva">
+            <button className="btn btn-primary btn-lg px-5">
+              Comprar Ahora
+            </button>
+          </Link>
         </div>
       </div>
     </main>

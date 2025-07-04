@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation"
 import { useSession } from "next-auth/react"
 
 const categorias = {
-  "✂️ Peluquería": [
+  "Peluquería": [
     "Corte",
     "Brushing / Peinado",
     "Planchita o Buclera",
@@ -16,7 +16,7 @@ const categorias = {
     "Shock de nutrición",
     "Tratamiento anti frizz"
   ],
-  "👁 Pestañas y Cejas": [
+  "Pestañas y Cejas": [
     "Pestañas clásicas",
     "Pestañas volumen (2D/3D/Ruso)",
     "Mantenimiento de extensiones",
@@ -25,7 +25,7 @@ const categorias = {
     "Diseño y perfilado de cejas",
     "Laminado de cejas"
   ],
-  "💅 Uñas": [
+  "Uñas": [
     "Manicura tradicional",
     "Manicura semipermanente",
     "Pedicura spa",
@@ -35,7 +35,7 @@ const categorias = {
     "Spa de manos/pies",
     "Reconstrucción de uñas quebradas"
   ],
-  "💆 Masajes": [
+  "Masajes": [
     "Masaje descontracturante",
     "Masaje relajante",
     "Masaje localizado",
@@ -70,6 +70,29 @@ export default function ReservaOnlinePage() {
 
       <div className="container my-5">
         <h1 className="display-4 fw-bold text-purple text-center mb-4">Reservá tu turno</h1>
+        {/* Filtro por categoría */}
+          <div className="mb-4 text-center">
+            <label htmlFor="categoriaSelect" className="form-label fw-medium me-2">Filtrar por categoría:</label>
+            <select
+              id="categoriaSelect"
+              className="form-select d-inline w-auto"
+              onChange={(e) => {
+                const seleccion = e.target.value
+                if (seleccion && rol === "cliente") {
+                  router.push(`/reserva/categoria/${encodeURIComponent(seleccion)}`)
+                } else if (!rol) {
+                  router.push("/login")
+                }
+              }}
+            >
+              <option value="">Seleccionar categoría</option>
+              {Object.keys(categorias).map((cat) => (
+                <option key={cat} value={cat}>
+                  {cat}
+                </option>
+              ))}
+            </select>
+          </div>
 
         {rol === "admin" && (
           <div className="text-end mb-3">
