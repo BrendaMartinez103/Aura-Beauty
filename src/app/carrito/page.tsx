@@ -47,9 +47,9 @@ export default function CarritoPage() {
 
   const eliminarItem = async (servicioId: number) => {
     await fetch(`/api/carrito`, {
-      method: 'DELETE',
+      method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ servicioId }),
+      body: JSON.stringify({ servicioId, cantidad: -1 }),
     })
     fetchCarrito()
   }
@@ -104,7 +104,7 @@ export default function CarritoPage() {
           </div>
 
           <div className="text-end mt-4">
-            <h4>Total: ${total}</h4>
+            <h4>Total: ${total.toLocaleString('es-AR')}</h4>
             <button className="btn btn-primary mt-2">
               Finalizar reserva
             </button>

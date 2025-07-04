@@ -94,3 +94,66 @@ export async function GET() {
 
   return NextResponse.json(items)
 }
+export async function PATCH(req: NextRequest) {
+  const session = await auth()
+  if (!session || !session.user?.email) {
+    return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
+  }
+
+  const { servicioId, cantidad } = await req.json()
+  if (!servicioId || !cantidad) {
+    return NextResponse.json({ error: 'Datos inválidos' }, { status: 400 })
+  }
+
+  const cliente = await prisma.cliente.findUnique({
+    where: { email: session.user.email },
+  })
+
+  if (!cliente) {
+    return NextResponse.json({ error: 'Cliente no encontrado' }, { status: 404 })
+  }
+
+  const existente = await prisma.carrito.findFirst({
+    where: {
+      clienteId: cliente.id,
+      servicioId,
+    },
+    orderBy: {
+      fechaHora: 'desc'
+    }
+  })
+
+  if (!existente) {
+    return NextResponse.json({ error: 'Elemento no encontrado' }, { status: 404 })
+  }
+
+  const nuevaCantidad = existente.cantidad + cantidad
+  if (nuevaCantidad <= 0) {
+    // Eliminar si la cantidad llega a 0 o menos
+    await prisma.carrito.delete({
+      where: {
+        clienteId_servicioId_fechaHora: {
+          clienteId: cliente.id,
+          servicioId,
+          fechaHora: existente.fechaHora
+        }
+      }
+    })
+  } else {
+    // Actualizar cantidad
+    await prisma.carrito.update({
+      where: {
+        clienteId_servicioId_fechaHora: {
+          clienteId: cliente.id,
+          servicioId,
+          fechaHora: existente.fechaHora
+        }
+      },
+      data: {
+        cantidad: nuevaCantidad
+      }
+    })
+  }
+
+  return NextResponse.json({ ok: true })
+}
