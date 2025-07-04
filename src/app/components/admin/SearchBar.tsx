@@ -6,13 +6,19 @@ interface SearchBarProps {
   value: string
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
   disabled?: boolean
+  placeholder?: string
 }
 
-const SearchBar: React.FC<SearchBarProps> = ({ value, onChange, disabled }) => (
+const SearchBar: React.FC<SearchBarProps> = ({
+  value,
+  onChange,
+  disabled,
+  placeholder,
+}) => (
   <div className="position-relative mb-4">
     <Form.Control
       type="text"
-      placeholder="Buscar categorías..."
+      placeholder={placeholder || 'Buscar...'}
       value={value}
       onChange={onChange}
       className="ps-5"

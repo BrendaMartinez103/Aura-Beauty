@@ -2,11 +2,13 @@
 
 import type React from 'react'
 import { useState, useMemo, useEffect } from 'react'
-import { Container, Row, Col, Button } from 'react-bootstrap'
+import { Container, Row, Col, Button, Alert } from 'react-bootstrap'
 import {
   getAllCategories,
   getCountServicesByCategoryId,
   createCategory,
+  updateCategory,
+  deleteCategory,
 } from '@/lib/data'
 import DeleteCategoryModal from './DeleteCategoryModal'
 import SearchBar from './SearchBar'
@@ -25,6 +27,9 @@ export default function CategorySearch() {
   const [showDeleteModal, setShowDeleteModal] = useState(false)
   const [categoryToDelete, setCategoryToDelete] = useState<number | null>(null)
   const [showAddModal, setShowAddModal] = useState(false)
+  const [actionError, setActionError] = useState<string | null>(null)
+  const [actionSuccess, setActionSuccess] = useState<string | null>(null)
+  const [actionLoading, setActionLoading] = useState(false)
 
   const fetchCategories = async () => {
     setLoading(true)
@@ -44,6 +49,13 @@ export default function CategorySearch() {
     fetchCategories()
   }, [])
 
+  useEffect(() => {
+    if (actionSuccess) {
+      const timer = setTimeout(() => setActionSuccess(null), 3000)
+      return () => clearTimeout(timer)
+    }
+  }, [actionSuccess])
+
   // Filtrar categorías basado en el término de búsqueda
   const filteredCategories = useMemo(() => {
     if (!searchTerm.trim()) {
@@ -59,10 +71,27 @@ export default function CategorySearch() {
     setShowDeleteModal(true)
   }
 
-  const confirmDelete = () => {
+  const confirmDelete = async () => {
+    setActionError(null)
+    setActionLoading(true)
     if (categoryToDelete !== null) {
-      setCategories((prev) => prev.filter((cat) => cat.id !== categoryToDelete))
+      try {
+        const serviceCount =
+          await getCountServicesByCategoryId(categoryToDelete)
+        if (serviceCount > 0) {
+          setActionError(
+            'No se puede eliminar la categoría porque tiene servicios asociados.'
+          )
+        } else {
+          await deleteCategory(categoryToDelete)
+          await fetchCategories()
+          setActionSuccess('Categoría eliminada correctamente.')
+        }
+      } catch {
+        setActionError('Error al eliminar la categoría.')
+      }
     }
+    setActionLoading(false)
     setShowDeleteModal(false)
     setCategoryToDelete(null)
   }
@@ -77,14 +106,19 @@ export default function CategorySearch() {
     setEditingName(category.name)
   }
 
-  const handleSaveEdit = (id: number) => {
+  const handleSaveEdit = async (id: number) => {
+    setActionError(null)
+    setActionLoading(true)
     if (editingName.trim()) {
-      setCategories((prev) =>
-        prev.map((cat) =>
-          cat.id === id ? { ...cat, name: editingName.trim() } : cat
-        )
-      )
+      try {
+        await updateCategory(id, editingName.trim())
+        await fetchCategories()
+        setActionSuccess('Categoría editada correctamente.')
+      } catch {
+        setActionError('Error al editar la categoría.')
+      }
     }
+    setActionLoading(false)
     setEditingId(null)
     setEditingName('')
   }
@@ -99,14 +133,41 @@ export default function CategorySearch() {
   }
 
   const handleAddCategory = async (name: string) => {
-    await createCategory(name)
-    await fetchCategories()
+    setActionError(null)
+    setActionLoading(true)
+    try {
+      await createCategory(name)
+      await fetchCategories()
+      setActionSuccess('Categoría agregada correctamente.')
+    } catch {
+      setActionError('Error al agregar la categoría.')
+    }
+    setActionLoading(false)
   }
 
   return (
-    <Container fluid className="py-4">
+    <Container fluid>
       <Row className="justify-content-end mb-4">
         <Col>
+          {/* Mensajes de feedback */}
+          {actionError && (
+            <Alert
+              variant="danger"
+              onClose={() => setActionError(null)}
+              dismissible
+            >
+              {actionError}
+            </Alert>
+          )}
+          {actionSuccess && (
+            <Alert
+              variant="success"
+              onClose={() => setActionSuccess(null)}
+              dismissible
+            >
+              {actionSuccess}
+            </Alert>
+          )}
           <div className="d-flex justify-content-between align-items-center mb-3">
             <h2 className="mb-0">Gestión de Categorías</h2>
           </div>
@@ -114,6 +175,7 @@ export default function CategorySearch() {
             value={searchTerm}
             onChange={handleSearch}
             disabled={loading}
+            placeholder="Buscar categorías..."
           />
           <CategoryInfoBar
             filteredCount={filteredCategories.length}
@@ -123,7 +185,11 @@ export default function CategorySearch() {
             loading={loading}
           />
           <div className="d-flex justify-content-end">
-            <Button variant="primary" onClick={() => setShowAddModal(true)}>
+            <Button
+              variant="primary"
+              onClick={() => setShowAddModal(true)}
+              disabled={actionLoading}
+            >
               <Plus size={18} className="me-2" /> Agregar categoría
             </Button>
           </div>

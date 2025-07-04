@@ -3,6 +3,7 @@
 import type React from 'react'
 import { Card, Button, Form } from 'react-bootstrap'
 import { Edit, Trash2 } from 'lucide-react'
+import { useRouter, usePathname } from 'next/navigation'
 
 interface Category {
   id: number
@@ -31,8 +32,14 @@ const CategoryCard: React.FC<CategoryCardProps> = ({
   onSaveEdit,
   onCancelEdit,
 }) => {
+  const router = useRouter()
+  const pathname = usePathname()
   return (
-    <Card className="h-100 shadow-sm">
+    <Card
+      className="h-100 shadow-sm"
+      style={{ cursor: 'pointer' }}
+      onClick={() => router.push(`${pathname}/${category.id}`)}
+    >
       <Card.Body className="d-flex flex-column">
         <div className="d-flex justify-content-between align-items-start mb-2">
           {isEditing ? (
@@ -49,6 +56,7 @@ const CategoryCard: React.FC<CategoryCardProps> = ({
                   onCancelEdit()
                 }
               }}
+              onClick={(e) => e.stopPropagation()}
             />
           ) : (
             <Card.Title className="h5 mb-1">{category.name}</Card.Title>
@@ -60,46 +68,31 @@ const CategoryCard: React.FC<CategoryCardProps> = ({
           </small>
         </div>
 
-        <div className="d-flex gap-2 mt-auto">
-          {isEditing ? (
-            <>
-              <Button
-                variant="success"
-                size="sm"
-                className="flex-fill"
-                onClick={() => onSaveEdit(category.id)}
-                disabled={!editingName.trim()}
-              >
-                Guardar
-              </Button>
-              <Button
-                variant="outline-secondary"
-                size="sm"
-                onClick={onCancelEdit}
-              >
-                Cancelar
-              </Button>
-            </>
-          ) : (
-            <>
-              <Button
-                variant="outline-primary"
-                size="sm"
-                className="flex-fill"
-                onClick={() => onEdit(category)}
-              >
-                <Edit size={16} className="me-1" />
-                Editar
-              </Button>
-              <Button
-                variant="outline-danger"
-                size="sm"
-                onClick={() => onDelete(category.id)}
-              >
-                <Trash2 size={16} />
-              </Button>
-            </>
-          )}
+        <div className="mt-auto d-flex gap-2 justify-content-end">
+          <Button
+            variant="outline-primary"
+            size="sm"
+            onClick={(e) => {
+              e.stopPropagation()
+              onEdit(category)
+            }}
+            disabled={isEditing}
+          >
+            <Edit size={16} />
+            Editar
+          </Button>
+          <Button
+            variant="outline-danger"
+            size="sm"
+            onClick={(e) => {
+              e.stopPropagation()
+              onDelete(category.id)
+            }}
+            disabled={isEditing}
+          >
+            <Trash2 size={16} />
+            Eliminar
+          </Button>
         </div>
       </Card.Body>
     </Card>

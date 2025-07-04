@@ -28,3 +28,16 @@ export async function createCategory(nombre: string) {
     data: { nombre },
   })
 }
+
+export async function updateCategory(id: number, nombre: string) {
+  return await prisma.categoria.update({
+    where: { id },
+    data: { nombre },
+  })
+}
+
+export async function deleteCategory(id: number) {
+  return await prisma.categoria.delete({
+    where: { id },
+  })
+}

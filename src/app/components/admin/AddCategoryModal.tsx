@@ -7,7 +7,11 @@ interface AddCategoryModalProps {
   onAdd: (name: string) => Promise<void>
 }
 
-const AddCategoryModal: React.FC<AddCategoryModalProps> = ({ show, onHide, onAdd }) => {
+const AddCategoryModal: React.FC<AddCategoryModalProps> = ({
+  show,
+  onHide,
+  onAdd,
+}) => {
   const [name, setName] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
@@ -23,7 +27,7 @@ const AddCategoryModal: React.FC<AddCategoryModalProps> = ({ show, onHide, onAdd
       setName('')
       setError('')
       onHide()
-    } catch (e) {
+    } catch {
       setError('Error al agregar la categoría')
     } finally {
       setLoading(false)
@@ -47,7 +51,7 @@ const AddCategoryModal: React.FC<AddCategoryModalProps> = ({ show, onHide, onAdd
           <Form.Control
             type="text"
             value={name}
-            onChange={e => setName(e.target.value)}
+            onChange={(e) => setName(e.target.value)}
             placeholder="Ej: Belleza, Peluquería, etc."
             autoFocus
             disabled={loading}
