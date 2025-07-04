@@ -6,7 +6,7 @@ import { useSession } from "next-auth/react"
 const categorias = {
   "✂️ Peluquería": [
     "Corte",
-    "Brushing o Peinado",
+    "Brushing / Peinado",
     "Planchita o Buclera",
     "Coloración",
     "Baño de crema",
@@ -17,8 +17,8 @@ const categorias = {
     "Tratamiento anti frizz"
   ],
   "👁 Pestañas y Cejas": [
-    "Colocación de pestañas clásicas (una por una)",
-    "Pestañas 2D, 3D, volumen ruso",
+    "Pestañas clásicas",
+    "Pestañas volumen (2D/3D/Ruso)",
     "Mantenimiento de extensiones",
     "Lifting de pestañas",
     "Tinte de pestañas",
@@ -30,15 +30,15 @@ const categorias = {
     "Manicura semipermanente",
     "Pedicura spa",
     "Esmaltado común o semipermanente",
-    "Uñas esculpidas en gel o acrílico",
+    "Uñas esculpidas",
     "Reforzamiento de uñas naturales",
-    "Spa de manos/pies con exfoliación y mascarilla",
+    "Spa de manos/pies",
     "Reconstrucción de uñas quebradas"
   ],
   "💆 Masajes": [
     "Masaje descontracturante",
     "Masaje relajante",
-    "Masaje localizado (cuello, espalda, piernas)",
+    "Masaje localizado",
     "Masaje con piedras calientes",
     "Drenaje linfático manual",
     "Masaje con aceites esenciales",
