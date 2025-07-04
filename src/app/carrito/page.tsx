@@ -1,5 +1,5 @@
 'use client'
-
+import { FaTrash } from 'react-icons/fa'
 import { useEffect, useState } from 'react'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
@@ -64,7 +64,7 @@ export default function CarritoPage() {
       <h1 className="text-purple fw-bold mb-4">Tu Carrito</h1>
 
       {carrito.length === 0 ? (
-        <p className="text-muted">No hay servicios en tu carrito.</p>
+        <p className="text-muted">Cargando carrito....</p>
       ) : (
         <>
           <div className="table-responsive">
@@ -92,9 +92,10 @@ export default function CarritoPage() {
                     <td>
                       <button
                         onClick={() => eliminarItem(item.servicioId)}
-                        className="btn btn-sm btn-outline-danger"
+                        className="btn-trash"
+                        title="Eliminar 1 unidad"
                       >
-                        Eliminar
+                        <FaTrash size={14} />
                       </button>
                     </td>
                   </tr>
@@ -107,6 +108,12 @@ export default function CarritoPage() {
             <h4>Total: ${total.toLocaleString('es-AR')}</h4>
             <button className="btn btn-primary mt-2">
               Finalizar reserva
+            </button>
+            <button
+              className="btn btn-purple mt-3 ms-2"
+              onClick={() => router.push('/reserva')}
+              >
+              ← Seguir comprando
             </button>
           </div>
         </>

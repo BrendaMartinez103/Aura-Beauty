@@ -75,3 +75,15 @@ body {
 .text-muted-foreground {
   color: #6c757d;
 }
+.btn-trash {
+  background-color: transparent;
+  border: none;
+  color: #c0392b;
+  cursor: pointer;
+  padding: 4px;
+  transition: color 0.2s ease;
+}
+
+.btn-trash:hover {
+  color: #e74c3c;
+}
