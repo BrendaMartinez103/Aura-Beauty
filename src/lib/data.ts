@@ -41,3 +41,49 @@ export async function deleteCategory(id: number) {
     where: { id },
   })
 }
+
+export async function createService(
+  nombre: string,
+  descripcion: string,
+  precio: number,
+  duracion: number,
+  activo: boolean,
+  categoriaId: number,
+  imageUrl?: string
+) {
+  return await prisma.servicio.create({
+    data: {
+      nombre,
+      descripcion,
+      imageUrl,
+      duracion,
+      precio,
+      activo,
+      categoriaId,
+    },
+  })
+}
+
+export async function updateService(
+  id: number,
+  data: Partial<{
+    nombre: string
+    descripcion: string
+    precio: number
+    duracion: number
+    activo: boolean
+    categoriaId: number
+    imageUrl?: string
+  }>
+) {
+  return await prisma.servicio.update({
+    where: { id },
+    data,
+  })
+}
+
+export async function deleteService(id: number) {
+  return await prisma.servicio.delete({
+    where: { id },
+  })
+}
