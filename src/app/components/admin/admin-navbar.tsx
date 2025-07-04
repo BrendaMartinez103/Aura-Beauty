@@ -3,22 +3,23 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { Menu } from 'lucide-react'
-import { useSession, signOut } from 'next-auth/react'
+import { signOut } from 'next-auth/react'
+import { Session } from 'next-auth'
 
 interface OffcanvasNavbarProps {
   brandName?: string
   brandHref?: string
   navigationItems?: { label: string; href: string }[]
+  session?: Session
 }
 
 export default function AdminNavbar({
   brandName = 'Aura Beauty',
   brandHref = '/',
   navigationItems = [{ label: 'Inicio', href: '/' }],
+  session = undefined,
 }: OffcanvasNavbarProps) {
   const [isOpen, setIsOpen] = useState(false)
-
-  const { data: session } = useSession()
 
   const toggleOffcanvas = () => setIsOpen(!isOpen)
   const closeOffcanvas = () => setIsOpen(false)

@@ -1,11 +1,14 @@
 import type React from 'react'
 import AdminNavbar from '../components/admin/admin-navbar'
+import { auth } from '@/lib/auth'
 
-export default function AdminLayout({
+export default async function AdminLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const session = await auth()
+
   const navigationItems = [
     { label: 'Inicio', href: '/admin' },
     { label: 'Servicios', href: '/admin/servicios' },
@@ -16,7 +19,10 @@ export default function AdminLayout({
 
   return (
     <>
-      <AdminNavbar navigationItems={navigationItems} />
+      <AdminNavbar
+        navigationItems={navigationItems}
+        session={session ?? undefined}
+      />
       <main className="container-fluid">{children}</main>
     </>
   )
