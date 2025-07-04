@@ -14,13 +14,13 @@ import SearchBar from './SearchBar'
 import InfoBar from './InfoBar'
 import CategoryGrid from './CategoryGrid'
 import AddCategoryModal from './AddCategoryModal'
-import { type Category } from '@/app/components/admin/CategoryCard'
+import { type CategoryCardData } from '@/types'
 import { Plus } from 'lucide-react'
 import ConfirmModal from './ConfirmModal'
 
 export default function CategorySearch() {
   const [searchTerm, setSearchTerm] = useState('')
-  const [categories, setCategories] = useState<Category[]>([])
+  const [categories, setCategories] = useState<CategoryCardData[]>([])
   const [editingId, setEditingId] = useState<number | null>(null)
   const [editingName, setEditingName] = useState('')
   const [loading, setLoading] = useState(true)
@@ -101,7 +101,7 @@ export default function CategorySearch() {
     setCategoryToDelete(null)
   }
 
-  const handleEdit = (category: Category) => {
+  const handleEdit = (category: CategoryCardData) => {
     setEditingId(category.id)
     setEditingName(category.name)
   }

@@ -12,3 +12,8 @@ export interface Servicio {
   duracion: number
   categoria: Categoria
 }
+export interface CategoryCardData {
+  id: number
+  name: string
+  serviceCount: number
+}
