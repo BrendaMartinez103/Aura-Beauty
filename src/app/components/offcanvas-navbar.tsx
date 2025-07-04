@@ -34,7 +34,6 @@ export default function OffcanvasNavbar({
     { label: 'Servicios', href: '/servicios' },
     { label: 'Reserva Online', href: '/reserva' },
     { label: 'Nuestros Clientes', href: '/nuestros-clientes' },
-    { label: 'Gift Card', href: '/gift-card' },
   ]
 
   const handleSubmit = (e: React.FormEvent) => {
