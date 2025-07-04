@@ -1,4 +1,4 @@
-import ServiceCategoriesSearch from '@/app/components/admin/ServiceCategoriesSearch'
+import ServiceCategoriesSearch from '@/app/components/admin/CategorySearchContainer'
 
 export default function AdminServiciosPage() {
   return (

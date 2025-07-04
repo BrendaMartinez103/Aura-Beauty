@@ -4,11 +4,11 @@ import ServiceGrid from './ServiceGrid'
 import { Servicio } from '@prisma/client'
 import SearchBar from './SearchBar'
 
-interface ServiciosPorCategoriaProps {
+interface ServiceSearchContainerProps {
   servicios: Servicio[]
 }
 
-const ServiciosPorCategoria: React.FC<ServiciosPorCategoriaProps> = ({
+const ServiceSearchContainer: React.FC<ServiceSearchContainerProps> = ({
   servicios,
 }) => {
   const [search, setSearch] = useState('')
@@ -38,4 +38,4 @@ const ServiciosPorCategoria: React.FC<ServiciosPorCategoriaProps> = ({
   )
 }
 
-export default ServiciosPorCategoria
+export default ServiceSearchContainer

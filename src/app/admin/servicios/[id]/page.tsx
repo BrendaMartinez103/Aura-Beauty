@@ -1,5 +1,5 @@
 import { getServiceByCategoryId, getAllCategories } from '@/lib/data'
-import ServiciosPorCategoria from '@/app/components/admin/ServiciosPorCategoria'
+import ServiceSearchContainer from '@/app/components/admin/ServiceSearchContainer'
 
 export default async function ServiciosPorCategoriaPage({
   params,
@@ -17,7 +17,7 @@ export default async function ServiciosPorCategoriaPage({
   return (
     <div className="container py-4">
       <h2>Servicios de la categoría: {category?.nombre}</h2>
-      <ServiciosPorCategoria servicios={servicios} />
+      <ServiceSearchContainer servicios={servicios} />
     </div>
   )
 }
