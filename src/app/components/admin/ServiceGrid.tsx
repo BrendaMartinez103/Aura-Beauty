@@ -1,16 +1,31 @@
 import React from 'react'
-import { Card, Row, Col } from 'react-bootstrap'
+import { Row, Col } from 'react-bootstrap'
+import AdminCard from './AdminCard'
+import { ServiceCardData } from '@/types'
 
-interface Servicio {
-  id: number
-  nombre: string
-  descripcion: string
-  imageUrl?: string
-  precio: number
-  duracion: number
+interface ServiceGridProps {
+  servicios: ServiceCardData[]
+  editingId?: number | null
+  editingName?: string
+  onEdit?: (servicio: ServiceCardData) => void
+  onDelete?: (id: number) => void
+  onEditingNameChange?: (name: string) => void
+  onSaveEdit?: (id: number) => void
+  onCancelEdit?: () => void
+  onCardClick?: (id: number) => void
 }
 
-const ServiceGrid: React.FC<{ servicios: Servicio[] }> = ({ servicios }) => {
+const ServiceGrid: React.FC<ServiceGridProps> = ({
+  servicios,
+  editingId = null,
+  editingName = '',
+  onEdit = () => {},
+  onDelete = () => {},
+  onEditingNameChange = () => {},
+  onSaveEdit = () => {},
+  onCancelEdit = () => {},
+  onCardClick,
+}) => {
   if (servicios.length === 0) {
     return <p>No hay servicios para mostrar.</p>
   }
@@ -18,25 +33,24 @@ const ServiceGrid: React.FC<{ servicios: Servicio[] }> = ({ servicios }) => {
     <Row>
       {servicios.map((servicio) => (
         <Col key={servicio.id} xs={12} md={6} lg={4} className="mb-4">
-          <Card>
-            {servicio.imageUrl && (
-              <Card.Img
-                variant="top"
-                src={servicio.imageUrl}
-                alt={servicio.nombre}
-              />
-            )}
-            <Card.Body>
-              <Card.Title>{servicio.nombre}</Card.Title>
-              <Card.Text>{servicio.descripcion}</Card.Text>
-              <Card.Text>
-                <strong>Precio:</strong> ${servicio.precio}
-              </Card.Text>
-              <Card.Text>
-                <strong>Duración:</strong> {servicio.duracion} min
-              </Card.Text>
-            </Card.Body>
-          </Card>
+          <AdminCard
+            id={servicio.id}
+            name={servicio.nombre}
+            description={servicio.descripcion}
+            imageUrl={servicio.imageUrl}
+            badgeText={servicio.activo ? 'Activo' : 'Inactivo'}
+            badgeVariant={servicio.activo ? 'success' : 'secondary'}
+            countLabel="min"
+            countValue={servicio.duracion}
+            isEditing={editingId === servicio.id}
+            editingName={editingName}
+            onEdit={() => onEdit}
+            onDelete={onDelete}
+            onEditingNameChange={onEditingNameChange}
+            onSaveEdit={onSaveEdit}
+            onCancelEdit={onCancelEdit}
+            onCardClick={onCardClick}
+          />
         </Col>
       ))}
     </Row>
