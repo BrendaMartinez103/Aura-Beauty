@@ -1,6 +1,6 @@
-import PedidosTable from '@/components/admin/PedidosTable'
+import PedidosTable from '@/app/components/admin/PedidosTable'
 import { getAllPedidos } from '@/lib/data'
-import type { ServicioPedido } from '@/components/admin/PedidoDetalleModal'
+import type { ServicioPedido } from '@/app/components/admin/PedidoDetalleModal'
 
 interface Pedido {
   id: number
@@ -32,7 +32,10 @@ export default async function PedidosPage() {
   const pedidos: Pedido[] = compras.map((compra) => ({
     id: compra.id,
     usuario: compra.cliente?.nombre || 'Sin nombre',
-    fecha: compra.fechaHora instanceof Date ? compra.fechaHora.toLocaleString('es-AR') : String(compra.fechaHora),
+    fecha:
+      compra.fechaHora instanceof Date
+        ? compra.fechaHora.toLocaleString('es-AR')
+        : String(compra.fechaHora),
     nroTransaccion: compra.mp_transaction_id,
     total: compra.total,
     servicios: compra.Detalle.map((d) => ({
