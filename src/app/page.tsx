@@ -2,12 +2,31 @@
 
 import Image from "next/image"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
+import { ShoppingCart } from "lucide-react"
 import OffcanvasNavbar from "./components/offcanvas-navbar"
 
 export default function Home() {
+  const router = useRouter()
+
+  const handleVerCarrito = () => {
+    router.push('/carrito')
+  }
+
   return (
     <main className="min-vh-100" style={{ backgroundColor: "var(--background)" }}>
       <OffcanvasNavbar brandName="Aura Beauty" brandHref="/" />
+
+      {/* Botón de carrito */}
+      <div className="container mt-3 text-end">
+        <button
+          className="btn btn-outline-primary d-inline-flex align-items-center gap-2"
+          onClick={handleVerCarrito}
+          title="Ir al carrito"
+        >
+          <ShoppingCart size={18} /> carrito
+        </button>
+      </div>
 
       {/* Imagen principal */}
       <div className="container my-4 d-flex justify-content-center">
