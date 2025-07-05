@@ -1,5 +1,6 @@
 'use client'
-import { FaTrash } from 'react-icons/fa'
+
+import { FaTrash, FaEdit } from 'react-icons/fa'
 import { useEffect, useState } from 'react'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
@@ -23,26 +24,14 @@ export default function CarritoPage() {
   }, [status, router])
 
   const fetchCarrito = async () => {
-  try {
-  const res = await fetch('/api/carrito')
-
-  if (!res.ok) {
-    console.error('Error al obtener carrito:', res.status)
-    return
-  }
-
-  const text = await res.text()
-  if (!text) {
-    console.warn('Respuesta vacía')
-    return
-  }
-
-  const data = JSON.parse(text)
-  setCarrito(data)
-} catch (error) {
-  console.error('Error cargando carrito:', error)
-}
-
+    try {
+      const res = await fetch('/api/carrito')
+      if (!res.ok) return console.error('Error al obtener carrito:', res.status)
+      const data = await res.json()
+      setCarrito(data)
+    } catch (error) {
+      console.error('Error cargando carrito:', error)
+    }
   }
 
   const eliminarItem = async (servicioId: number) => {
@@ -64,7 +53,7 @@ export default function CarritoPage() {
       <h1 className="text-purple fw-bold mb-4">Tu Carrito</h1>
 
       {carrito.length === 0 ? (
-        <p className="text-muted">Cargando carrito....</p>
+        <p className="text-muted">Cargando carrito...</p>
       ) : (
         <>
           <div className="table-responsive">
@@ -81,21 +70,26 @@ export default function CarritoPage() {
               <tbody>
                 {carrito.map((item) => (
                   <tr key={item.servicioId}>
-                    <td>
-                      <div className="d-flex align-items-center gap-3">
-                        {item.nombre}
-                      </div>
-                    </td>
+                    <td>{item.nombre}</td>
                     <td>${item.precio}</td>
                     <td>{item.cantidad}</td>
                     <td>${item.precio * item.cantidad}</td>
-                    <td>
+                    <td className="d-flex gap-2">
                       <button
                         onClick={() => eliminarItem(item.servicioId)}
                         className="btn-trash"
                         title="Eliminar 1 unidad"
                       >
                         <FaTrash size={14} />
+                      </button>
+                      <button
+                        className="btn btn-sm btn-outline-secondary"
+                        title="Editar cantidad"
+                        onClick={() =>
+                          router.push(`/reserva/${encodeURIComponent(item.nombre)}`)
+                        }
+                      >
+                        <FaEdit size={14} />
                       </button>
                     </td>
                   </tr>
@@ -106,13 +100,11 @@ export default function CarritoPage() {
 
           <div className="text-end mt-4">
             <h4>Total: ${total.toLocaleString('es-AR')}</h4>
-            <button className="btn btn-primary mt-2">
-              Finalizar compra
-            </button>
+            <button className="btn btn-primary mt-2">Finalizar compra</button>
             <button
               className="btn btn-purple mt-3 ms-2"
               onClick={() => router.push('/reserva')}
-              >
+            >
               ← Seguir comprando
             </button>
           </div>
