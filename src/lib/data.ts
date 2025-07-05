@@ -108,4 +108,17 @@ export async function getPedidoById(id: number) {
   })
 }
 
+export async function getAllClientes() {
+  return await prisma.cliente.findMany({
+    orderBy: { creadoEn: 'desc' },
+  })
+}
 
+export async function deleteCliente(id: number) {
+  try {
+    await prisma.cliente.delete({ where: { id } })
+    return true
+  } catch {
+    return false
+  }
+}
