@@ -1,41 +1,36 @@
-// import axios from 'axios';
+'use server'
+import { MercadoPagoConfig, Preference } from 'mercadopago'
+import { PreferenceResponse } from 'mercadopago/dist/clients/preference/commonTypes'
 
-// const MERCADOPAGO_API_URL = 'https://api.mercadopago.com/v1';
-// const ACCESS_TOKEN = process.env.MERCADOPAGO_ACCESS_TOKEN; // Ensure to set this in your environment variables
+const ACCESS_TOKEN = process.env.MERCADOPAGO_ACCESS_TOKEN || 'token' // Ensure to set this in your environment variables
+const BACK_URL = process.env.MERCADOPAGO_BACK_URL || 'http://localhost:3000'
 
-// export const createPreference = async (items) => {
-//     try {
-//         const response = await axios.post(
-//             `${MERCADOPAGO_API_URL}/checkout/preferences`,
-//             {
-//                 items,
-//             },
-//             {
-//                 headers: {
-//                     Authorization: `Bearer ${ACCESS_TOKEN}`,
-//                 },
-//             }
-//         );
-//         return response.data;
-//     } catch (error) {
-//         console.error('Error creating Mercado Pago preference:', error);
-//         throw error;
-//     }
-// };
+export const initializeMercadoPago = async () => {
+  return new MercadoPagoConfig({ accessToken: ACCESS_TOKEN })
+}
 
-// export const getPaymentStatus = async (paymentId) => {
-//     try {
-//         const response = await axios.get(
-//             `${MERCADOPAGO_API_URL}/payments/${paymentId}`,
-//             {
-//                 headers: {
-//                     Authorization: `Bearer ${ACCESS_TOKEN}`,
-//                 },
-//             }
-//         );
-//         return response.data;
-//     } catch (error) {
-//         console.error('Error fetching payment status:', error);
-//         throw error;
-//     }
-// };
+export const createPreference = async (
+  client: MercadoPagoConfig,
+  items: { id: string; title: string; quantity: number; unit_price: number }[]
+): Promise<PreferenceResponse | null> => {
+  const preference = new Preference(client)
+  try {
+    const response = await preference.create({
+      body: {
+        items: items,
+        back_urls: {
+          success: `${BACK_URL}/success`,
+          failure: `${BACK_URL}/failure`,
+        },
+        auto_return: 'approved',
+      },
+    })
+    console.log('Preference created successfully:', response)
+    return response
+  } catch (error) {
+    console.log(error)
+    return null
+  }
+}
+
+export const getPaymentStatus = async () => {}

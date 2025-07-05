@@ -43,6 +43,31 @@ export default function CarritoPage() {
     fetchCarrito()
   }
 
+  const handleFinalizarCompra = async () => {
+    try {
+      const items = carrito.map((item) => ({
+        id: item.servicioId.toString(),
+        title: item.nombre,
+        quantity: item.cantidad,
+        unit_price: item.precio,
+      }))
+      const res = await fetch('/api/pago', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ items }),
+      })
+      const data = await res.json()
+      if (data.init_point) {
+        router.push(data.init_point)
+      } else {
+        alert(data.error || 'No se pudo obtener el enlace de pago')
+      }
+    } catch (error) {
+      alert('Error al procesar el pago')
+      console.error(error)
+    }
+  }
+
   const total = carrito.reduce(
     (acc, item) => acc + item.precio * item.cantidad,
     0
@@ -86,7 +111,9 @@ export default function CarritoPage() {
                         className="btn btn-sm btn-outline-secondary"
                         title="Editar cantidad"
                         onClick={() =>
-                          router.push(`/reserva/${encodeURIComponent(item.nombre)}`)
+                          router.push(
+                            `/reserva/${encodeURIComponent(item.nombre)}`
+                          )
                         }
                       >
                         <FaEdit size={14} />
@@ -100,7 +127,12 @@ export default function CarritoPage() {
 
           <div className="text-end mt-4">
             <h4>Total: ${total.toLocaleString('es-AR')}</h4>
-            <button className="btn btn-primary mt-2">Finalizar compra</button>
+            <button
+              className="btn btn-primary mt-2"
+              onClick={handleFinalizarCompra}
+            >
+              Finalizar compra
+            </button>
             <button
               className="btn btn-purple mt-3 ms-2"
               onClick={() => router.push('/reserva')}

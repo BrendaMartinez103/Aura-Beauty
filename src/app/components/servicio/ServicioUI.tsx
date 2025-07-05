@@ -1,8 +1,8 @@
 'use client'
 
-import { Servicio } from "@/types"
-import { useState } from "react"
-import { useRouter } from "next/navigation"
+import { Servicio } from '@/types'
+import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 
 export function ServicioUI({ servicio }: { servicio: Servicio }) {
   const [cantidad, setCantidad] = useState(1)
@@ -44,9 +44,15 @@ export function ServicioUI({ servicio }: { servicio: Servicio }) {
         <h1 className="text-purple fw-bold mb-4">{servicio.nombre}</h1>
         <p className="text-muted">{servicio.descripcion}</p>
 
-        <p><strong>Precio:</strong> ${servicio.precio}</p>
-        <p><strong>Duración:</strong> {servicio.duracion} minutos</p>
-        <p><strong>Categoría:</strong> {servicio.categoria.nombre}</p>
+        <p>
+          <strong>Precio:</strong> ${servicio.precio}
+        </p>
+        <p>
+          <strong>Duración:</strong> {servicio.duracion} minutos
+        </p>
+        <p>
+          <strong>Categoría:</strong> {servicio.categoria.nombre}
+        </p>
 
         <div className="mb-4 mt-4">
           <label className="form-label fw-semibold">Cantidad</label>
@@ -55,12 +61,15 @@ export function ServicioUI({ servicio }: { servicio: Servicio }) {
             min={1}
             className="form-control w-25"
             value={cantidad}
-            onChange={(e) => setCantidad(parseInt(e.target.value))}
+            onChange={(e) => setCantidad(Number(e.target.value))}
           />
         </div>
 
         <div className="d-flex gap-3 mt-2">
-          <button className="btn btn-outline-primary" onClick={handleAgregarCarrito}>
+          <button
+            className="btn btn-outline-primary"
+            onClick={handleAgregarCarrito}
+          >
             Agregar al carrito
           </button>
           <button className="btn btn-primary" onClick={handleComprar}>

@@ -5,7 +5,11 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { ShoppingCart } from 'lucide-react'
 
-export default function ServicioCardInteractiva({ servicio }: { servicio: Servicio }) {
+export default function ServicioCardInteractiva({
+  servicio,
+}: {
+  servicio: Servicio
+}) {
   const [cantidad, setCantidad] = useState(1)
   const router = useRouter()
 
@@ -51,7 +55,7 @@ export default function ServicioCardInteractiva({ servicio }: { servicio: Servic
             min={1}
             className="form-control w-50"
             value={cantidad}
-            onChange={(e) => setCantidad(parseInt(e.target.value))}
+            onChange={(e) => setCantidad(Number(e.target.value))}
           />
         </div>
 
