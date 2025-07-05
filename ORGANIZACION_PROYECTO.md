@@ -8,7 +8,7 @@ Este documento contiene la organización inicial del proyecto web de reservas de
 
 - [ ] Definir roles: usuario final vs. administrador
 - [ ] Crear mockups / bocetos de la interfaz
-- [X] Esquematizar base de datos (modelos, relaciones)
+- [x] Esquematizar base de datos (modelos, relaciones)
 - [ ] Definir servicios de belleza y estructura de reservas
 - [ ] Revisión de requisitos y funcionalidades
 - [ ] Definir flujo de usuario: desde la selección del servicio hasta la confirmación del turno
@@ -17,14 +17,14 @@ Este documento contiene la organización inicial del proyecto web de reservas de
 
 ## 🎨 Frontend
 
-- [X] Página principal con presentación de servicios
-- [X] Página de conocenos
-- [X] Página de nuestros espacios
-- [X] Página de servicios
-- [X] Página de nuestros clientes
-- [X] Página pre gift card
+- [x] Página principal con presentación de servicios
+- [x] Página de conocenos
+- [x] Página de nuestros espacios
+- [x] Página de servicios
+- [x] Página de nuestros clientes
+- [x] Página pre gift card
 - [ ] Página gift card
-- [X] Página pre reserva y seleccion de servicio
+- [x] Página pre reserva y seleccion de servicio
 - [x] Página reservar turnos
 - [ ] Página de confirmación y checkout
 - [ ] notificacion
@@ -36,13 +36,13 @@ Este documento contiene la organización inicial del proyecto web de reservas de
 
 ## ⚙️ Backend y Base de Datos
 
-- [X] Crear esquemas prisma y migraciones de base de datos
-- [X] Configurar conexión a la base de datos (PostgreSQL)
-- [X] Configurar ORM (Prisma)
-- [X] Crear modelos de datos: Usuario, Servicio, Reserva
+- [x] Crear esquemas prisma y migraciones de base de datos
+- [x] Configurar conexión a la base de datos (PostgreSQL)
+- [x] Configurar ORM (Prisma)
+- [x] Crear modelos de datos: Usuario, Servicio, Reserva
 - [ ] Endpoints API REST para CRUD de servicios
 - [ ] Endpoints API REST para reservas de turnos
-- [X] Endpoints para autenticación (login, logout, registro)
+- [x] Endpoints para autenticación (login, logout, registro)
 - [ ] Validación de datos en backend
 - [ ] Manejo de errores 404 y generales
 
@@ -50,9 +50,9 @@ Este documento contiene la organización inicial del proyecto web de reservas de
 
 ## 🔐 Autenticación y Roles
 
-- [X] Configurar NextAuth
-- [X] Implementar login/logout
-- [ ] Diferenciar vistas entre usuario y administrador
+- [x] Configurar NextAuth
+- [x] Implementar login/logout
+- [x] Diferenciar vistas entre usuario y administrador
 - [ ] Proteger rutas de administrador
 
 ---
@@ -67,9 +67,9 @@ Este documento contiene la organización inicial del proyecto web de reservas de
 
 ## 🧑‍💼 Funcionalidades del Administrador
 
-- [ ] Panel para ver turnos reservados
-- [ ] Altas,bajas y modificaciones de servicios
-- [ ] Vista resumen de turnos o ingresos
+- [x] Panel para ver pedidos realizados
+- [x] Altas,bajas y modificaciones de servicios
+- [x] Vista resumen de turnos o ingresos
 
 ---
 
