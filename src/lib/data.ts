@@ -87,3 +87,25 @@ export async function deleteService(id: number) {
     where: { id },
   })
 }
+
+export async function getAllPedidos() {
+  return await prisma.compra.findMany({
+    include: {
+      cliente: true,
+      Detalle: true,
+    },
+    orderBy: { fechaHora: 'desc' },
+  })
+}
+
+export async function getPedidoById(id: number) {
+  return await prisma.compra.findUnique({
+    where: { id },
+    include: {
+      cliente: true,
+      Detalle: true,
+    },
+  })
+}
+
+
