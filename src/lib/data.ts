@@ -122,3 +122,74 @@ export async function deleteCliente(id: number) {
     return false
   }
 }
+
+// Cantidad total de pedidos
+export async function getPedidosTotalCount() {
+  return await prisma.compra.count()
+}
+
+// Cantidad de pedidos en los últimos 7 días
+export async function getPedidosCountLastWeek() {
+  const hace7dias = new Date()
+  hace7dias.setDate(hace7dias.getDate() - 7)
+  return await prisma.compra.count({
+    where: {
+      fechaHora: {
+        gte: hace7dias,
+      },
+    },
+  })
+}
+
+// Cantidad de pedidos por día (últimos 30 días)
+export async function getPedidosGroupedByDate() {
+  const hace30dias = new Date()
+  hace30dias.setDate(hace30dias.getDate() - 30)
+  const pedidos = await prisma.compra.findMany({
+    where: {
+      fechaHora: {
+        gte: hace30dias,
+      },
+    },
+    select: {
+      fechaHora: true,
+    },
+  })
+  // Agrupa por fecha (YYYY-MM-DD)
+  const conteo: Record<string, number> = {}
+  pedidos.forEach((p) => {
+    const fecha = p.fechaHora.toISOString().slice(0, 10)
+    conteo[fecha] = (conteo[fecha] || 0) + 1
+  })
+  return conteo
+}
+
+// Cantidad de pedidos por categoría de servicio (para gráfico de torta)
+export async function getPedidosGroupedByServiceCategory() {
+  // Une Compra -> Detalle -> categoria
+  const detalles = await prisma.detalle.findMany({
+    select: {
+      categoria: true,
+      cantidad: true,
+    },
+  })
+  const conteo: Record<string, number> = {}
+  detalles.forEach((d) => {
+    conteo[d.categoria] = (conteo[d.categoria] || 0) + d.cantidad
+  })
+  return conteo
+}
+
+// Cantidad de servicios por categoría (para gráfico de torta)
+export async function getServiciosCountByCategory() {
+  const categorias = await prisma.categoria.findMany({
+    include: {
+      Servicio: true,
+    },
+  })
+  const conteo: Record<string, number> = {}
+  categorias.forEach((cat) => {
+    conteo[cat.nombre] = cat.Servicio.length
+  })
+  return conteo
+}

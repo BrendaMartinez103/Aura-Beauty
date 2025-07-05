@@ -1,4 +1,17 @@
-export default function adminPage() {
+import { getPedidosGroupedByServiceCategory } from '@/lib/data'
+import ServiciosPieChart from '../components/admin/ServiciosPieChart'
+import AdminResumen from '../components/admin/AdminResumen'
+
+export default async function adminPage() {
+  const comprasPorCategoria = await getPedidosGroupedByServiceCategory()
+  const hayDatos = Object.keys(comprasPorCategoria).length > 0
+  const chartData = hayDatos
+    ? {
+        labels: Object.keys(comprasPorCategoria),
+        values: Object.values(comprasPorCategoria),
+      }
+    : { labels: [], values: [] }
+
   return (
     <div className="row">
       <main className="col-md-9 ms-sm-auto col-lg-10 px-md-4">
@@ -6,14 +19,11 @@ export default function adminPage() {
           <h1>Actividad Reciente</h1>
         </div>
         <div>
-          <h2>Pedidos de la ultima semana</h2>
-          <p>X nuevos pedidos</p>
-          <p>Y pedidos totales</p>
-          <h2>Nuevos usuarios</h2>
-          <p>X nuevos usuarios</p>
-          <p>Y usuarios totales</p>
-          <h2>Servicios solicitados</h2>
-          <p>Grafico de torta con las categorias</p>
+          <AdminResumen />
+          {!hayDatos && (
+            <div className="alert alert-info my-3">No hay datos suficientes</div>
+          )}
+          <ServiciosPieChart data={chartData} />
         </div>
       </main>
     </div>
