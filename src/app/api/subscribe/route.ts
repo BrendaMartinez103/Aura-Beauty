@@ -1,19 +1,17 @@
-
-import { NextResponse } from 'next/server'
-import { auth } from '@/lib/authOptions'
 import { prisma } from '@/db/client'
+import { NextResponse } from 'next/server'
 
 export async function POST(req: Request) {
-  const session = await auth()
-  if (!session || !session.user?.email) {
-    return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
+  const sub = await req.json()
+
+  if (!sub || !sub.endpoint) {
+    return NextResponse.json({ error: 'Suscripción inválida' }, { status: 400 })
   }
 
-  const body = await req.json()
-
-  await prisma.cliente.update({
-    where: { email: session.user.email },
-    data: { pushSub: body } // asumimos que agregaste un campo tipo Json al modelo Cliente
+  await prisma.suscripcionAnonima.create({
+    data: {
+      sub
+    }
   })
 
   return NextResponse.json({ ok: true })

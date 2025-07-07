@@ -19,30 +19,26 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   useEffect(() => {
-    if (typeof window === 'undefined') return
-
     if ('serviceWorker' in navigator && 'PushManager' in window) {
       navigator.serviceWorker.register('/sw.js').then(async (reg) => {
         const permission = await Notification.requestPermission()
-
         if (permission === 'granted') {
-          const subscription = await reg.pushManager.subscribe({
+          const sub = await reg.pushManager.subscribe({
             userVisibleOnly: true,
             applicationServerKey: process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY
               ? Uint8Array.from(atob(process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY), c => c.charCodeAt(0))
-              : undefined,
+              : undefined
           })
 
-          await fetch('/api/subscribe', {
+          await fetch('/api/subscribe-anon', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(subscription),
+            body: JSON.stringify(sub)
           })
         }
-      }).catch(console.error)
+      })
     }
   }, [])
-
   return (
     <html lang="es">
       <body>
