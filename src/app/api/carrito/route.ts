@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/db/client'
-import { auth } from '@/lib/authOptions'
+import { auth } from '@/lib/auth'
 
 export async function POST(req: NextRequest) {
   const session = await auth()
@@ -14,10 +14,13 @@ export async function POST(req: NextRequest) {
   }
 
   const cliente = await prisma.cliente.findUnique({
-    where: { email: session.user.email }
+    where: { email: session.user.email },
   })
   if (!cliente) {
-    return NextResponse.json({ error: 'Cliente no encontrado' }, { status: 404 })
+    return NextResponse.json(
+      { error: 'Cliente no encontrado' },
+      { status: 404 }
+    )
   }
 
   const ahora = new Date()
@@ -28,8 +31,8 @@ export async function POST(req: NextRequest) {
       servicioId,
     },
     orderBy: {
-      fechaHora: 'desc'
-    }
+      fechaHora: 'desc',
+    },
   })
 
   if (existente) {
@@ -38,12 +41,12 @@ export async function POST(req: NextRequest) {
         clienteId_servicioId_fechaHora: {
           clienteId: cliente.id,
           servicioId,
-          fechaHora: existente.fechaHora
-        }
+          fechaHora: existente.fechaHora,
+        },
       },
       data: {
-        cantidad: existente.cantidad + cantidad
-      }
+        cantidad: existente.cantidad + cantidad,
+      },
     })
   } else {
     await prisma.carrito.create({
@@ -51,8 +54,8 @@ export async function POST(req: NextRequest) {
         clienteId: cliente.id,
         servicioId,
         cantidad,
-        fechaHora: ahora
-      }
+        fechaHora: ahora,
+      },
     })
   }
 
@@ -72,16 +75,19 @@ export async function GET() {
         include: {
           servicio: {
             include: {
-              categoria: true
-            }
-          }
-        }
-      }
-    }
+              categoria: true,
+            },
+          },
+        },
+      },
+    },
   })
 
   if (!cliente) {
-    return NextResponse.json({ error: 'Cliente no encontrado' }, { status: 404 })
+    return NextResponse.json(
+      { error: 'Cliente no encontrado' },
+      { status: 404 }
+    )
   }
 
   const items = cliente.Carritos.map((item) => ({
@@ -111,14 +117,17 @@ export async function DELETE(req: NextRequest) {
   })
 
   if (!cliente) {
-    return NextResponse.json({ error: 'Cliente no encontrado' }, { status: 404 })
+    return NextResponse.json(
+      { error: 'Cliente no encontrado' },
+      { status: 404 }
+    )
   }
 
   await prisma.carrito.deleteMany({
     where: {
       clienteId: cliente.id,
       servicioId,
-    }
+    },
   })
 
   return NextResponse.json({ ok: true })
@@ -139,7 +148,10 @@ export async function PATCH(req: NextRequest) {
   })
 
   if (!cliente) {
-    return NextResponse.json({ error: 'Cliente no encontrado' }, { status: 404 })
+    return NextResponse.json(
+      { error: 'Cliente no encontrado' },
+      { status: 404 }
+    )
   }
 
   const existente = await prisma.carrito.findFirst({
@@ -148,12 +160,15 @@ export async function PATCH(req: NextRequest) {
       servicioId,
     },
     orderBy: {
-      fechaHora: 'desc'
-    }
+      fechaHora: 'desc',
+    },
   })
 
   if (!existente) {
-    return NextResponse.json({ error: 'Elemento no encontrado' }, { status: 404 })
+    return NextResponse.json(
+      { error: 'Elemento no encontrado' },
+      { status: 404 }
+    )
   }
 
   if (cantidad <= 0) {
@@ -164,8 +179,8 @@ export async function PATCH(req: NextRequest) {
           clienteId: cliente.id,
           servicioId,
           fechaHora: existente.fechaHora,
-        }
-      }
+        },
+      },
     })
   } else {
     // Si es válida, actualizamos
@@ -175,11 +190,11 @@ export async function PATCH(req: NextRequest) {
           clienteId: cliente.id,
           servicioId,
           fechaHora: existente.fechaHora,
-        }
+        },
       },
       data: {
         cantidad: cantidad,
-      }
+      },
     })
   }
 
