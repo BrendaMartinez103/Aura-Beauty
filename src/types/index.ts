@@ -4,9 +4,8 @@ export interface Categoria {
 }
 
 export interface Servicio {
-  id: number  
-  nombre: string
   id: number
+  nombre: string
   descripcion: string
   imageUrl?: string
   precio: number

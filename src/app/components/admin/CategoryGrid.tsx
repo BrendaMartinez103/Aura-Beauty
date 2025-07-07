@@ -2,7 +2,7 @@ import React from 'react'
 import { Row, Col, Card, Spinner } from 'react-bootstrap'
 import { Search } from 'lucide-react'
 import AdminCard from './AdminCard'
-import { Category } from '@/types'
+import { CategoryCardData as Category } from '@/types'
 
 interface CategoryGridProps {
   categories: Category[]

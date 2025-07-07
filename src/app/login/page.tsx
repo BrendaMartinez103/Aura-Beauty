@@ -1,11 +1,11 @@
 'use client'
 
-import React from 'react'
+import React, { Suspense } from 'react'
 import { useActionState } from 'react'
 import { authenticate } from '@/lib/actions'
 import { useSearchParams } from 'next/navigation'
 
-export default function LoginForm() {
+function LoginFormContent() {
   const searchParams = useSearchParams()
   const callbackUrl = searchParams.get('callbackUrl') || '/'
   const [errorMessage, formAction, isPending] = useActionState(
@@ -101,5 +101,13 @@ export default function LoginForm() {
         </div>
       </form>
     </div>
+  )
+}
+
+export default function LoginForm() {
+  return (
+    <Suspense fallback={<div>Cargando...</div>}>
+      <LoginFormContent />
+    </Suspense>
   )
 }
