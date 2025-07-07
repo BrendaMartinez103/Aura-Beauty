@@ -1,6 +1,6 @@
 'use client'
 
-import { FaTrash, FaEdit } from 'react-icons/fa'
+import { FaTrash } from 'react-icons/fa'
 import { useEffect, useState } from 'react'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
@@ -9,7 +9,7 @@ interface ItemCarrito {
   servicioId: number
   nombre: string
   precio: number
-  cantidad: number
+  cantidad: number | string
   imageUrl: string
 }
 
@@ -34,44 +34,38 @@ export default function CarritoPage() {
     }
   }
 
-  const eliminarItem = async (servicioId: number) => {
+  const eliminarServicio = async (servicioId: number) => {
     await fetch(`/api/carrito`, {
-      method: 'PATCH',
+      method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ servicioId, cantidad: -1 }),
+      body: JSON.stringify({ servicioId }),
     })
     fetchCarrito()
   }
 
-  const handleFinalizarCompra = async () => {
-    try {
-      const items = carrito.map((item) => ({
-        id: item.servicioId.toString(),
-        title: item.nombre,
-        quantity: item.cantidad,
-        unit_price: item.precio,
-      }))
-      const res = await fetch('/api/pago', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ items }),
-      })
-      const data = await res.json()
-      if (data.init_point) {
-        router.push(data.init_point)
-      } else {
-        alert(data.error || 'No se pudo obtener el enlace de pago')
-      }
-    } catch (error) {
-      alert('Error al procesar el pago')
-      console.error(error)
-    }
+  const actualizarCantidad = async (servicioId: number, cantidad: number) => {
+    await fetch(`/api/carrito`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ servicioId, cantidad }),
+    })
+    fetchCarrito()
   }
 
-  const total = carrito.reduce(
-    (acc, item) => acc + item.precio * item.cantidad,
-    0
-  )
+  const handleInputChange = (servicioId: number, value: string) => {
+    setCarrito((prev) =>
+      prev.map((item) =>
+        item.servicioId === servicioId
+          ? { ...item, cantidad: value === '' ? '' : parseInt(value) }
+          : item
+      )
+    )
+  }
+
+  const total = carrito.reduce((acc, item) => {
+    const cantidad = typeof item.cantidad === 'number' ? item.cantidad : 0
+    return acc + item.precio * cantidad
+  }, 0)
 
   return (
     <main className="container py-5">
@@ -97,26 +91,38 @@ export default function CarritoPage() {
                   <tr key={item.servicioId}>
                     <td>{item.nombre}</td>
                     <td>${item.precio}</td>
-                    <td>{item.cantidad}</td>
-                    <td>${item.precio * item.cantidad}</td>
-                    <td className="d-flex gap-2">
+                    <td>
+                      <input
+                        type="number"
+                        min={1}
+                        className="form-control form-control-sm w-50"
+                        value={item.cantidad}
+                        onChange={(e) =>
+                          handleInputChange(item.servicioId, e.target.value)
+                        }
+                        onBlur={() => {
+                          const cantidad = parseInt(item.cantidad.toString())
+                          if (!isNaN(cantidad) && cantidad > 0) {
+                            actualizarCantidad(item.servicioId, cantidad)
+                          } else {
+                            fetchCarrito() // Restaurar si el input queda inválido
+                          }
+                        }}
+                      />
+                    </td>
+                    <td>
+                      $
+                      {typeof item.cantidad === 'number'
+                        ? item.precio * item.cantidad
+                        : 0}
+                    </td>
+                    <td>
                       <button
-                        onClick={() => eliminarItem(item.servicioId)}
-                        className="btn-trash"
-                        title="Eliminar 1 unidad"
+                        onClick={() => eliminarServicio(item.servicioId)}
+                        className="btn btn-sm btn-outline-danger"
+                        title="Eliminar servicio del carrito"
                       >
                         <FaTrash size={14} />
-                      </button>
-                      <button
-                        className="btn btn-sm btn-outline-secondary"
-                        title="Editar cantidad"
-                        onClick={() =>
-                          router.push(
-                            `/reserva/${encodeURIComponent(item.nombre)}`
-                          )
-                        }
-                      >
-                        <FaEdit size={14} />
                       </button>
                     </td>
                   </tr>
@@ -127,10 +133,7 @@ export default function CarritoPage() {
 
           <div className="text-end mt-4">
             <h4>Total: ${total.toLocaleString('es-AR')}</h4>
-            <button
-              className="btn btn-primary mt-2"
-              onClick={handleFinalizarCompra}
-            >
+            <button className="btn btn-primary mt-2">
               Finalizar compra
             </button>
             <button

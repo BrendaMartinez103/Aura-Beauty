@@ -94,6 +94,35 @@ export async function GET() {
 
   return NextResponse.json(items)
 }
+
+export async function DELETE(req: NextRequest) {
+  const session = await auth()
+  if (!session || !session.user?.email) {
+    return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
+  }
+
+  const { servicioId } = await req.json()
+  if (!servicioId) {
+    return NextResponse.json({ error: 'Datos inválidos' }, { status: 400 })
+  }
+
+  const cliente = await prisma.cliente.findUnique({
+    where: { email: session.user.email },
+  })
+
+  if (!cliente) {
+    return NextResponse.json({ error: 'Cliente no encontrado' }, { status: 404 })
+  }
+
+  await prisma.carrito.deleteMany({
+    where: {
+      clienteId: cliente.id,
+      servicioId,
+    }
+  })
+
+  return NextResponse.json({ ok: true })
+}
 export async function PATCH(req: NextRequest) {
   const session = await auth()
   if (!session || !session.user?.email) {
@@ -101,7 +130,7 @@ export async function PATCH(req: NextRequest) {
   }
 
   const { servicioId, cantidad } = await req.json()
-  if (!servicioId || !cantidad) {
+  if (!servicioId || cantidad == null) {
     return NextResponse.json({ error: 'Datos inválidos' }, { status: 400 })
   }
 
@@ -127,30 +156,29 @@ export async function PATCH(req: NextRequest) {
     return NextResponse.json({ error: 'Elemento no encontrado' }, { status: 404 })
   }
 
-  const nuevaCantidad = existente.cantidad + cantidad
-  if (nuevaCantidad <= 0) {
-    // Eliminar si la cantidad llega a 0 o menos
+  if (cantidad <= 0) {
+    // Si la cantidad nueva es 0 o menor, eliminamos el ítem
     await prisma.carrito.delete({
       where: {
         clienteId_servicioId_fechaHora: {
           clienteId: cliente.id,
           servicioId,
-          fechaHora: existente.fechaHora
+          fechaHora: existente.fechaHora,
         }
       }
     })
   } else {
-    // Actualizar cantidad
+    // Si es válida, actualizamos
     await prisma.carrito.update({
       where: {
         clienteId_servicioId_fechaHora: {
           clienteId: cliente.id,
           servicioId,
-          fechaHora: existente.fechaHora
+          fechaHora: existente.fechaHora,
         }
       },
       data: {
-        cantidad: nuevaCantidad
+        cantidad: cantidad,
       }
     })
   }
