@@ -2,8 +2,10 @@ import type React from 'react'
 import type { Metadata } from 'next'
 import './globals.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
-import { SessionProvider } from 'next-auth/react'
 import PushManagerProvider from './components/PushManagerProvider'
+import { auth } from '@/lib/auth'
+import OffcanvasNavbar from './components/offcanvas-navbar'
+import { SessionProvider } from 'next-auth/react'
 
 export const metadata: Metadata = {
   title: 'Aura Beauty - Más que belleza, armonía',
@@ -11,18 +13,23 @@ export const metadata: Metadata = {
     'Salón de belleza y estética con servicios de pestañas, masajes, manicura y estilismo',
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const session = await auth()
+
   return (
     <html lang="es">
       <body>
-        <SessionProvider>
-          <PushManagerProvider />
-          {children}
-        </SessionProvider>
+        <PushManagerProvider />
+        <OffcanvasNavbar
+          session={session ?? undefined}
+          brandName="Aura Beauty"
+          brandHref="/"
+        />
+        <SessionProvider>{children}</SessionProvider>
       </body>
     </html>
   )

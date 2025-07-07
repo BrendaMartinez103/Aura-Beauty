@@ -14,7 +14,7 @@ interface OffcanvasNavbarProps {
 }
 
 export default function AdminNavbar({
-  brandName = 'Aura Beauty',
+  brandName = 'Panel de Administración',
   brandHref = '/',
   navigationItems = [{ label: 'Inicio', href: '/' }],
   session = undefined,

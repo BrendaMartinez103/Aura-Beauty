@@ -1,6 +1,5 @@
 'use client'
 import Image from 'next/image'
-import OffcanvasNavbar from '../components/offcanvas-navbar'
 import Link from 'next/link'
 
 export default function NuestrosEspacios() {
@@ -38,12 +37,15 @@ export default function NuestrosEspacios() {
   ]
 
   return (
-    <main className="min-vh-100" style={{ backgroundColor: 'var(--background)' }}>
-      <OffcanvasNavbar brandName="Aura Beauty" brandHref="/" />
-
+    <main
+      className="min-vh-100"
+      style={{ backgroundColor: 'var(--background)' }}
+    >
       <div className="container py-5">
         <div className="text-center mb-5">
-          <h1 className="display-4 fw-bold text-purple mb-3">Nuestros Espacios</h1>
+          <h1 className="display-4 fw-bold text-purple mb-3">
+            Nuestros Espacios
+          </h1>
           <p className="fs-5 text-muted-foreground">
             Conocé cada rincón diseñado para tu comodidad, relax y belleza.
           </p>
@@ -67,14 +69,20 @@ export default function NuestrosEspacios() {
               />
             </div>
             <div className="col-md-6">
-              <h3 className="h4 fw-semibold text-purple mb-3">{servicio.titulo}</h3>
-              <p className="fs-6 text-muted-foreground">{servicio.descripcion}</p>
+              <h3 className="h4 fw-semibold text-purple mb-3">
+                {servicio.titulo}
+              </h3>
+              <p className="fs-6 text-muted-foreground">
+                {servicio.descripcion}
+              </p>
             </div>
           </div>
         ))}
 
         <div className="bg-light rounded p-4 text-center mt-5">
-          <h4 className="h5 fw-semibold text-purple mb-3">¿Querés visitarnos?</h4>
+          <h4 className="h5 fw-semibold text-purple mb-3">
+            ¿Querés visitarnos?
+          </h4>
           <p className="fs-6 text-muted-foreground mb-3">
             Vení a disfrutar de un ambiente pensado exclusivamente para vos.
           </p>

@@ -3,20 +3,21 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { Menu } from 'lucide-react'
-import { useSession, signOut } from 'next-auth/react'
+import { signOut } from 'next-auth/react'
+import { Session } from 'next-auth'
 
 interface OffcanvasNavbarProps {
   brandName?: string
   brandHref?: string
+  session?: Session
 }
 
 export default function OffcanvasNavbar({
   brandName = 'Aura Beauty',
   brandHref = '/',
+  session,
 }: OffcanvasNavbarProps) {
   const [isOpen, setIsOpen] = useState(false)
-
-  const { data: session } = useSession()
 
   const toggleOffcanvas = () => setIsOpen(!isOpen)
   const closeOffcanvas = () => setIsOpen(false)
@@ -61,7 +62,7 @@ export default function OffcanvasNavbar({
           </button>
 
           <div className="collapse navbar-collapse d-none d-lg-flex align-items-center">
-            <ul className="nav flex-column mb-0">
+            <ul className="nav flex-row mb-0">
               {navigationItems.map((item) => (
                 <li key={item.label} className="nav-item border-bottom py-2">
                   <Link
