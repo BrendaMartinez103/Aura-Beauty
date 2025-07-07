@@ -14,10 +14,18 @@ export async function POST(req: Request) {
   const subs = await prisma.suscripcionAnonima.findMany()
 
   for (const { sub } of subs) {
-    try {
-      await webpush.sendNotification(sub, JSON.stringify({ title, body }))
-    } catch (err) {
-      console.error('Error enviando notificación:', err)
+    if (sub) {
+      try {
+        const parsedSub = typeof sub === 'string' ? JSON.parse(sub) : sub
+        await webpush.sendNotification(
+          parsedSub as webpush.PushSubscription,
+          JSON.stringify({ title, body })
+        )
+      } catch (err) {
+        console.error('Error enviando notificación:', err)
+      }
+    } else {
+      console.warn('Suscripción nula o inválida encontrada, se omite.')
     }
   }
 
