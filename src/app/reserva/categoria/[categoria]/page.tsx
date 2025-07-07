@@ -1,8 +1,8 @@
 import { prisma } from '@/db/client'
-import ListaServiciosPorCategoria from '../../../components/servicio/lista-servicios-por-categoria'
+import ListaServiciosPorCategoria from '@/app/components/servicio/lista-servicios-por-categoria'
 import Link from 'next/link'
 interface Props {
-  params: { categoria: string }
+  params: Promise<{ categoria: string }>
 }
 
 export default async function ServiciosPorCategoriaPage({ params }: Props) {

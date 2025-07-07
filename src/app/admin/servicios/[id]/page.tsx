@@ -1,11 +1,11 @@
 import { getServiceByCategoryId, getAllCategories } from '@/lib/data'
 import ServiceSearchContainer from '@/app/components/admin/ServiceSearchContainer'
 
-export default async function ServiciosPorCategoriaPage({
-  params,
-}: {
-  params: { id: string }
-}) {
+type PageProps = {
+  params: Promise<{ id: string }>
+}
+
+export default async function ServiciosPorCategoriaPage({ params }: PageProps) {
   const { id } = await params
   const categoryId = Number(id)
   const servicios = await getServiceByCategoryId(categoryId)
