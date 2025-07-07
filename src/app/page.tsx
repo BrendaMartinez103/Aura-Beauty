@@ -48,7 +48,9 @@ export default function Home() {
       {/* Banner promocional */}
       <div className="bg-purple py-3 text-center">
         <p className="fs-5 fw-medium text-white px-3 mb-0">
-          20% DE DESCUENTO CONTRATANDO DOS O MÁS SERVICIOS + 15% DE AHORRO TODOS LOS MARTES Y JUEVES.
+          ¡Empezá tu transformación! ✨
+          Comprá todos los servicios que quieras y te esperamos en nuestro local 💅💇‍♀️💆‍♀️
+
         </p>
       </div>
 

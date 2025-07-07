@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { Menu, Search } from 'lucide-react'
+import { Menu } from 'lucide-react'
 import { useSession, signOut } from 'next-auth/react'
 
 interface OffcanvasNavbarProps {
@@ -35,11 +35,6 @@ export default function OffcanvasNavbar({
     { label: 'Comprar Servicios', href: '/reserva' },
     { label: 'Nuestros Clientes', href: '/nuestros-clientes' },
   ]
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    console.log('Búsqueda enviada')
-  }
 
   return (
     <>
@@ -125,17 +120,6 @@ export default function OffcanvasNavbar({
         </div>
 
         <div className="offcanvas-body d-flex flex-column">
-          <form onSubmit={handleSubmit} className="d-flex gap-2 mb-3">
-            <input
-              type="search"
-              className="form-control"
-              placeholder="Buscar..."
-            />
-            <button type="submit" className="btn btn-outline-secondary">
-              <Search size={18} />
-            </button>
-          </form>
-
           {session ? (
             <button
               onClick={cerrarSesion}
