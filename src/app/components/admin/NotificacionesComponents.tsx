@@ -14,7 +14,9 @@ interface NotificacionesListProps {
   notificaciones: Notificacion[]
 }
 
-const NotificacionesList: React.FC<NotificacionesListProps> = ({ notificaciones }) => {
+const NotificacionesList: React.FC<NotificacionesListProps> = ({
+  notificaciones,
+}) => {
   if (!notificaciones.length) {
     return <Alert variant="info">No hay notificaciones.</Alert>
   }
@@ -36,19 +38,37 @@ const NotificacionesList: React.FC<NotificacionesListProps> = ({ notificaciones 
 }
 
 interface NotificacionFormProps {
-  onAdd: (titulo: string, mensaje: string) => void
+  onAdd: (
+    titulo: string,
+    mensaje: string,
+    setSuccess: (v: boolean) => void,
+    setError: (v: string) => void
+  ) => Promise<void>
 }
 
 const NotificacionForm: React.FC<NotificacionFormProps> = ({ onAdd }) => {
   const [titulo, setTitulo] = useState('')
   const [mensaje, setMensaje] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+  const [success, setSuccess] = useState(false)
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setError('')
+    setSuccess(false)
     if (!titulo.trim() || !mensaje.trim()) return
-    onAdd(titulo, mensaje)
-    setTitulo('')
-    setMensaje('')
+    setLoading(true)
+    try {
+      await onAdd(titulo, mensaje, setSuccess, setError)
+      setTitulo('')
+      setMensaje('')
+    } catch (err: unknown) {
+      if (err instanceof Error) setError(err.message)
+      else setError('Error desconocido')
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -64,6 +84,7 @@ const NotificacionForm: React.FC<NotificacionFormProps> = ({ onAdd }) => {
               onChange={(e) => setTitulo(e.target.value)}
               placeholder="Título de la notificación"
               required
+              disabled={loading}
             />
           </Form.Group>
           <Form.Group className="mb-2">
@@ -75,11 +96,22 @@ const NotificacionForm: React.FC<NotificacionFormProps> = ({ onAdd }) => {
               onChange={(e) => setMensaje(e.target.value)}
               placeholder="Mensaje de la notificación"
               required
+              disabled={loading}
             />
           </Form.Group>
-          <Button type="submit" variant="primary">
-            Enviar notificación
+          <Button type="submit" variant="primary" disabled={loading}>
+            {loading ? 'Enviando...' : 'Enviar notificación'}
           </Button>
+          {success && (
+            <Alert variant="success" className="mt-2">
+              Notificación enviada
+            </Alert>
+          )}
+          {error && (
+            <Alert variant="danger" className="mt-2">
+              {error}
+            </Alert>
+          )}
         </Form>
       </Card.Body>
     </Card>
