@@ -23,6 +23,8 @@ export default async function SuccessPage({
 
   const paymentData = await payment.json()
 
+  console.log('Payment Data:', paymentData)
+
   const valid = paymentData.status === 'approved' && status === 'approved'
 
   if (valid && session) {
