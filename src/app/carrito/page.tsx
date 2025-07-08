@@ -62,6 +62,31 @@ export default function CarritoPage() {
     )
   }
 
+  const handleFinalizarCompra = async () => {
+    try {
+      const items = carrito.map((item) => ({
+        id: item.servicioId.toString(),
+        title: item.nombre,
+        quantity: item.cantidad,
+        unit_price: item.precio,
+      }))
+      const res = await fetch('/api/pago', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ items }),
+      })
+      const data = await res.json()
+      if (data.init_point) {
+        router.push(data.init_point)
+      } else {
+        alert(data.error || 'No se pudo obtener el enlace de pago')
+      }
+    } catch (error) {
+      alert('Error al procesar el pago')
+      console.error(error)
+    }
+  }
+
   const total = carrito.reduce((acc, item) => {
     const cantidad = typeof item.cantidad === 'number' ? item.cantidad : 0
     return acc + item.precio * cantidad
@@ -133,7 +158,10 @@ export default function CarritoPage() {
 
           <div className="text-end mt-4">
             <h4>Total: ${total.toLocaleString('es-AR')}</h4>
-            <button className="btn btn-primary mt-2">
+            <button
+              className="btn btn-primary mt-2"
+              onClick={handleFinalizarCompra}
+            >
               Finalizar compra
             </button>
             <button
