@@ -17,7 +17,7 @@ export default async function SuccessPage({
 
   const payment = await fetch(ML_API_URL + `/${paymentId}`, {
     headers: {
-      Authorization: `Bearer ${process.env.MP_ACCESS_TOKEN}`,
+      Authorization: `Bearer ${process.env.MERCADOPAGO_ACCESS_TOKEN}`,
     },
   })
 
