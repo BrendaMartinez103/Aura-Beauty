@@ -193,3 +193,60 @@ export async function getServiciosCountByCategory() {
   })
   return conteo
 }
+
+// get carrito
+export async function getCarrito(clienteId: number) {
+  return await prisma.carrito.findMany({
+    where: { clienteId },
+    include: {
+      servicio: {
+        include: {
+          categoria: true,
+        },
+      },
+    },
+  })
+}
+
+// crear Compra
+export async function crearCompra(
+  clienteId: number,
+  mp_transaction_id: string
+) {
+  // Obtener el carrito del cliente
+  const carrito = await getCarrito(clienteId)
+
+  return await prisma.compra.create({
+    data: {
+      clienteId,
+      Detalle: {
+        create: carrito.map((item) => ({
+          nombre: item.servicio.nombre,
+          descripcion: item.servicio.descripcion,
+          imageUrl: item.servicio.imageUrl,
+          precio: item.servicio.precio,
+          duracion: item.servicio.duracion,
+          cantidad: item.cantidad,
+          categoria: item.servicio.categoria.nombre,
+        })),
+      },
+      total: carrito.reduce(
+        (sum, item) => sum + item.servicio.precio * item.cantidad,
+        0
+      ),
+      mp_transaction_id,
+    },
+  })
+}
+
+export async function getUserByEmail(email: string) {
+  return await prisma.cliente.findUnique({
+    where: { email },
+  })
+}
+
+export async function eliminarCarrito(clienteId: number) {
+  return await prisma.carrito.deleteMany({
+    where: { clienteId },
+  })
+}
