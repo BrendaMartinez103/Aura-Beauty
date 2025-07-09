@@ -82,7 +82,7 @@ export default function OffcanvasNavbar({
               session.user?.rol === 'admin' ? (
                 <Link
                   href="/admin"
-                  className="btn btn-warning ms-3 text-uppercase"
+                  className="btn btn-info ms-3 text-uppercase"
                 >
                   Panel Admin
                 </Link>

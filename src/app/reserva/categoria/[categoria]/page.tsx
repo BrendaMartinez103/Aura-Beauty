@@ -1,15 +1,24 @@
 import { prisma } from '@/db/client'
 import ListaServiciosPorCategoria from '@/app/components/servicio/lista-servicios-por-categoria'
 import Link from 'next/link'
-interface Props {
-  params: { categoria: string }
-  searchParams: { page?: string; search?: string }
-}
+
 const SERVICIOS_POR_PAGINA = 4
-export default async function ServiciosPorCategoriaPage({ params, searchParams }: Props) {
-  const nombreCategoria = decodeURIComponent(params.categoria)
-  const paginaActual = parseInt(searchParams.page || '1')
-  const search = searchParams.search?.toLowerCase() || ''
+export default async function ServiciosPorCategoriaPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ categoria: string }>
+  searchParams: Promise<{ page?: string; search?: string }>
+}) {
+  const nombreCategoria = decodeURIComponent(
+    await params.then((p) => p.categoria)
+  )
+  const paginaActual = Number(
+    (await searchParams.then((searchParams) => searchParams.page)) || '1'
+  )
+  const search = await searchParams.then(
+    (searchParams) => searchParams.search?.toLowerCase() || ''
+  )
 
   const categoria = await prisma.categoria.findUnique({
     where: { nombre: nombreCategoria },
@@ -29,13 +38,15 @@ export default async function ServiciosPorCategoriaPage({ params, searchParams }
       </div>
     )
   }
- const serviciosFiltrados = categoria.Servicio.filter(
+  const serviciosFiltrados = categoria.Servicio.filter(
     (servicio) =>
       servicio.nombre.toLowerCase().includes(search) ||
       servicio.descripcion.toLowerCase().includes(search)
   )
 
-  const totalPaginas = Math.ceil(serviciosFiltrados.length / SERVICIOS_POR_PAGINA)
+  const totalPaginas = Math.ceil(
+    serviciosFiltrados.length / SERVICIOS_POR_PAGINA
+  )
 
   const servicios = serviciosFiltrados.slice(
     (paginaActual - 1) * SERVICIOS_POR_PAGINA,
@@ -43,12 +54,15 @@ export default async function ServiciosPorCategoriaPage({ params, searchParams }
   )
 
   return (
-    <main className="min-vh-100" style={{ backgroundColor: 'var(--background)' }}>
+    <main
+      className="min-vh-100"
+      style={{ backgroundColor: 'var(--background)' }}
+    >
       <div className="container py-5">
         <h1 className="display-5 fw-bold text-purple mb-4">
           Servicios de {categoria.nombre}
         </h1>
-         {/* 🔍 Formulario de búsqueda */}
+        {/* 🔍 Formulario de búsqueda */}
         <form className="mb-4">
           <input
             type="text"
@@ -71,7 +85,7 @@ export default async function ServiciosPorCategoriaPage({ params, searchParams }
                 href={`/reserva/categoria/${encodeURIComponent(nombreCategoria)}${query}`}
               >
                 <button
-                 className={`btn ${pagina === paginaActual ? 'btn-primary' : 'btn-outline-primary'} btn-sm`}
+                  className={`btn ${pagina === paginaActual ? 'btn-primary' : 'btn-outline-primary'} btn-sm`}
                 >
                   {pagina}
                 </button>
@@ -82,7 +96,9 @@ export default async function ServiciosPorCategoriaPage({ params, searchParams }
 
         <div className="text-center mt-4">
           <Link href="/reserva">
-            <button className="btn btn-outline-primary">← Volver a categorías</button>
+            <button className="btn btn-outline-primary">
+              ← Volver a categorías
+            </button>
           </Link>
         </div>
       </div>
