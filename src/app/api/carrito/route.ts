@@ -98,6 +98,10 @@ export async function GET() {
     imageUrl: item.servicio.imageUrl,
   }))
 
+  items.sort((a, b) =>
+    a.nombre.localeCompare(b.nombre, 'es', { sensitivity: 'base' })
+  )
+
   return NextResponse.json(items)
 }
 

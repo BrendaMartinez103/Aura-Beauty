@@ -1,7 +1,7 @@
 'use client'
 
 import { FaTrash } from 'react-icons/fa'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 
 interface ItemCarrito {
@@ -15,8 +15,10 @@ interface ItemCarrito {
 export default function CarritoPage() {
   const router = useRouter()
   const [carrito, setCarrito] = useState<ItemCarrito[]>([])
+  const [loading, setLoading] = useState(true)
 
   const fetchCarrito = async () => {
+    setLoading(true)
     try {
       const res = await fetch('/api/carrito')
       if (!res.ok) return console.error('Error al obtener carrito:', res.status)
@@ -24,8 +26,14 @@ export default function CarritoPage() {
       setCarrito(data)
     } catch (error) {
       console.error('Error cargando carrito:', error)
+    } finally {
+      setLoading(false)
     }
   }
+
+  useEffect(() => {
+    fetchCarrito()
+  }, [])
 
   const eliminarServicio = async (servicioId: number) => {
     await fetch(`/api/carrito`, {
@@ -89,7 +97,7 @@ export default function CarritoPage() {
     <main className="container py-5">
       <h1 className="text-purple fw-bold mb-4">Tu Carrito</h1>
 
-      {status === 'loading' ? (
+      {loading ? (
         <p className="text-muted">Cargando carrito...</p>
       ) : carrito.length === 0 ? (
         <p className="text-muted">Carrito vacio</p>
