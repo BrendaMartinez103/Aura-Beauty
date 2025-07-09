@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { Menu } from 'lucide-react'
 import { signOut } from 'next-auth/react'
 import { Session } from 'next-auth'
+import { ShoppingCart } from 'lucide-react'
 
 interface OffcanvasNavbarProps {
   brandName?: string
@@ -47,7 +48,7 @@ export default function OffcanvasNavbar({
       </div>
 
       {/* Navbar principal */}
-      <nav className="navbar navbar-expand-lg navbar-light bg-white border-bottom sticky-top">
+      <nav className="navbar navbar-expand-lg navbar-light bg-white border-bottom sticky-top py-3">
         <div className="container">
           <Link href={brandHref} className="navbar-brand fw-bold text-primary">
             {brandName}
@@ -61,10 +62,10 @@ export default function OffcanvasNavbar({
             <Menu size={20} />
           </button>
 
-          <div className="collapse navbar-collapse d-none d-lg-flex align-items-center">
-            <ul className="nav flex-row mb-0">
+          <div className="collapse navbar-collapse d-none d-lg-flex align-items-center justify-content-center w-100 h-100">
+            <ul className="nav flex-row flex-nowrap mb-0 justify-content-center w-100 text-center align-items-center h-100 border-bottom">
               {navigationItems.map((item) => (
-                <li key={item.label} className="nav-item border-bottom py-2">
+                <li key={item.label} className="nav-item py-2">
                   <Link
                     href={item.href}
                     className="nav-link text-uppercase"
@@ -76,10 +77,30 @@ export default function OffcanvasNavbar({
               ))}
             </ul>
 
+            {/* Admin o Carrito */}
+            {session ? (
+              session.user?.rol === 'admin' ? (
+                <Link
+                  href="/admin"
+                  className="btn btn-warning ms-3 text-uppercase"
+                >
+                  Panel Admin
+                </Link>
+              ) : (
+                <Link
+                  href="/carrito"
+                  className="btn btn-outline-primary d-inline-flex align-items-center gap-2 ms-3 text-uppercase"
+                  title="Ir al carrito"
+                >
+                  <ShoppingCart size={18} /> Carrito
+                </Link>
+              )
+            ) : null}
+
             {session ? (
               <button
                 onClick={cerrarSesion}
-                className="btn btn-outline-danger ms-3 text-uppercase"
+                className="btn btn-outline-danger ms-3 text-uppercase text-nowrap"
               >
                 Cerrar sesión
               </button>
@@ -121,6 +142,7 @@ export default function OffcanvasNavbar({
         </div>
 
         <div className="offcanvas-body d-flex flex-column">
+          {/* Boton de sesion */}
           {session ? (
             <button
               onClick={cerrarSesion}
@@ -137,7 +159,26 @@ export default function OffcanvasNavbar({
               Iniciar Sesión
             </Link>
           )}
-
+          {/* Admin o Carrito */}
+          {session ? (
+            session.user?.rol === 'admin' ? (
+              <Link
+                href="/admin"
+                className="btn btn-warning text-uppercase mb-4"
+              >
+                Panel Admin
+              </Link>
+            ) : (
+              <Link
+                href="/carrito"
+                className="btn btn-outline-primary d-inline-flex align-items-center gap-2 text-uppercase mb-4"
+                title="Ir al carrito"
+                onClick={closeOffcanvas}
+              >
+                <ShoppingCart size={18} /> Carrito
+              </Link>
+            )
+          ) : null}
           <ul className="nav flex-column mb-0">
             {navigationItems.map((item) => (
               <li key={item.label} className="nav-item border-bottom py-2">

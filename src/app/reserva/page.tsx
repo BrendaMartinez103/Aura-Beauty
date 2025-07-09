@@ -2,6 +2,7 @@
 import { useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 import { Plus } from 'lucide-react'
+import Link from 'next/link'
 
 const categorias = {
   Peluquería: [
@@ -60,10 +61,6 @@ export default function ReservaOnlinePage() {
     }
   }
 
-  const handleAgregarServicio = () => {
-    router.push('/admin/servicios')
-  }
-
   return (
     <main
       className="min-vh-100"
@@ -106,13 +103,14 @@ export default function ReservaOnlinePage() {
 
         {rol === 'admin' && (
           <div className="text-end mb-3">
-            <button
+            <Link
               className="btn btn-outline-primary"
-              onClick={handleAgregarServicio}
+              title="Agregar nuevo servicio"
+              href="/admin/servicios"
             >
               <Plus size={18} />
               Agregar Servicio
-            </button>
+            </Link>
           </div>
         )}
 
