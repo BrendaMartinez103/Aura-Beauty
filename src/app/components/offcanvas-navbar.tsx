@@ -83,6 +83,7 @@ export default function OffcanvasNavbar({
                 <Link
                   href="/admin"
                   className="btn btn-info ms-3 text-uppercase"
+                  onClick={closeOffcanvas}
                 >
                   Panel Admin
                 </Link>
@@ -164,7 +165,8 @@ export default function OffcanvasNavbar({
             session.user?.rol === 'admin' ? (
               <Link
                 href="/admin"
-                className="btn btn-warning text-uppercase mb-4"
+                className="btn btn-info text-uppercase mb-4"
+                onClick={closeOffcanvas}
               >
                 Panel Admin
               </Link>
