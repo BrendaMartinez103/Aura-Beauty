@@ -1,8 +1,7 @@
 'use client'
 
 import { FaTrash } from 'react-icons/fa'
-import { useEffect, useState } from 'react'
-import { useSession } from 'next-auth/react'
+import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 
 interface ItemCarrito {
@@ -14,18 +13,8 @@ interface ItemCarrito {
 }
 
 export default function CarritoPage() {
-  const { status } = useSession()
   const router = useRouter()
   const [carrito, setCarrito] = useState<ItemCarrito[]>([])
-
-  useEffect(() => {
-    if (status === 'unauthenticated') {
-      router.push('/login')
-    }
-    if (status === 'authenticated') {
-      fetchCarrito()
-    }
-  }, [status, router])
 
   const fetchCarrito = async () => {
     try {
@@ -100,11 +89,11 @@ export default function CarritoPage() {
     <main className="container py-5">
       <h1 className="text-purple fw-bold mb-4">Tu Carrito</h1>
 
-      {status=== 'loading' ? (
+      {status === 'loading' ? (
         <p className="text-muted">Cargando carrito...</p>
       ) : carrito.length === 0 ? (
         <p className="text-muted">Carrito vacio</p>
-      ): (
+      ) : (
         <>
           <div className="table-responsive">
             <table className="table align-middle">
@@ -164,17 +153,14 @@ export default function CarritoPage() {
 
           <div className="text-end mt-4">
             <h4>Total: ${total.toLocaleString('es-AR')}</h4>
-            <button
-              className="btn btn-primary"
-              onClick={handleFinalizarCompra}
-            >
+            <button className="btn btn-primary" onClick={handleFinalizarCompra}>
               Finalizar compra
             </button>
-             <button
-                className="btn btn-outline-primary"
-                style={{ padding: '6px 14px', fontWeight: '500' }}
-                onClick={() => router.push('/reserva')}
-              >
+            <button
+              className="btn btn-outline-primary"
+              style={{ padding: '6px 14px', fontWeight: '500' }}
+              onClick={() => router.push('/reserva')}
+            >
               Seguir comprando
             </button>
           </div>

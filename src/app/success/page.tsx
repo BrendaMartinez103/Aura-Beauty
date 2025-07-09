@@ -27,7 +27,7 @@ export default async function SuccessPage({
 
   const valid =
     (paymentData.status === 'approved' && status === 'approved') ||
-    process.env.MERCADOPAGO_MODE === 'sandbox'
+    (process.env.MERCADOPAGO_MODE === 'sandbox' && status === 'approved')
 
   if (valid && session) {
     const clienteId = session.user?.id

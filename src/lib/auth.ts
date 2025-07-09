@@ -2,7 +2,6 @@ import { prisma } from '@/db/client'
 import bcrypt from 'bcryptjs'
 import NextAuth from 'next-auth'
 import Credentials from 'next-auth/providers/credentials'
-import { authConfig } from '../config/auth.config'
 import z from 'zod'
 
 async function getAdminFromDb(email: string, hashPassword: string) {
@@ -52,7 +51,9 @@ async function getUserFromDb(email: string, hashPassword: string) {
 }
 
 export const { auth, handlers, signIn, signOut } = NextAuth({
-  ...authConfig,
+  pages: {
+    signIn: '/login',
+  },
   providers: [
     Credentials({
       authorize: async (credentials) => {
@@ -88,6 +89,16 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
   secret: process.env.NEXTAUTH_SECRET,
   debug: process.env.NODE_ENV === 'development',
   callbacks: {
+    authorized: async ({ auth, request }) => {
+      const isLoggedIn = !!auth
+      const isAdmin = auth?.user?.rol === 'admin'
+      const isAdminRoute = request.nextUrl.pathname.startsWith('/admin')
+
+      if (isAdminRoute) {
+        return isLoggedIn && isAdmin
+      }
+      return isLoggedIn
+    },
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id
