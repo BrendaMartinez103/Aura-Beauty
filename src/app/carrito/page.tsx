@@ -19,7 +19,7 @@ export default function CarritoPage() {
   const [carrito, setCarrito] = useState<ItemCarrito[]>([])
 
   useEffect(() => {
-    if (status === 'loading') return
+    //if (status === 'loading') return
     if (status === 'unauthenticated') {
       router.push('/login')
     }
