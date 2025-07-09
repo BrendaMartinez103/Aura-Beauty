@@ -6,6 +6,17 @@ export async function getAllCategories() {
   return await prisma.categoria.findMany()
 }
 
+export async function getCategoriesAndServices() {
+  return await prisma.categoria.findMany({
+    include: {
+      Servicio: {
+        orderBy: { nombre: 'asc' },
+      },
+    },
+    orderBy: { nombre: 'asc' },
+  })
+}
+
 export async function getAllServices() {
   return await prisma.servicio.findMany()
 }
