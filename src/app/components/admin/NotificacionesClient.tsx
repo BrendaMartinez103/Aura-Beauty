@@ -1,15 +1,9 @@
 'use client'
 
-import React, { useState } from 'react'
-import {
-  NotificacionesList,
-  NotificacionForm,
-  Notificacion,
-} from '@/app/components/admin/NotificacionesComponents'
+import { NotificacionForm } from '@/app/components/admin/NotificacionesComponents'
+import { sendNotification } from '@/lib/noticationActions'
 
 export default function NotificacionesClient() {
-  const [notificaciones, setNotificaciones] = useState<Notificacion[]>([])
-
   const handleAdd = async (
     titulo: string,
     mensaje: string,
@@ -19,22 +13,11 @@ export default function NotificacionesClient() {
     setError('')
     setSuccess(false)
     try {
-      const res = await fetch('/api/notificar', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title: titulo, body: mensaje }),
-      })
-      if (!res.ok) throw new Error('Error al enviar la notificación')
+      const res = await sendNotification(titulo, mensaje)
+      if (!res.success) {
+        throw new Error(res.error || 'Error al enviar la notificación')
+      }
       setSuccess(true)
-      setNotificaciones((prev) => [
-        {
-          id: Date.now(),
-          titulo,
-          mensaje,
-          fecha: new Date().toLocaleString('es-AR'),
-        },
-        ...prev,
-      ])
     } catch (err: unknown) {
       if (err instanceof Error) setError(err.message)
       else setError('Error desconocido')
@@ -44,7 +27,6 @@ export default function NotificacionesClient() {
   return (
     <>
       <NotificacionForm onAdd={handleAdd} />
-      <NotificacionesList notificaciones={notificaciones} />
     </>
   )
 }
