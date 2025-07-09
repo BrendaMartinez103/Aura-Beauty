@@ -19,8 +19,14 @@ export default function CarritoPage() {
   const [carrito, setCarrito] = useState<ItemCarrito[]>([])
 
   useEffect(() => {
-    if (status === 'unauthenticated') router.push('/login')
-    if (status === 'authenticated') fetchCarrito()
+    if (status === 'loading') return
+    if (status === 'unauthenticated') {
+      router.push('/login')
+    }
+    else
+    if (status === 'authenticated') {
+      fetchCarrito()
+    }
   }, [status, router])
 
   const fetchCarrito = async () => {
@@ -159,16 +165,17 @@ export default function CarritoPage() {
           <div className="text-end mt-4">
             <h4>Total: ${total.toLocaleString('es-AR')}</h4>
             <button
-              className="btn btn-primary mt-2"
+              className="btn btn-primary"
               onClick={handleFinalizarCompra}
             >
               Finalizar compra
             </button>
-            <button
-              className="btn btn-purple mt-3 ms-2"
-              onClick={() => router.push('/reserva')}
-            >
-              ← Seguir comprando
+             <button
+                className="btn btn-outline-primary"
+                style={{ padding: '6px 14px', fontWeight: '500' }}
+                onClick={() => router.push('/reserva')}
+              >
+              Seguir comprando
             </button>
           </div>
         </>
