@@ -66,12 +66,12 @@ export default function Home() {
         <div className="row g-4">
           <div className="col-12 col-md-6 col-lg-4">
             <Link
-              href="/reserva/categoria/Manicura y Pedicura"
+              href="/reserva/categoria/Uñas"
               className="text-decoration-none"
             >
               <div className="service-card">
                 <div className="service-icon">💅</div>
-                <h3 className="h5 fw-semibold mb-2">Manicura y Pedicura</h3>
+                <h3 className="h5 fw-semibold mb-2">Uñas</h3>
                 <p className="text-muted-foreground mb-0">
                   Cuidado profesional para tus uñas
                 </p>

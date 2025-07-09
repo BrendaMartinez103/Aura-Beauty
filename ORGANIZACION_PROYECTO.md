@@ -6,12 +6,12 @@ Este documento contiene la organización inicial del proyecto web de reservas de
 
 ## ✍ Investigación y Diseño
 
-- [ ] Definir roles: usuario final vs. administrador
-- [ ] Crear mockups / bocetos de la interfaz
+- [X] Definir roles: usuario final vs. administrador
+- [X] Crear mockups / bocetos de la interfaz
 - [x] Esquematizar base de datos (modelos, relaciones)
-- [ ] Definir servicios de belleza y estructura de reservas
-- [ ] Revisión de requisitos y funcionalidades
-- [ ] Definir flujo de usuario: desde la selección del servicio hasta la confirmación del turno
+- [X] Definir servicios de belleza y estructura de reservas
+- [X] Revisión de requisitos y funcionalidades
+- [X] Definir flujo de usuario: desde la selección del servicio hasta la confirmación del turno
 
 ---
 
@@ -22,11 +22,9 @@ Este documento contiene la organización inicial del proyecto web de reservas de
 - [x] Página de nuestros espacios
 - [x] Página de servicios
 - [x] Página de nuestros clientes
-- [x] Página pre gift card
-- [ ] Página gift card
 - [x] Página pre reserva y seleccion de servicio
 - [x] Página reservar turnos
-- [ ] Página de confirmación y checkout
+- [X] Página de confirmación y checkout
 - [ ] notificacion
 - [ ] Validación de formularios en frontend
 - [ ] Barra de navegación y footer reutilizable
@@ -59,7 +57,7 @@ Este documento contiene la organización inicial del proyecto web de reservas de
 
 ## 💳 Integraciones Externas
 
-- [ ] Integrar Mercado Pago (modo sandbox)
+- [X] Integrar Mercado Pago (modo sandbox)
 - [ ] Probar flujo de pago básico desde frontend
 - [ ] Agregar alguna API externa útil (imagenes, frases motivacionales, etc.)
 
@@ -77,7 +75,7 @@ Este documento contiene la organización inicial del proyecto web de reservas de
 
 - [ ] Validación de formularios en backend
 - [ ] Accesibilidad básica (usar Lighthouse)
-- [ ] Búsqueda y paginación de servicios
+- [X] Búsqueda y paginación de servicios
 - [ ] Revisar responsividad en móviles
 
 ---
