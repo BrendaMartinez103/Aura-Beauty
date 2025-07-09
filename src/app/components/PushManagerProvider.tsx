@@ -11,14 +11,17 @@ export default function PushManagerProvider() {
           const sub = await reg.pushManager.subscribe({
             userVisibleOnly: true,
             applicationServerKey: process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY
-              ? Uint8Array.from(atob(process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY), c => c.charCodeAt(0))
-              : undefined
+              ? Uint8Array.from(
+                  atob(process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY),
+                  (c) => c.charCodeAt(0)
+                )
+              : undefined,
           })
 
-          await fetch('/api/subscribe-anon', {
+          await fetch('/api/notificar', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(sub)
+            body: JSON.stringify(sub),
           })
         }
       })
