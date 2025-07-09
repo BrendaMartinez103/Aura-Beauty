@@ -19,11 +19,9 @@ export default function CarritoPage() {
   const [carrito, setCarrito] = useState<ItemCarrito[]>([])
 
   useEffect(() => {
-    //if (status === 'loading') return
     if (status === 'unauthenticated') {
       router.push('/login')
     }
-    else
     if (status === 'authenticated') {
       fetchCarrito()
     }
@@ -102,9 +100,11 @@ export default function CarritoPage() {
     <main className="container py-5">
       <h1 className="text-purple fw-bold mb-4">Tu Carrito</h1>
 
-      {carrito.length === 0 ? (
+      {status=== 'loading' ? (
         <p className="text-muted">Cargando carrito...</p>
-      ) : (
+      ) : carrito.length === 0 ? (
+        <p className="text-muted">Carrito vacio</p>
+      ): (
         <>
           <div className="table-responsive">
             <table className="table align-middle">
