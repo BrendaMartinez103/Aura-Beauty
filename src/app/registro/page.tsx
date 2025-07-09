@@ -5,9 +5,10 @@ import { useRouter } from 'next/navigation';
 
 export default function RegistroForm() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null)
   const [isPending, setIsPending] = useState(false);
   const router = useRouter();
-
+ 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -37,8 +38,9 @@ export default function RegistroForm() {
       });
 
       if (!response.ok) throw new Error('No se pudo registrar el usuario');
-
-      router.push('/login');
+      setSuccessMessage('Registro exitoso. Redirigiendo al login ...');
+      setTimeout(() =>
+      router.push('/login'),2000);
     } catch {
       setErrorMessage('Error al registrar. Verificá los datos.');
     } finally {
@@ -93,6 +95,12 @@ export default function RegistroForm() {
           {errorMessage && (
             <div className="alert alert-danger mt-3" role="alert">
               {errorMessage}
+            </div>
+          )}
+           {/* EXITO */}
+           {successMessage && (
+            <div className="alert alert-sucess mt-3 " role="alert">
+              {successMessage}
             </div>
           )}
 
