@@ -1,6 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/db/client'
 import { auth } from '@/lib/auth'
+import { z } from 'zod'
+
+const CarritoItemSchema = z.object({
+  servicioId: z.number().int().positive(),
+  cantidad: z.number().int().positive(),
+})
 
 /* Crea o actualiza el carrito */
 export async function POST(req: NextRequest) {
@@ -9,10 +15,15 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
   }
 
-  const { servicioId, cantidad } = await req.json()
-  if (!servicioId || !cantidad) {
-    return NextResponse.json({ error: 'Datos inválidos' }, { status: 400 })
+  const body = await req.json()
+  const parsed = CarritoItemSchema.safeParse(body)
+  if (!parsed.success) {
+    return NextResponse.json(
+      { error: 'Datos inválidos', detalles: parsed.error.errors },
+      { status: 400 }
+    )
   }
+  const { servicioId, cantidad } = parsed.data
 
   const cliente = await prisma.cliente.findUnique({
     where: { email: session.user.email },
@@ -112,10 +123,17 @@ export async function DELETE(req: NextRequest) {
     return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
   }
 
-  const { servicioId } = await req.json()
-  if (!servicioId) {
-    return NextResponse.json({ error: 'Datos inválidos' }, { status: 400 })
+  const body = await req.json()
+  const parsed = z
+    .object({ servicioId: z.number().int().positive() })
+    .safeParse(body)
+  if (!parsed.success) {
+    return NextResponse.json(
+      { error: 'Datos inválidos', detalles: parsed.error.errors },
+      { status: 400 }
+    )
   }
+  const { servicioId } = parsed.data
 
   const cliente = await prisma.cliente.findUnique({
     where: { email: session.user.email },
@@ -145,10 +163,20 @@ export async function PATCH(req: NextRequest) {
     return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
   }
 
-  const { servicioId, cantidad } = await req.json()
-  if (!servicioId || cantidad == null) {
-    return NextResponse.json({ error: 'Datos inválidos' }, { status: 400 })
+  const body = await req.json()
+  const parsed = z
+    .object({
+      servicioId: z.number().int().positive(),
+      cantidad: z.number().int(),
+    })
+    .safeParse(body)
+  if (!parsed.success) {
+    return NextResponse.json(
+      { error: 'Datos inválidos', detalles: parsed.error.errors },
+      { status: 400 }
+    )
   }
+  const { servicioId, cantidad } = parsed.data
 
   const cliente = await prisma.cliente.findUnique({
     where: { email: session.user.email },

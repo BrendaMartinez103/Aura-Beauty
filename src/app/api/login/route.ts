@@ -1,11 +1,28 @@
 import { prisma } from '@/db/client'
 import bcrypt from 'bcryptjs'
 import { NextRequest, NextResponse } from 'next/server'
+import { z } from 'zod'
+
+const LoginSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(4),
+})
 
 /* Maneja el login de clientes y administradores */
 export async function POST(req: NextRequest) {
   try {
-    const { email, password } = await req.json()
+    const body = await req.json()
+    const parsed = LoginSchema.safeParse(body)
+    if (!parsed.success) {
+      return NextResponse.json(
+        {
+          error: 'Datos inválidos',
+          detalles: parsed.error.errors,
+        },
+        { status: 400 }
+      )
+    }
+    const { email, password } = parsed.data
 
     // Busca primero en administradores
     const admin = await prisma.administrador.findUnique({ where: { email } })

@@ -1,18 +1,31 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/db/client'
 import bcrypt from 'bcryptjs'
+import { z } from 'zod'
+
+const RegistroSchema = z.object({
+  nombre: z.string().min(1),
+  documento: z.string().min(1),
+  telefono: z.string().min(1),
+  email: z.string().email(),
+  password: z.string().min(4),
+})
 
 /* Maneja el registro de nuevos clientes */
 export async function POST(req: NextRequest) {
   try {
-    const { nombre, documento, telefono, email, password } = await req.json()
-
-    if (!nombre || !documento || !telefono || !email || !password) {
+    const body = await req.json()
+    const parsed = RegistroSchema.safeParse(body)
+    if (!parsed.success) {
       return NextResponse.json(
-        { error: 'Faltan campos obligatorios' },
+        {
+          error: 'Datos inválidos',
+          detalles: parsed.error.errors,
+        },
         { status: 400 }
       )
     }
+    const { nombre, documento, telefono, email, password } = parsed.data
 
     const existe = await prisma.cliente.findFirst({
       where: {

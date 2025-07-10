@@ -1,6 +1,8 @@
 'use server'
 
 import { prisma } from '@/db/client'
+import { CategoriaSchema, ServicioSchema } from './zodSchemas'
+import { z } from 'zod'
 
 export async function getAllCategories() {
   return await prisma.categoria.findMany()
@@ -22,12 +24,14 @@ export async function getAllServices() {
 }
 
 export async function getServiceByCategoryId(categoryId: number) {
+  z.number().int().positive().parse(categoryId)
   return await prisma.servicio.findMany({
     where: { categoriaId: categoryId },
   })
 }
 
 export async function getCountServicesByCategoryId(categoryId: number) {
+  z.number().int().positive().parse(categoryId)
   const count = await prisma.servicio.count({
     where: { categoriaId: categoryId },
   })
@@ -35,12 +39,15 @@ export async function getCountServicesByCategoryId(categoryId: number) {
 }
 
 export async function createCategory(nombre: string) {
+  CategoriaSchema.pick({ nombre: true }).parse({ nombre })
   return await prisma.categoria.create({
     data: { nombre },
   })
 }
 
 export async function updateCategory(id: number, nombre: string) {
+  z.number().int().positive().parse(id)
+  CategoriaSchema.pick({ nombre: true }).parse({ nombre })
   return await prisma.categoria.update({
     where: { id },
     data: { nombre },
@@ -48,6 +55,7 @@ export async function updateCategory(id: number, nombre: string) {
 }
 
 export async function deleteCategory(id: number) {
+  z.number().int().positive().parse(id)
   return await prisma.categoria.delete({
     where: { id },
   })
@@ -62,6 +70,15 @@ export async function createService(
   categoriaId: number,
   imageUrl?: string
 ) {
+  ServicioSchema.pick({
+    nombre: true,
+    descripcion: true,
+    precio: true,
+    duracion: true,
+    activo: true,
+    categoriaId: true,
+    imageUrl: true,
+  }).parse({ nombre, descripcion, precio, duracion, activo, categoriaId, imageUrl })
   return await prisma.servicio.create({
     data: {
       nombre,
@@ -87,6 +104,8 @@ export async function updateService(
     imageUrl?: string
   }>
 ) {
+  z.number().int().positive().parse(id)
+  ServicioSchema.partial().parse(data)
   return await prisma.servicio.update({
     where: { id },
     data,
@@ -94,6 +113,7 @@ export async function updateService(
 }
 
 export async function deleteService(id: number) {
+  z.number().int().positive().parse(id)
   return await prisma.servicio.delete({
     where: { id },
   })
@@ -110,6 +130,7 @@ export async function getAllPedidos() {
 }
 
 export async function getPedidoById(id: number) {
+  z.number().int().positive().parse(id)
   return await prisma.compra.findUnique({
     where: { id },
     include: {
@@ -126,6 +147,7 @@ export async function getAllClientes() {
 }
 
 export async function deleteCliente(id: number) {
+  z.number().int().positive().parse(id)
   try {
     await prisma.cliente.delete({ where: { id } })
     return true
@@ -207,6 +229,7 @@ export async function getServiciosCountByCategory() {
 
 // get carrito
 export async function getCarrito(clienteId: number) {
+  z.number().int().positive().parse(clienteId)
   return await prisma.carrito.findMany({
     where: { clienteId },
     include: {
@@ -224,6 +247,8 @@ export async function crearCompra(
   clienteId: number,
   mp_transaction_id: string
 ) {
+  z.number().int().positive().parse(clienteId)
+  z.string().min(1).parse(mp_transaction_id)
   // Obtener el carrito del cliente
   const carrito = await getCarrito(clienteId)
 
@@ -251,12 +276,14 @@ export async function crearCompra(
 }
 
 export async function getUserByEmail(email: string) {
+  z.string().email().parse(email)
   return await prisma.cliente.findUnique({
     where: { email },
   })
 }
 
 export async function eliminarCarrito(clienteId: number) {
+  z.number().int().positive().parse(clienteId)
   return await prisma.carrito.deleteMany({
     where: { clienteId },
   })
