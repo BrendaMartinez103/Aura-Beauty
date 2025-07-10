@@ -40,19 +40,29 @@ export default function PushNotificationManager() {
   }
 
   async function registerServiceWorker() {
-    const registration = await navigator.serviceWorker.register('/sw.js', {
-      scope: '/',
-      updateViaCache: 'none',
-    })
-    const sub = await registration.pushManager.getSubscription()
-    setSubscription(sub)
+    try {
+      // Verifica si el usuario ya negó el permiso
+      if (Notification.permission === 'denied') return
+
+      const registration = await navigator.serviceWorker.register('/sw.js', {
+        scope: '/',
+        updateViaCache: 'none',
+      })
+      const sub = await registration.pushManager.getSubscription()
+      setSubscription(sub)
+    } catch (error) {
+      console.warn(error)
+    }
   }
 
   useEffect(() => {
     if ('serviceWorker' in navigator && 'PushManager' in window) {
-      registerServiceWorker()
-      if (!subscription) {
-        subscribeToPush()
+      // Solo intenta registrar si el permiso no está denegado
+      if (Notification.permission !== 'denied') {
+        registerServiceWorker()
+        if (!subscription) {
+          subscribeToPush()
+        }
       }
     }
   }, [subscription])

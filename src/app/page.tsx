@@ -12,7 +12,7 @@ export default function Home() {
         <Image
           src="/imagenPrincipal.jpeg"
           alt="Servicios de belleza: pestañas y cejas, masajes, manicura y pedicura y estilismo"
-          width={300}
+          width={400}
           height={100}
           className="rounded shadow-sm"
         />
