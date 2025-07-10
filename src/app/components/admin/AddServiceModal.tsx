@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Modal, Button, Form, Row, Col } from 'react-bootstrap'
+import { uploadImageToCloudinary } from '@/lib/actions'
 
 export interface ServiceModalData {
   nombre: string
@@ -37,6 +38,7 @@ const AddOrEditServiceModal: React.FC<AddOrEditServiceModalProps> = ({
   const [imageUrl, setImageUrl] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  const [file, setFile] = useState<File | null>(null)
 
   useEffect(() => {
     if (show && initialData) {
@@ -59,6 +61,12 @@ const AddOrEditServiceModal: React.FC<AddOrEditServiceModalProps> = ({
     setError('')
   }, [show, initialData])
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setFile(e.target.files[0])
+    }
+  }
+
   const handleSubmit = async () => {
     if (
       !nombre.trim() ||
@@ -72,6 +80,11 @@ const AddOrEditServiceModal: React.FC<AddOrEditServiceModalProps> = ({
     }
     setLoading(true)
     try {
+      let uploadedImageUrl = imageUrl.trim() || undefined
+      if (file) {
+        const response = await uploadImageToCloudinary(file)
+        uploadedImageUrl = response.secure_url
+      }
       await onSubmit({
         nombre: nombre.trim(),
         descripcion: descripcion.trim(),
@@ -79,7 +92,7 @@ const AddOrEditServiceModal: React.FC<AddOrEditServiceModalProps> = ({
         duracion: Number(duracion),
         activo,
         categoriaId: Number(categoriaId),
-        imageUrl: imageUrl.trim() || undefined,
+        imageUrl: uploadedImageUrl,
       })
       onHide()
     } catch {
@@ -173,11 +186,11 @@ const AddOrEditServiceModal: React.FC<AddOrEditServiceModalProps> = ({
           </Form.Select>
         </Form.Group>
         <Form.Group className="mb-3">
-          <Form.Label>Imagen (URL)</Form.Label>
+          <Form.Label>Imagen</Form.Label>
           <Form.Control
-            type="text"
-            value={imageUrl}
-            onChange={(e) => setImageUrl(e.target.value)}
+            type="file"
+            accept="image/*"
+            onChange={handleFileChange}
             disabled={loading}
           />
         </Form.Group>
