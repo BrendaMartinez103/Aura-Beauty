@@ -1,7 +1,6 @@
 import type { NextConfig } from 'next'
 
-const cloudinaryCloudName =
-  process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || 'aura-beauty'
+const cloudinaryCloudName = process.env.CLOUDINARY_CLOUD_NAME || 'aura-beauty'
 const nextConfig: NextConfig = {
   async headers() {
     return [
