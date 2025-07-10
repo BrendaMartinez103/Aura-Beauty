@@ -17,18 +17,23 @@ export const metadata: Metadata = {
   openGraph: {
     images: [
       {
-        url: URL,
+        url: URL + '/icon.png',
         width: 800,
         height: 600,
       },
       {
-        url: URL,
+        url: URL + '/icon.png',
         width: 1800,
         height: 1600,
       },
     ],
     locale: 'es_AR',
     type: 'website',
+  },
+  icons: {
+    icon: '/favicon.ico',
+    shortcut: '/favicon.ico',
+    apple: '/favicon-32x32.png',
   },
 }
 
