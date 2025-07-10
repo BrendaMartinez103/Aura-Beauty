@@ -8,31 +8,36 @@ export default function NuestrosEspacios() {
       titulo: 'Recepción',
       descripcion:
         'Al ingresar a Aura Beauty, te recibe un ambiente cálido y moderno, pensado para que te sientas cómoda desde el primer momento. Nuestra recepción combina elegancia y tranquilidad, preparándote para una experiencia única de bienestar y belleza.',
-      imagen: '/recepcion.png',
+      imagen:
+        'https://res.cloudinary.com/aura-beauty/image/upload/v1752106043/recepcion_s5dkoc.png',
     },
     {
       titulo: 'Peluquería',
       descripcion:
         'Nuestro espacio de peluquería está diseñado para brindarte un servicio profesional y relajado. Desde cortes y peinados hasta coloraciones y tratamientos capilares, contamos con las mejores manos y productos para cuidar tu cabello.',
-      imagen: '/peluqueria.png',
+      imagen:
+        'https://res.cloudinary.com/aura-beauty/image/upload/v1752106038/peluqueria_esbkhm.png',
     },
     {
       titulo: 'Masajes',
       descripcion:
         'En nuestra sala de masajes, el estrés se desvanece. Un lugar acogedor donde ofrecemos distintas técnicas de relajación y terapias corporales que revitalizan tu cuerpo y mente.',
-      imagen: '/masajes.png',
+      imagen:
+        'https://res.cloudinary.com/aura-beauty/image/upload/v1752106047/masajes_q3m34b.png',
     },
     {
       titulo: 'Manicura',
       descripcion:
         'Un espacio pensado para realzar tu estilo. Aquí realizamos manicuras, pedicuras, esculpidas y nail art, cuidando cada detalle para que tus manos y pies luzcan impecables.',
-      imagen: '/uñas.png',
+      imagen:
+        'https://res.cloudinary.com/aura-beauty/image/upload/v1752106038/u%C3%B1as_zp0z7f.png',
     },
     {
       titulo: 'Pestañas',
       descripcion:
         'Nuestro rincón de pestañas ofrece extensiones, lifting y tintes. Un entorno tranquilo y delicado donde resaltamos tu mirada con precisión y profesionalismo.',
-      imagen: '/pestañas.png',
+      imagen:
+        'https://res.cloudinary.com/aura-beauty/image/upload/v1752106040/pesta%C3%B1as_vbpipq.png',
     },
   ]
 
