@@ -3,15 +3,15 @@ import ServicioGrid from '@/app/components/list/ServicioGrid'
 import Link from 'next/link'
 
 interface Props {
-  params: { nombre: string }
+  params: Promise<{ nombre: string }>
 }
 
 export default async function CategoriaPage({ params }: Props) {
   const categoriasRaw = await getCategoriesAndServices()
+  const { nombre } = await params
   const categoria = categoriasRaw.find(
     (cat) =>
-      cat.nombre.toLowerCase() ===
-      decodeURIComponent(params.nombre).toLowerCase()
+      cat.nombre.toLowerCase() === decodeURIComponent(nombre).toLowerCase()
   )
 
   if (!categoria) {
