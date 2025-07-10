@@ -1,7 +1,14 @@
-'use client'
 import Link from 'next/link'
+import CategoriasGrid from '../components/list/CategoriaGrid'
+import { getCategoriesAndServices } from '@/lib/data'
 
-export default function ServiciosPage() {
+export default async function ServiciosPage() {
+  const categoriasRaw = await getCategoriesAndServices()
+  const categorias = categoriasRaw.map((cat) => ({
+    nombre: cat.nombre,
+    servicios: cat.Servicio.map((serv) => serv.nombre),
+  }))
+
   return (
     <main
       className="min-vh-100"
@@ -20,76 +27,20 @@ export default function ServiciosPage() {
               </p>
             </div>
 
-            <div className="bg-white rounded shadow-sm p-4 p-md-5">
-              {/* Peluquería */}
-              <h2 className="h4 fw-semibold text-purple mb-3">✂️ Peluquería</h2>
-              <ul className="text-muted-foreground mb-4">
-                <li>Corte</li>
-                <li>Brushing / Peinado</li>
-                <li>Planchita o Buclera</li>
-                <li>Coloración (tinte, reflejos, balayage)</li>
-                <li>Baño de crema</li>
-                <li>Keratina alisadora</li>
-                <li>Botox capilar</li>
-                <li>Hidratación profunda</li>
-                <li>Shock de nutrición</li>
-                <li>Tratamiento anti frizz</li>
-              </ul>
+            <CategoriasGrid categorias={categorias} />
 
-              {/* Pestañas y Cejas */}
-              <h2 className="h4 fw-semibold text-purple mb-3">
-                👁 Pestañas y Cejas
-              </h2>
-              <ul className="text-muted-foreground mb-4">
-                <li>Colocación de pestañas clásicas (una por una)</li>
-                <li>Pestañas 2D, 3D, volumen ruso</li>
-                <li>Mantenimiento de extensiones</li>
-                <li>Lifting de pestañas</li>
-                <li>Tinte de pestañas</li>
-                <li>Diseño y perfilado de cejas</li>
-                <li>Laminado de cejas</li>
-              </ul>
-
-              {/* Uñas */}
-              <h2 className="h4 fw-semibold text-purple mb-3">
-                💅 Uñas (Manicura y Pedicura)
-              </h2>
-              <ul className="text-muted-foreground mb-4">
-                <li>Manicura tradicional</li>
-                <li>Manicura semipermanente</li>
-                <li>Pedicura spa</li>
-                <li>Esmaltado común o semipermanente</li>
-                <li>Uñas esculpidas en gel o acrílico</li>
-                <li>Reforzamiento de uñas naturales</li>
-                <li>Spa de manos/pies con exfoliación y mascarilla</li>
-                <li>Reconstrucción de uñas quebradas</li>
-              </ul>
-
-              {/* Masajes */}
-              <h2 className="h4 fw-semibold text-purple mb-3">💆‍♀️ Masajes</h2>
-              <ul className="text-muted-foreground mb-4">
-                <li>Masaje descontracturante</li>
-                <li>Masaje relajante</li>
-                <li>Masaje localizado (cuello, espalda, piernas)</li>
-                <li>Masaje con piedras calientes</li>
-                <li>Drenaje linfático manual</li>
-                <li>Masaje con aceites esenciales</li>
-                <li>Masaje reductor</li>
-              </ul>
-
-              {/* Botón final */}
-              <div className="bg-light rounded p-4 text-center">
-                <h4 className="h5 fw-semibold text-purple mb-3">
-                  ¿Querés vivir la experiencia Aura?
-                </h4>
-                <p className="fs-6 text-muted-foreground mb-3">
-                  Elegí el servicio que más te guste y dejate cuidar por
-                  nuestras profesionales.
-                </p>
-                <Link href="/" className="btn btn-primary">
-                  Volver al Inicio
-                </Link>
-              </div>
+            {/* Botón final */}
+            <div className="bg-light rounded p-4 text-center">
+              <h4 className="h5 fw-semibold text-purple mb-3">
+                ¿Querés vivir la experiencia Aura?
+              </h4>
+              <p className="fs-6 text-muted-foreground mb-3">
+                Elegí el servicio que más te guste y dejate cuidar por nuestras
+                profesionales.
+              </p>
+              <Link href="/" className="btn btn-primary">
+                Volver al Inicio
+              </Link>
             </div>
           </div>
         </div>
