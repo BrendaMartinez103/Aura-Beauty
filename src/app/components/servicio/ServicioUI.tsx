@@ -33,11 +33,6 @@ export function ServicioUI({ servicio }: { servicio: Servicio }) {
     }
   }
 
-  const handleComprar = () => {
-    alert(`Comprando ahora: ${servicio.nombre} x${cantidad}`)
-    // Podrías implementar navegación o lógica adicional acá
-  }
-
   return (
     <main className="min-vh-100 bg-light py-5">
       <div className="container">
@@ -71,9 +66,6 @@ export function ServicioUI({ servicio }: { servicio: Servicio }) {
             onClick={handleAgregarCarrito}
           >
             Agregar al carrito
-          </button>
-          <button className="btn btn-primary" onClick={handleComprar}>
-            Comprar ahora
           </button>
         </div>
       </div>
