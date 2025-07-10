@@ -25,10 +25,10 @@ Este documento contiene la organización inicial del proyecto web de reservas de
 - [x] Página pre reserva y seleccion de servicio
 - [x] Página reservar turnos
 - [X] Página de confirmación y checkout
-- [ ] notificacion
-- [ ] Validación de formularios en frontend
-- [ ] Barra de navegación y footer reutilizable
-- [ ] Componentes reutilizables: tarjetas de servicio, formulario de reserva
+- [x] notificacion
+- [x] Validación de formularios en frontend
+- [x] Barra de navegación reutilizable
+- [x] Componentes reutilizables: tarjetas de servicio, formulario de reserva
 
 ---
 
@@ -38,11 +38,9 @@ Este documento contiene la organización inicial del proyecto web de reservas de
 - [x] Configurar conexión a la base de datos (PostgreSQL)
 - [x] Configurar ORM (Prisma)
 - [x] Crear modelos de datos: Usuario, Servicio, Reserva
-- [ ] Endpoints API REST para CRUD de servicios
-- [ ] Endpoints API REST para reservas de turnos
 - [x] Endpoints para autenticación (login, logout, registro)
-- [ ] Validación de datos en backend
-- [ ] Manejo de errores 404 y generales
+- [x] Validación de datos en backend
+- [x] Manejo de errores 404 y generales
 
 ---
 
@@ -51,15 +49,15 @@ Este documento contiene la organización inicial del proyecto web de reservas de
 - [x] Configurar NextAuth
 - [x] Implementar login/logout
 - [x] Diferenciar vistas entre usuario y administrador
-- [ ] Proteger rutas de administrador
+- [x] Proteger rutas de administrador
 
 ---
 
 ## 💳 Integraciones Externas
 
-- [X] Integrar Mercado Pago (modo sandbox)
-- [ ] Probar flujo de pago básico desde frontend
-- [ ] Agregar alguna API externa útil (imagenes, frases motivacionales, etc.)
+- [x] Integrar Mercado Pago (modo sandbox)
+- [x] Probar flujo de pago básico desde frontend
+- [x] Agregar alguna API externa útil (imagenes, frases motivacionales, etc.)
 
 ---
 
@@ -73,19 +71,19 @@ Este documento contiene la organización inicial del proyecto web de reservas de
 
 ## 🧪 Testing y Control de Calidad
 
-- [ ] Validación de formularios en backend
-- [ ] Accesibilidad básica (usar Lighthouse)
-- [X] Búsqueda y paginación de servicios
-- [ ] Revisar responsividad en móviles
+- [x] Validación de formularios en backend
+- [x] Accesibilidad básica (usar Lighthouse)
+- [x] Búsqueda y paginación de servicios
+- [x] Revisar responsividad en móviles
 
 ---
 
 ## 🚀 Deploy y Entrega
 
-- [ ] Subir a GitHub (rama main)
-- [ ] Desplegar en Vercel
-- [ ] Agregar link funcional en README
-- [ ] Revisión final con checklist
+- [x] Subir a GitHub (rama main)
+- [x] Desplegar en Vercel
+- [x] Agregar link funcional en README
+- [x] Revisión final con checklist
 - [ ] Ensayo de defensa
 
 ---
@@ -94,4 +92,3 @@ Este documento contiene la organización inicial del proyecto web de reservas de
 
 - [ ] Chatbot de atención al cliente con IA
 - [ ] Generación automática de descripciones para servicios
-- [ ] Sugerencia inteligente de turnos según disponibilidad
