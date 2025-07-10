@@ -26,10 +26,9 @@ export default function CategoriasGrid({
                   {cat.nombre}
                 </Card.Title>
                 <ul className="text-muted-foreground mb-0">
-                  {cat.servicios.slice(0, 6).map((serv, i) => (
+                  {cat.servicios.map((serv, i) => (
                     <li key={i}>{serv}</li>
                   ))}
-                  {cat.servicios.length > 6 && <li>...</li>}
                 </ul>
               </Card.Body>
             </Card>

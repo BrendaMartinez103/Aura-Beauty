@@ -17,7 +17,7 @@ export default async function ServiciosPorCategoriaPage({ params }: PageProps) {
   return (
     <div className="container py-4">
       <h2>Servicios de la categoría: {category?.nombre}</h2>
-      <ServiceSearchContainer servicios={servicios} />
+      <ServiceSearchContainer servicios={servicios} categoria={categoryId} />
     </div>
   )
 }

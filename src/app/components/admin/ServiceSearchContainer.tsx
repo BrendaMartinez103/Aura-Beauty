@@ -11,6 +11,7 @@ import {
   getAllServices,
   createService,
   getAllCategories,
+  getServiceByCategoryId,
 } from '@/lib/data'
 import { ServiceCardData } from '@/types'
 import AddOrEditServiceModal, { ServiceModalData } from './AddServiceModal'
@@ -18,10 +19,12 @@ import ConfirmModal from './ConfirmModal'
 
 interface ServiceSearchContainerProps {
   servicios: ServiceCardData[]
+  categoria?: number
 }
 
 const ServiceSearchContainer: React.FC<ServiceSearchContainerProps> = ({
   servicios: initialServicios = [],
+  categoria,
 }) => {
   const [search, setSearch] = useState('')
   const [showAddModal, setShowAddModal] = useState(false)
@@ -37,7 +40,9 @@ const ServiceSearchContainer: React.FC<ServiceSearchContainerProps> = ({
     null
   )
   const [showConfirmModal, setShowConfirmModal] = useState(false)
-  const [serviceIdToDelete, setServiceIdToDelete] = useState<number | null>(null)
+  const [serviceIdToDelete, setServiceIdToDelete] = useState<number | null>(
+    null
+  )
 
   React.useEffect(() => {
     // Cargar categorías al montar
@@ -59,7 +64,9 @@ const ServiceSearchContainer: React.FC<ServiceSearchContainerProps> = ({
 
   const fetchServices = async () => {
     setActionLoading(true)
-    const all = await getAllServices()
+    const all = categoria
+      ? await getServiceByCategoryId(categoria)
+      : await getAllServices()
     setServices(all)
     setActionLoading(false)
   }
@@ -239,7 +246,10 @@ const ServiceSearchContainer: React.FC<ServiceSearchContainerProps> = ({
       />
       <ConfirmModal
         show={showConfirmModal}
-        onHide={() => { setShowConfirmModal(false); setServiceIdToDelete(null) }}
+        onHide={() => {
+          setShowConfirmModal(false)
+          setServiceIdToDelete(null)
+        }}
         onConfirm={handleConfirmDelete}
         title="Eliminar servicio"
         message="¿Estás seguro de que deseas eliminar este servicio? Esta acción no se puede deshacer."
