@@ -7,10 +7,29 @@ import { auth } from '@/lib/auth'
 import OffcanvasNavbar from './components/offcanvas-navbar'
 import { SessionProvider } from 'next-auth/react'
 
+const URL =
+  process.env.VERCEL_URL || process.env.NEXTAUTH_URL || 'http://localhost:3000'
+
 export const metadata: Metadata = {
   title: 'Aura Beauty - Más que belleza, armonía',
   description:
     'Salón de belleza y estética con servicios de pestañas, masajes, manicura y estilismo',
+  openGraph: {
+    images: [
+      {
+        url: URL,
+        width: 800,
+        height: 600,
+      },
+      {
+        url: URL,
+        width: 1800,
+        height: 1600,
+      },
+    ],
+    locale: 'es_AR',
+    type: 'website',
+  },
 }
 
 export default async function RootLayout({
