@@ -25,10 +25,9 @@ export const createPreference = async (
         auto_return: 'approved',
       },
     })
-    console.log('Preference created successfully:', response)
     return response
   } catch (error) {
-    console.log(error)
+    console.error(error)
     return null
   }
 }

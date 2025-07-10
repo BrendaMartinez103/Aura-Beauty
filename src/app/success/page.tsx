@@ -23,8 +23,6 @@ export default async function SuccessPage({
 
   const paymentData = await payment.json()
 
-  console.log('Payment Data:', paymentData)
-
   const valid =
     (paymentData.status === 'approved' && status === 'approved') ||
     (process.env.MERCADOPAGO_MODE === 'sandbox' && status === 'approved')
