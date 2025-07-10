@@ -45,7 +45,6 @@ const ServiceSearchContainer: React.FC<ServiceSearchContainerProps> = ({
   )
 
   React.useEffect(() => {
-    // Cargar categorías al montar
     getAllCategories().then(setCategorias)
   }, [])
 
@@ -62,10 +61,11 @@ const ServiceSearchContainer: React.FC<ServiceSearchContainerProps> = ({
     setSearch(e.target.value)
   }
 
-  const fetchServices = async () => {
+  const fetchServices = async (cat?: number) => {
     setActionLoading(true)
-    const all = categoria
-      ? await getServiceByCategoryId(categoria)
+    const categoryToUse = typeof cat === 'number' ? cat : categoria
+    const all = categoryToUse
+      ? await getServiceByCategoryId(categoryToUse)
       : await getAllServices()
     setServices(all)
     setActionLoading(false)
@@ -81,7 +81,6 @@ const ServiceSearchContainer: React.FC<ServiceSearchContainerProps> = ({
     setActionLoading(true)
     try {
       if (serviceToEdit) {
-        // Check if the service still exists before updating
         const exists = services.some((s) => s.id === serviceToEdit.id)
         if (!exists) {
           setActionError('El servicio ya no existe o fue eliminado.')
@@ -90,7 +89,7 @@ const ServiceSearchContainer: React.FC<ServiceSearchContainerProps> = ({
           setServiceToEdit(null)
           return
         }
-        // Convert fields to correct types for updateService
+
         await updateService(serviceToEdit.id, {
           nombre: data.nombre,
           descripcion: data.descripcion,
@@ -100,7 +99,7 @@ const ServiceSearchContainer: React.FC<ServiceSearchContainerProps> = ({
           categoriaId: Number(data.categoriaId),
           imageUrl: data.imageUrl?.trim() || undefined,
         })
-        await fetchServices()
+        await fetchServices(Number(data.categoriaId))
         setActionSuccess('Servicio editado correctamente.')
       }
     } catch (e) {
