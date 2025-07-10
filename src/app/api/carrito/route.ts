@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/db/client'
 import { auth } from '@/lib/auth'
 
+/* Crea o actualiza el carrito */
 export async function POST(req: NextRequest) {
   const session = await auth()
   if (!session || !session.user?.email) {
@@ -22,8 +23,6 @@ export async function POST(req: NextRequest) {
       { status: 404 }
     )
   }
-
-  const ahora = new Date()
 
   const existente = await prisma.carrito.findFirst({
     where: {
@@ -54,7 +53,7 @@ export async function POST(req: NextRequest) {
         clienteId: cliente.id,
         servicioId,
         cantidad,
-        fechaHora: ahora,
+        fechaHora: new Date(),
       },
     })
   }
@@ -62,6 +61,7 @@ export async function POST(req: NextRequest) {
   return NextResponse.json({ ok: true })
 }
 
+/* Obtiene los ítems del carrito del cliente autenticado */
 export async function GET() {
   const session = await auth()
   if (!session || !session.user?.email) {
@@ -105,6 +105,7 @@ export async function GET() {
   return NextResponse.json(items)
 }
 
+/* Elimina un ítem del carrito del cliente autenticado */
 export async function DELETE(req: NextRequest) {
   const session = await auth()
   if (!session || !session.user?.email) {
@@ -136,6 +137,8 @@ export async function DELETE(req: NextRequest) {
 
   return NextResponse.json({ ok: true })
 }
+
+/* Actualiza la cantidad de un ítem en el carrito del cliente autenticado */
 export async function PATCH(req: NextRequest) {
   const session = await auth()
   if (!session || !session.user?.email) {

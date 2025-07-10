@@ -8,6 +8,7 @@ webpush.setVapidDetails(
   process.env.VAPID_PRIVATE_KEY!
 )
 
+/* Envia una notificación push a todos los suscriptores anónimos */
 export async function POST(req: Request) {
   const { title, body } = await req.json()
 

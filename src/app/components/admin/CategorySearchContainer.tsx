@@ -17,6 +17,7 @@ import AddCategoryModal from './AddCategoryModal'
 import { type CategoryCardData } from '@/types'
 import { Plus } from 'lucide-react'
 import ConfirmModal from './ConfirmModal'
+import { useRouter } from 'next/navigation'
 
 export default function CategorySearch() {
   const [searchTerm, setSearchTerm] = useState('')
@@ -30,6 +31,7 @@ export default function CategorySearch() {
   const [actionError, setActionError] = useState<string | null>(null)
   const [actionSuccess, setActionSuccess] = useState<string | null>(null)
   const [actionLoading, setActionLoading] = useState(false)
+  const router = useRouter()
 
   const fetchCategories = async () => {
     setLoading(true)
@@ -145,6 +147,10 @@ export default function CategorySearch() {
     setActionLoading(false)
   }
 
+  const handleCardClick = (id: number) => {
+    router.push(`/admin/servicios/${id}`)
+  }
+
   return (
     <Container fluid>
       <Row className="justify-content-end mb-4">
@@ -207,6 +213,7 @@ export default function CategorySearch() {
         onSaveEdit={handleSaveEdit}
         onCancelEdit={handleCancelEdit}
         searchTerm={searchTerm}
+        onCardClick={handleCardClick}
       />
       <ConfirmModal
         show={showDeleteModal}

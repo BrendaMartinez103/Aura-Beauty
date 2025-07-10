@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createPreference, initializeMercadoPago } from '@/services/mercadopago'
 
+/* Maneja la creación de una preferencia de pago con Mercado Pago. */
 export async function POST(req: NextRequest) {
   try {
     const { items } = await req.json()

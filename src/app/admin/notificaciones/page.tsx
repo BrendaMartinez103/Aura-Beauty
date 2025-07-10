@@ -1,4 +1,3 @@
-'use client'
 import NotificacionesClient from '@/app/components/admin/NotificacionesClient'
 import { Container } from 'react-bootstrap'
 
