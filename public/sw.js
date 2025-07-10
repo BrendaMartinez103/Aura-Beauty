@@ -17,5 +17,7 @@ self.addEventListener('push', function (event) {
 self.addEventListener('notificationclick', function (event) {
   console.info('Notification click received.')
   event.notification.close()
-  event.waitUntil(clients.openWindow('<https://your-website.com>'))
+  event.waitUntil(
+    clients.openWindow('https://aura-beauty-three.vercel.app/reserva')
+  )
 })
